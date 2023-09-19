@@ -103,7 +103,7 @@ dependencies {
     // Popup框架 https://github.com/razerdp/BasePopup
     api 'io.github.razerdp:BasePopup:3.2.0'
     //标签布局 https://github.com/LuckyCodeer/TagLayout
-    api 'com.github.LuckyCodeer:TagLayout:1.0.5'
+    api 'com.github.LuckyCodeer:TagLayout:1.0.8'
     //日期时间选择
     api 'com.github.LuckyCodeer.Android-PickerView:pickerview:4.2.5'
     // 图片选择 https://github.com/LuckSiege/PictureSelector/blob/version_component/README_CN.md
@@ -117,4 +117,6 @@ dependencies {
     api "androidx.work:work-runtime:2.8.0"
     // 侧滑控件 https://github.com/LuckyCodeer/SwipeDelMenuLayout/releases/tag/V1.3.1
     api "com.github.LuckyCodeer:SwipeDelMenuLayout:V1.3.1"
+    // 表格库
+    api 'com.github.huangyanbin:SmartTable:2.2.0'
 }

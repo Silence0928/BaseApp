@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.app.databinding.ActivityMainBinding;
 import com.app.mvvm.MvvmDemoActivity;
+import com.app.whms.TableDemoActivity;
 import com.hjq.permissions.Permission;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.base.mvvm.BaseMvvmActivity;
@@ -201,6 +202,12 @@ public class MainActivity extends BaseMvvmActivity<ActivityMainBinding, BaseView
         mDataBinding.btnDataBinding.setOnClickListener(v -> {
             startActivity(new Intent(this, MvvmDemoActivity.class));
         });
+
+        // 数据表格
+        mDataBinding.btnDataTable.setOnClickListener(v -> {
+            startActivity(new Intent(this, TableDemoActivity.class));
+        });
+
     }
 
     @Override

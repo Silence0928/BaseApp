@@ -116,6 +116,13 @@
                 android:text="数据双向绑定"
                 android:textAllCaps="false"/>
 
+            <Button
+                android:id="@+id/btn_data_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="数据表格"
+                android:textAllCaps="false"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
