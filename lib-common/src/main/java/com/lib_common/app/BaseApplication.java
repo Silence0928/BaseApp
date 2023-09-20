@@ -1,13 +1,18 @@
 package com.lib_common.app;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 
+import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.BuildConfig;
+import com.lib_common.utils.ActivityStackManager;
 import com.lib_src.R;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
@@ -41,6 +46,12 @@ public class BaseApplication extends MultiDexApplication {
             return new ClassicsFooter(context).setDrawableSize(20);
         });
     }
+    private static BaseApplication application; // 全局唯一的context
+    private static Context mContext;//上下文
+    private static Thread mMainThread;//主线程
+    private static long mMainThreadId;//主线程id
+    private static Looper mMainLooper;//循环队列
+    private static Handler mHandler;//主线程Handler
 
     @Override
     public void onCreate() {
@@ -48,11 +59,28 @@ public class BaseApplication extends MultiDexApplication {
         initSDK();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        application = this;
+        MultiDex.install(this);
+    }
+
     private void initSDK() {
         initARouter();
         initToast();
         initRxHttp();
+        init();
         MMKV.initialize(this);
+    }
+
+    private void init() {
+        mContext = getApplicationContext();
+        mMainThread = Thread.currentThread();
+        mMainThreadId = android.os.Process.myTid();
+        mHandler = new Handler();
+        // Activity 栈管理初始化
+        ActivityStackManager.getInstance().init(this);
     }
 
     /**
@@ -111,5 +139,28 @@ public class BaseApplication extends MultiDexApplication {
             ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
         }
         ARouter.init(this); // 尽可能早，推荐在Application中初始化
+    }
+
+    public static BaseApplication getApplication() {
+        return application;
+    }
+    public static Context getContext() {
+        return mContext;
+    }
+    public static void setContext(Context context) {
+        BaseApplication.mContext = context;
+    }
+    public static long getMainThreadId() {
+        return mMainThreadId;
+    }
+    public static Handler getMainHandler() {
+        return mHandler;
+    }
+
+    /**
+     * 退出应用
+     */
+    public void exitApp() {
+        ActivityStackManager.getInstance().finishAllActivities();
     }
 }

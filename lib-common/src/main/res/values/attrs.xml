@@ -55,5 +55,56 @@
         <!-- 密码输入明文或密文 -->
         <attr name="isShowPwd" format="boolean" />
     </declare-styleable>
-
+    <!-- 设置栏 -->
+    <declare-styleable name="SettingBar">
+        <!-- 左边 -->
+        <attr name="bar_leftText" format="string" />
+        <attr name="bar_leftHint" format="string" />
+        <attr name="bar_leftIcon" format="reference" />
+        <attr name="bar_leftColor" format="color" />
+        <attr name="bar_leftSize" format="dimension" />
+        <!-- 右边 -->
+        <attr name="bar_rightText" format="string" />
+        <attr name="bar_rightHint" format="string" />
+        <attr name="bar_rightIcon" format="reference" />
+        <attr name="bar_rightColor" format="color" />
+        <attr name="bar_rightSize" format="dimension" />
+        <!--右侧控件是否为EditText,不设置或者默认为TextView-->
+        <attr name="bar_editor" format="boolean" />
+        <!--输入类型-->
+        <attr name="bar_inputType" format="enum">
+            <enum name="phone" value="1" />
+            <enum name="number" value="2" />
+            <enum name="numberDecimal" value="3" />
+        </attr>
+        <!--输入最大长度-->
+        <attr name="bar_length" format="integer" />
+        <!--最大行数-->
+        <attr name="bar_maxLine" format="integer" />
+        <!--是否为必填会显示红色*号-->
+        <attr name="bar_required" format="boolean" />
+        <!--提示文字,有文字会自动显示提示按钮-->
+        <attr name="bar_tipText" format="string" />
+        <!--提示图标,不设置有默认图标-->
+        <attr name="bar_tipIcon" format="reference" />
+        <!--限制输入字符-->
+        <attr name="bar_edit_digits" format="string" />
+        <!--右侧编辑框padding值-->
+        <attr name="bar_edit_padding" format="dimension" />
+        <attr name="bar_edit_paddingLeft" format="dimension" />
+        <attr name="bar_edit_paddingRight" format="dimension" />
+        <attr name="bar_edit_paddingTop" format="dimension" />
+        <attr name="bar_edit_paddingBottom" format="dimension" />
+        <!--限制小数位数 输入类型为numberDecimal有效-->
+        <attr name="bar_edit_decimalsNum" format="integer" />
+        <!--限制最大输入的数字 输入类型为numberDecimal有效-->
+        <attr name="bar_edit_maxNum" format="integer" />
+        <!-- 分割线 -->
+        <attr name="bar_lineVisible" format="boolean" />
+        <attr name="bar_lineColor" format="reference|color" />
+        <attr name="bar_lineSize" format="dimension" />
+        <attr name="bar_lineMargin" format="dimension" />
+        <!--左侧副标题小号字文本-->
+        <attr name="bar_leftSubText" format="string" />
+    </declare-styleable>
 </resources>

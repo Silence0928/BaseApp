@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white05">
+
+        <LinearLayout
+            android:id="@+id/tv_refuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp"
+            android:layout_marginHorizontal="14dp"
+            android:paddingVertical="19dp"
+            android:paddingHorizontal="17dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/normal_refuel_item_bg">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_home_waybill_driver"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginStart="29dp"
+                android:textStyle="bold"
+                android:text="移库采集"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_normal_refuel_arrow"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/tv_specify_refuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp"
+            android:layout_marginHorizontal="14dp"
+            android:paddingVertical="19dp"
+            android:paddingHorizontal="17dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/special_refuel_item_bg">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_home_goods_driver"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="29dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="移库审核"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_specify_refuel_arrow"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

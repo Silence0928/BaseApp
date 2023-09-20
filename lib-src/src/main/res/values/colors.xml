@@ -142,4 +142,8 @@
     <color name="border_color_gray">#F0EFF4</color>
     <color name="orange_F16B0C_tr22">#22F16B0C</color>
     <color name="color_1890FF">#1890FF</color>
+    <color name="color_20FEAE0E">#20FEAE0E</color>
+    <color name="color_203390FF">#203390FF</color>
+    <color name="black80">#CC000000</color>
+    <color name="black60">#99000000</color>
 </resources>

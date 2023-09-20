@@ -9,7 +9,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:overScrollMode="never"
         android:background="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,8 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="50dp">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_bg"
@@ -249,6 +248,24 @@
                 app:stv_shaderStartColor="@color/green_4CB57E"
                 app:stv_solid="@color/main_color" />
 
+            <TextView
+                android:id="@+id/tv_company_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="公司名称"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/tv_login"
+                app:layout_constraintBottom_toTopOf="@+id/tv_version"/>
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                tools:text="版本：V1.0.0"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

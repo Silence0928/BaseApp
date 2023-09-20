@@ -9,4 +9,8 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="str_home">首页</string>
+    <string name="str_home_shifting_parking">移库</string>
+    <string name="str_home_mine">我的</string>
+    <string name="str_home_bale">捆包</string>
 </resources>

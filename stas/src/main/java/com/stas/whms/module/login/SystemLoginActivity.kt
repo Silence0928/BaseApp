@@ -1,20 +1,31 @@
 package com.stas.whms.module.login
 
+import android.annotation.SuppressLint
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.hjq.toast.ToastUtils
+import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.InputTextHelper
 import com.stas.whms.R
+import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityLoginBinding
+import com.stas.whms.utils.RouteJumpUtil
 
+@Route(path = RoutePathConfig.ROUTE_LOGIN)
 class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>() {
     private var clickSystemSetting = false
-
+    /**
+     * 判断点击退出程序标识
+     */
+    private var mBackKeyPressedTimes: Long = 0
 
     override fun initView() {
         title = "登录"
         mActionBar.leftView.visibility = View.INVISIBLE
+        mDataBinding.tvVersion.text = "版本：V${AndroidUtil.getAppVersionName(this)}"
     }
 
     override fun onViewEvent() {
@@ -78,6 +89,53 @@ class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>
     }
 
     private fun login(jobNum: String, pwd: String) {
+        RouteJumpUtil.jumpToMain()
+        finish()
+    }
 
+
+    @SuppressLint("UnsafeOptInUsageError")
+    override fun onBackPressed() {
+//        if (BuildCompat.isAtLeastT()) {
+//            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+//                OnBackInvokedDispatcher.PRIORITY_DEFAULT
+//            ) {
+//                // Back is pressed... Finishing the activity
+//                if (System.currentTimeMillis() - mBackKeyPressedTimes > 2000) {
+//                    mBackKeyPressedTimes = System.currentTimeMillis()
+//                    ToastUtils.showShort(
+//                        resources.getString(com.lib_src.R.string.home_exit_app)
+//                    )
+//                    return@registerOnBackInvokedCallback
+//                }
+//                finish()
+//            }
+//        } else {
+//            onBackPressedDispatcher.addCallback(this , object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    if (System.currentTimeMillis() - mBackKeyPressedTimes > 2000) {
+//                        mBackKeyPressedTimes = System.currentTimeMillis()
+//                        ToastUtils.showShort(
+//                            resources.getString(com.lib_src.R.string.home_exit_app)
+//                        )
+//                        return
+//                    }
+//                    finish()
+//                }
+//            })
+//        }
+        if (System.currentTimeMillis() - mBackKeyPressedTimes > 2000) {
+            mBackKeyPressedTimes = System.currentTimeMillis()
+            ToastUtils.showShort(
+                resources.getString(com.lib_src.R.string.home_exit_app)
+            )
+            return
+        }
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        BaseApplication.getApplication().exitApp()
     }
 }

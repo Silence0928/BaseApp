@@ -9,4 +9,5 @@
     <string name="please_select">请选择</string>
     <string name="app_upgrade_title">升级</string>
     <string name="app_upgrade_confirm">立即升级</string>
+    <string name="home_exit_app">再按一次退出程序</string>
 </resources>

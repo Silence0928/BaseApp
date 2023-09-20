@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/i_home"
+        android:checked="true"
+        android:icon="@drawable/tab_home"
+        android:title="@string/str_home" />
+    <item
+        android:id="@+id/i_home_bale"
+        android:icon="@drawable/tab_sog"
+        android:title="@string/str_home_bale" />
+    <item
+        android:id="@+id/i_home_shifting_parking"
+        android:icon="@drawable/tab_refuel"
+        android:title="@string/str_home_shifting_parking" />
+    <item
+        android:id="@+id/i_mine"
+        android:icon="@drawable/tab_mine"
+        android:title="@string/str_home_mine" />
+</menu>
