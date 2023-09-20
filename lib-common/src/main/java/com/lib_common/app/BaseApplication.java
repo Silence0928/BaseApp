@@ -12,6 +12,7 @@ import com.lib_src.R;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.tencent.mmkv.MMKV;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,6 +52,7 @@ public class BaseApplication extends MultiDexApplication {
         initARouter();
         initToast();
         initRxHttp();
+        MMKV.initialize(this);
     }
 
     /**

@@ -15,6 +15,7 @@ import com.lib_common.R;
 import com.lib_common.base.mvvm.BaseMvvmActivity;
 import com.lib_common.dialog.LoadingDialog;
 import com.lib_common.view.layout.ActionBar;
+import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,6 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 public abstract class BaseActivity extends AppCompatActivity {
     protected ActionBar mActionBar;
     protected LoadingDialog mLoadingDialog;
+    protected MMKV mMMKV;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isRegisterEventBus()) {
             EventBus.getDefault().register(this);
         }
+        mMMKV = MMKV.defaultMMKV();
     }
 
     /**
