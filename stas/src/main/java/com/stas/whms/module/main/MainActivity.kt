@@ -158,11 +158,7 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, BaseViewModel>() {
             )
             return
         }
-        finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         BaseApplication.getApplication().exitApp()
     }
+
 }

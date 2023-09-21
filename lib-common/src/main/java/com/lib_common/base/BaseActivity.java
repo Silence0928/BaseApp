@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lib_common.R;
 import com.lib_common.base.mvvm.BaseMvvmActivity;
 import com.lib_common.dialog.LoadingDialog;
@@ -29,11 +30,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ActionBar mActionBar;
     protected LoadingDialog mLoadingDialog;
     protected MMKV mMMKV;
+    protected ImmersionBar mImmersionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ARouter.getInstance().inject(this);
+        initImmersionBar(com.lib_src.R.color.main_color);
         if (!isDataBinding()) {
             //每个界面添加actionbar
             if (isShowActionBar()) {
@@ -51,6 +54,18 @@ public abstract class BaseActivity extends AppCompatActivity {
             EventBus.getDefault().register(this);
         }
         mMMKV = MMKV.defaultMMKV();
+    }
+
+    /**
+     * 设置沉浸式状态栏颜色
+     * @param color
+     */
+    protected void initImmersionBar(int color) {
+        mImmersionBar = ImmersionBar.with(this);
+        if (color != 0) {
+            mImmersionBar.statusBarColor(color);
+        }
+        mImmersionBar.init();
     }
 
     /**

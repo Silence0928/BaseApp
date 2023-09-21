@@ -82,7 +82,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="出货修正"
+                    android:text="照合解除"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:layout_weight="1"

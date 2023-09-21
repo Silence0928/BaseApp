@@ -123,4 +123,8 @@ dependencies {
     api 'androidx.viewpager2:viewpager2:1.0.0'
     // 圆形图标
     api 'de.hdodenhof:circleimageview:3.0.1'
+    // 沉浸式状态栏
+    api 'com.gyf.immersionbar:immersionbar:3.0.0'
+    api 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+    api 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 }

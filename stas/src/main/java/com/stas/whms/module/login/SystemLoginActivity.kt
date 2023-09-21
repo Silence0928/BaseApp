@@ -131,11 +131,7 @@ class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>
             )
             return
         }
-        finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         BaseApplication.getApplication().exitApp()
     }
+
 }

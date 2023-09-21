@@ -265,6 +265,7 @@
                 android:layout_marginTop="10dp"
                 tools:text="版本：V1.0.0"
                 android:gravity="center"
+                android:paddingBottom="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

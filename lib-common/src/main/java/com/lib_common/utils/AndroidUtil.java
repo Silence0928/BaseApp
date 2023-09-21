@@ -394,4 +394,22 @@ public class AndroidUtil {
         lp.screenBrightness = bright;
         window.setAttributes(lp);
     }
+
+    /**
+     * [获取应用程序版本名称信息]
+     *
+     * @param context Context
+     * @return 当前应用的版本名称
+     */
+    public static synchronized int getVersionCode(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    context.getPackageName(), 0);
+            return Integer.parseInt(packageInfo.versionName.replace(".", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
