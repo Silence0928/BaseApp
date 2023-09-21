@@ -11,11 +11,16 @@ public class RouteJumpUtil {
     public static void jumpToLogin() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_LOGIN).navigation();
     }
-
     /**
      * 主页
      */
     public static void jumpToMain() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_MAIN).navigation();
+    }
+    /**
+     * 入库采集
+     */
+    public static void jumpToStorageCollection() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_STORAGE_COLLECTION).navigation();
     }
 }

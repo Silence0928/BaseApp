@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/bg_view"
+        android:layout_width="match_parent"
+        android:background="@color/black_999999"
+        android:layout_height="0dp"
+        android:alpha="0.2"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_height="279dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/pickerview_topbar_padding"
+                android:text="@string/pickerview_cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/black_999999"
+                android:textSize="@dimen/pickerview_topbar_btn_textsize" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btnSubmit"
+                android:layout_toRightOf="@+id/btnCancel"
+                android:gravity="center"
+                android:textColor="@color/pickerview_topbar_title"
+                android:textSize="@dimen/pickerview_topbar_title_textsize" />
+
+            <Button
+                android:id="@id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/pickerview_topbar_padding"
+                android:text="@string/pickerview_submit"
+                android:textAllCaps="false"
+                android:textColor="@color/green_27B57D"
+                android:textSize="@dimen/pickerview_topbar_btn_textsize" />
+        </RelativeLayout>
+
+        <com.contrarywind.view.WheelView
+            android:id="@+id/wheel_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
