@@ -27,8 +27,9 @@
 
         <activity android:name=".module.login.SystemLoginActivity"
             android:exported="false"/>
-
         <activity android:name=".module.entry.StorageCollectionActivity"
+            android:exported="false"/>
+        <activity android:name=".module.entry.StorageAuditActivity"
             android:exported="false"/>
     </application>
 

@@ -23,4 +23,10 @@ public class RouteJumpUtil {
     public static void jumpToStorageCollection() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_STORAGE_COLLECTION).navigation();
     }
+    /**
+     * 入库审核
+     */
+    public static void jumpToStorageAudit() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_STORAGE_AUDIT).navigation();
+    }
 }

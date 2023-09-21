@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_bg_color_gray">
+
+        <TextView
+            android:id="@+id/tv_document_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="单据号："
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/black_333333"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"/>
+
+        <com.lib_common.view.widget.ClearEditText
+            android:id="@+id/cet_document_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_333333"
+            android:textSize="14sp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:maxLength="50"
+            tools:text=""
+            android:hint="请输入单据号"
+            android:background="@drawable/bg_shape_et_gray_5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_document_no"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <com.bin.david.form.core.SmartTable
+            android:id="@+id/table_goods"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_total_num"
+            app:layout_constraintTop_toBottomOf="@+id/cet_document_no"/>
+
+        <TextView
+            android:id="@+id/tv_total_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ll_btn"
+            android:text="总箱数/总数量："
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="30dp"
+            android:textColor="@color/black_333333"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/cet_total_box_num"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:textColor="@color/black_333333"
+            android:textSize="14sp"
+            tools:text="1000"
+            android:gravity="center"
+            android:enabled="false"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/bg_shape_et_gray_5dp"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_num"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total_num"
+            app:layout_constraintLeft_toRightOf="@+id/tv_total_num"/>
+
+        <TextView
+            android:id="@+id/tv_total_num_split"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black_333333"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@+id/cet_total_box_num"
+            app:layout_constraintBottom_toBottomOf="@+id/cet_total_box_num"
+            app:layout_constraintTop_toTopOf="@+id/cet_total_box_num"/>
+
+        <TextView
+            android:id="@+id/cet_total_num"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:textColor="@color/black_333333"
+            android:textSize="14sp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="10dp"
+            tools:text="1000"
+            android:gravity="center"
+            android:enabled="false"
+            android:background="@drawable/bg_shape_et_gray_5dp"
+            app:layout_constraintTop_toTopOf="@+id/cet_total_box_num"
+            app:layout_constraintBottom_toBottomOf="@+id/cet_total_box_num"
+            app:layout_constraintLeft_toRightOf="@+id/tv_total_num_split"/>
+
+        <LinearLayout
+            android:id="@+id/ll_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:padding="15dp">
+
+            <com.coorchice.library.SuperTextView
+                android:id="@+id/stv_close"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="关闭"
+                app:stv_solid="@color/main_color"
+                app:stv_corner="50dp" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

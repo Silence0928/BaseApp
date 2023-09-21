@@ -13,4 +13,8 @@ public class RoutePathConfig {
      * 入库采集
      */
     public static final String ROUTE_STORAGE_COLLECTION = "/entry/StorageCollectionActivity";
+    /**
+     * 入库审核
+     */
+    public static final String ROUTE_STORAGE_AUDIT = "/entry/StorageAuditActivity";
 }

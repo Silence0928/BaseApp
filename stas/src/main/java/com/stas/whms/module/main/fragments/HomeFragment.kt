@@ -8,8 +8,13 @@ import com.stas.whms.utils.RouteJumpUtil
 
 class HomeFragment: BaseMvvmFragment<FragmentHomeBinding, BaseViewModel>() {
     override fun onViewEvent() {
+        // 入库采集
         mDataBinding.tvStorageCollection.setOnClickListener {
             RouteJumpUtil.jumpToStorageCollection()
+        }
+        // 入库审核
+        mDataBinding.tvStorageAudit.setOnClickListener {
+            RouteJumpUtil.jumpToStorageAudit()
         }
     }
 
