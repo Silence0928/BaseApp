@@ -33,4 +33,12 @@ public class RoutePathConfig {
      * 退库审核
      */
     public static final String ROUTE_REFUND_AUDIT = "/refund/RefundAuditActivity";
+    /**
+     * 出货准备
+     */
+    public static final String ROUTE_SHIPMENT_PREPARE = "/bale/ShipmentPrepareActivity";
+    /**
+     * 捆包照合
+     */
+    public static final String ROUTE_BALE_GROUP_PHOTO = "/bale/BaleGroupPhotoActivity";
 }

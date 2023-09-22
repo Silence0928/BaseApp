@@ -39,6 +39,10 @@
             android:exported="false"/>
         <activity android:name=".module.refund.RefundAuditActivity"
             android:exported="false"/>
+        <activity android:name=".module.bale.ShipmentPrepareActivity"
+            android:exported="false"/>
+        <activity android:name=".module.bale.BaleGroupPhotoActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -53,4 +53,16 @@ public class RouteJumpUtil {
     public static void jumpToRefundAudit() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_REFUND_AUDIT).navigation();
     }
+    /**
+     * 出货准备
+     */
+    public static void jumpToShipmentPrepare() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_SHIPMENT_PREPARE).navigation();
+    }
+    /**
+     * 捆包合照
+     */
+    public static void jumpToBaleGroupPhoto() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_BALE_GROUP_PHOTO).navigation();
+    }
 }
