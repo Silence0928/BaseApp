@@ -17,4 +17,20 @@ public class RoutePathConfig {
      * 入库审核
      */
     public static final String ROUTE_STORAGE_AUDIT = "/entry/StorageAuditActivity";
+    /**
+     * 在库查询
+     */
+    public static final String ROUTE_QUERY_LIBRARY = "/entry/QueryLibraryActivity";
+    /**
+     * 在库调整
+     */
+    public static final String ROUTE_ADJUSTMENT_LIBRARY = "/entry/AdjustmentLibraryActivity";
+    /**
+     * 退库采集
+     */
+    public static final String ROUTE_REFUND_COLLECTION = "/refund/RefundCollectionActivity";
+    /**
+     * 退库审核
+     */
+    public static final String ROUTE_REFUND_AUDIT = "/refund/RefundAuditActivity";
 }

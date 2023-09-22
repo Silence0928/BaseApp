@@ -16,6 +16,22 @@ class HomeFragment: BaseMvvmFragment<FragmentHomeBinding, BaseViewModel>() {
         mDataBinding.tvStorageAudit.setOnClickListener {
             RouteJumpUtil.jumpToStorageAudit()
         }
+        // 在库查询
+        mDataBinding.tvStockQuery.setOnClickListener {
+            RouteJumpUtil.jumpToQueryLibrary()
+        }
+        // 在库调整
+        mDataBinding.tvStockModify.setOnClickListener {
+            RouteJumpUtil.jumpToAdjustmentLibrary()
+        }
+        // 退库采集
+        mDataBinding.tvRefundStock.setOnClickListener {
+            RouteJumpUtil.jumpToRefundCollection()
+        }
+        // 退库审核
+        mDataBinding.tvRefundStockAudit.setOnClickListener {
+            RouteJumpUtil.jumpToRefundAudit()
+        }
     }
 
     override fun getLayoutId(): Int {

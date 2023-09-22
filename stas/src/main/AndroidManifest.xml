@@ -31,6 +31,14 @@
             android:exported="false"/>
         <activity android:name=".module.entry.StorageAuditActivity"
             android:exported="false"/>
+        <activity android:name=".module.refund.RefundCollectionActivity"
+            android:exported="false"/>
+        <activity android:name=".module.entry.QueryLibraryActivity"
+            android:exported="false"/>
+        <activity android:name=".module.entry.AdjustmentLibraryActivity"
+            android:exported="false"/>
+        <activity android:name=".module.refund.RefundAuditActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
