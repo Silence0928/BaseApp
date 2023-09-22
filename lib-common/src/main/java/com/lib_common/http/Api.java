@@ -1,6 +1,7 @@
 package com.lib_common.http;
 
 import rxhttp.wrapper.annotation.DefaultDomain;
+import rxhttp.wrapper.annotation.Domain;
 
 /**
  * created by yhw
@@ -8,7 +9,7 @@ import rxhttp.wrapper.annotation.DefaultDomain;
  */
 public class Api {
     //默认baseUrl
-    @DefaultDomain
+    @Domain
     public static String baseUrl = "https://www.wanandroid.com/";
 
     /**

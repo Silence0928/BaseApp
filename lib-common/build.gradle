@@ -1,5 +1,8 @@
 plugins {
     id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp' version '1.9.10-1.0.13'
 }
 
 android {
@@ -18,9 +21,18 @@ android {
             annotationProcessorOptions {
                 arguments = [
                         AROUTER_MODULE_NAME: project.getName(),
-                        rxhttp_rxjava      : 'rxjava2',
-                        rxhttp_package     : 'rxhttp'  //指定RxHttp类包名，可随意指定
+//                        rxhttp_rxjava      : 'rxjava2',
+//                        rxhttp_package     : 'rxhttp'  //指定RxHttp类包名，可随意指定
                 ]
+            }
+        }
+        ksp {
+            arg("rxhttp_rxjava", "2.2.21")
+            arg("rxhttp_package", "rxhttp")
+        }
+        kapt {
+            arguments {
+                arg("rxhttp_rxjava", "2.2.21")
             }
         }
     }
@@ -54,12 +66,13 @@ dependencies {
     //https://square.github.io/leakcanary/getting_started/
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
     //网络框架RxHttp 相关依赖 https://github.com/liujingxing/rxhttp
+    def rxhttp_version = '3.1.1'
     api 'com.squareup.okhttp3:okhttp:4.10.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
-    api "com.github.liujingxing.rxhttp:rxhttp:3.0.0"
-    annotationProcessor "com.github.liujingxing.rxhttp:rxhttp-compiler:3.0.0"
+    api "com.github.liujingxing.rxhttp:rxhttp:$rxhttp_version"
+    kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
     //RxJava2
-    api 'io.reactivex.rxjava2:rxjava:2.2.10'
+    api 'io.reactivex.rxjava2:rxjava:2.2.21'
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'com.github.liujingxing.rxlife:rxlife-rxjava2:2.2.2' //管理RxJava2生命周期，页面销毁，关闭请求
     api 'androidx.multidex:multidex:2.0.1'
@@ -127,4 +140,8 @@ dependencies {
     api 'com.gyf.immersionbar:immersionbar:3.0.0'
     api 'com.gyf.immersionbar:immersionbar-components:3.0.0'
     api 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
+    // rxjava3
+//    implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
+//    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+//    implementation 'com.github.liujingxing.rxlife:rxlife-rxjava3:2.2.2' //RxJava3, Automatic close request
 }
