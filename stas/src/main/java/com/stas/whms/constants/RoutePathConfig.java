@@ -53,4 +53,12 @@ public class RoutePathConfig {
      * 出货取消
      */
     public static final String ROUTE_SHIPMENT_CANCEL = "/bale/ShipmentCancelActivity";
+    /**
+     * 移库采集
+     */
+    public static final String ROUTE_MOVE_COLLECTION = "/move/MoveCollectionActivity";
+    /**
+     * 移库审核
+     */
+    public static final String ROUTE_MOVE_AUDIT = "/move/MoveAuditActivity";
 }

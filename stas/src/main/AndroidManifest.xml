@@ -49,6 +49,10 @@
             android:exported="false"/>
         <activity android:name=".module.bale.ShipmentCancelActivity"
             android:exported="false"/>
+        <activity android:name=".module.move.MoveCollectionActivity"
+            android:exported="false"/>
+        <activity android:name=".module.move.MoveAuditActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

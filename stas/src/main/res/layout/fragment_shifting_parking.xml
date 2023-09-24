@@ -13,7 +13,7 @@
         android:background="@color/white05">
 
         <LinearLayout
-            android:id="@+id/tv_refuel"
+            android:id="@+id/ll_move_collection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -47,7 +47,7 @@
 
 
         <LinearLayout
-            android:id="@+id/tv_specify_refuel"
+            android:id="@+id/ll_move_audit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

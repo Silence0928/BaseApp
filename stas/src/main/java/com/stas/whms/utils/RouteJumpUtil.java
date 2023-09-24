@@ -83,4 +83,16 @@ public class RouteJumpUtil {
     public static void jumpToShipmentCancel() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_SHIPMENT_CANCEL).navigation();
     }
+    /**
+     * 移库采集
+     */
+    public static void jumpToMoveCollection() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_MOVE_COLLECTION).navigation();
+    }
+    /**
+     * 移库审核
+     */
+    public static void jumpToMoveAudit() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_MOVE_AUDIT).navigation();
+    }
 }
