@@ -65,4 +65,22 @@ public class RouteJumpUtil {
     public static void jumpToBaleGroupPhoto() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_BALE_GROUP_PHOTO).navigation();
     }
+    /**
+     * 出货
+     */
+    public static void jumpToShipment() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_SHIPMENT).navigation();
+    }
+    /**
+     * 照和解除
+     */
+    public static void jumpToLightRelease() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_LIGHT_RELEASE).navigation();
+    }
+    /**
+     * 出货取消
+     */
+    public static void jumpToShipmentCancel() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_SHIPMENT_CANCEL).navigation();
+    }
 }

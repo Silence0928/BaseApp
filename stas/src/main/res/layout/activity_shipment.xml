@@ -26,14 +26,14 @@
                 android:background="@color/base_bg_color_gray">
 
                 <TextView
-                    android:id="@+id/tv_shipment_instruction"
+                    android:id="@+id/tv_customer_instruction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="出货指示书："
+                    android:text="客户受领书："
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,41 +51,9 @@
                     android:padding="10dp"
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_shipment_instruction"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_customer_instruction"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="" />
-
-                <TextView
-                    android:id="@+id/tv_production_signage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="生产看板："
-                    android:textColor="@color/black_333333"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_shipment_instruction" />
-
-                <com.lib_common.view.widget.ClearEditText
-                    android:id="@+id/cet_production_signage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/bg_shape_et_white_5dp"
-                    android:hint="请输入"
-                    android:maxLength="50"
-                    android:padding="10dp"
-                    android:textColor="@color/black_333333"
-                    android:textSize="14sp"
-                    app:layout_constraintLeft_toLeftOf="@+id/cet_shipment_instruction"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_production_signage"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_shipment_instruction"
                     tools:text="" />
 
                 <TextView
@@ -100,7 +68,7 @@
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cet_production_signage" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_customer_instruction" />
 
                 <com.lib_common.view.widget.ClearEditText
                     android:id="@+id/cet_customer_board"
@@ -117,11 +85,11 @@
                     app:layout_constraintLeft_toLeftOf="@+id/cet_shipment_instruction"
                     app:layout_constraintLeft_toRightOf="@+id/tv_customer_board"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cet_production_signage"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_customer_instruction"
                     tools:text="" />
 
                 <com.bin.david.form.core.SmartTable
-                    android:id="@+id/table_bale_photo"
+                    android:id="@+id/table_customer"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_marginStart="15dp"
@@ -141,10 +109,10 @@
                     android:layout_marginBottom="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="当前箱数/总数："
+                    android:text="总箱数/总数："
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/table_bale_photo"
+                    app:layout_constraintTop_toBottomOf="@+id/table_customer"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
@@ -191,7 +159,7 @@
                     tools:text="1000" />
 
                 <TextView
-                    android:id="@+id/tv_plan_total_num"
+                    android:id="@+id/tv_collected_total_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -199,55 +167,59 @@
                     android:layout_marginBottom="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="计划箱数/总数："
+                    android:text="已采集箱数："
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@+id/cet_total_num"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/cet_plan_total_box_num"
-                    android:layout_width="100dp"
+                    android:id="@+id/cet_collected_total_box_num"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginEnd="15dp"
                     android:background="@drawable/bg_shape_et_gray_5dp"
                     android:enabled="false"
                     android:gravity="center"
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_plan_total_num"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_plan_total_num"
-                    app:layout_constraintTop_toTopOf="@+id/tv_plan_total_num"
+                    app:layout_constraintRight_toRightOf="@+id/cet_total_num"
+                    app:layout_constraintLeft_toLeftOf="@+id/cet_total_box_num"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_collected_total_num"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_collected_total_num"
+                    app:layout_constraintTop_toTopOf="@+id/tv_collected_total_num"
                     tools:text="1000" />
 
                 <TextView
-                    android:id="@+id/tv_plan_total_num_split"
+                    android:id="@+id/tv_car_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="/"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="车牌号："
                     android:textColor="@color/black_333333"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cet_plan_total_box_num"
-                    app:layout_constraintLeft_toRightOf="@+id/cet_plan_total_box_num"
-                    app:layout_constraintTop_toTopOf="@+id/cet_plan_total_box_num" />
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_collected_total_num"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/cet_plan_total_num"
-                    android:layout_width="100dp"
+                    android:id="@+id/cet_car_no"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/bg_shape_et_gray_5dp"
+                    android:background="@drawable/bg_shape_et_white_5dp"
                     android:enabled="false"
                     android:gravity="center"
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cet_plan_total_box_num"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_plan_total_num_split"
-                    app:layout_constraintTop_toTopOf="@+id/cet_plan_total_box_num"
-                    tools:text="1000" />
-
+                    android:hint="请输入车牌号"
+                    app:layout_constraintRight_toRightOf="@+id/cet_total_num"
+                    app:layout_constraintLeft_toLeftOf="@+id/cet_total_box_num"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_car_no"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_collected_total_num"
+                    app:layout_constraintTop_toTopOf="@+id/tv_car_no" />
+                
                 <TextView
                     android:id="@+id/tv_remark"
                     android:layout_width="wrap_content"
@@ -260,7 +232,7 @@
                     android:text="备注："
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_plan_total_num"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_car_no"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <LinearLayout
@@ -268,10 +240,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
-                    app:layout_constraintLeft_toLeftOf="@+id/cet_plan_total_box_num"
+                    app:layout_constraintLeft_toLeftOf="@+id/cet_collected_total_box_num"
                     app:layout_constraintLeft_toRightOf="@+id/tv_remark"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_plan_total_num"
-                    app:layout_constraintRight_toRightOf="@+id/table_bale_photo"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_car_no"
+                    app:layout_constraintRight_toRightOf="@+id/table_customer"
                     android:background="@drawable/bg_shape_et_white_5dp"
                     android:orientation="vertical">
 

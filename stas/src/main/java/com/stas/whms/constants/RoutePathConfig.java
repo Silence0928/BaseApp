@@ -41,4 +41,16 @@ public class RoutePathConfig {
      * 捆包照合
      */
     public static final String ROUTE_BALE_GROUP_PHOTO = "/bale/BaleGroupPhotoActivity";
+    /**
+     * 出货
+     */
+    public static final String ROUTE_SHIPMENT = "/bale/ShipmentActivity";
+    /**
+     * 照合解除
+     */
+    public static final String ROUTE_LIGHT_RELEASE = "/bale/LightReleaseActivity";
+    /**
+     * 出货取消
+     */
+    public static final String ROUTE_SHIPMENT_CANCEL = "/bale/ShipmentCancelActivity";
 }

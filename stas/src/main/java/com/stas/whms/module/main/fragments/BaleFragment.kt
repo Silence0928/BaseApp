@@ -16,6 +16,18 @@ class BaleFragment: BaseMvvmFragment<FragmentBaleBinding, BaseViewModel>() {
         mDataBinding.tvBale.setOnClickListener {
             RouteJumpUtil.jumpToBaleGroupPhoto()
         }
+        // 出货
+        mDataBinding.tvShipment.setOnClickListener {
+            RouteJumpUtil.jumpToShipment()
+        }
+        // 照合解除
+        mDataBinding.tvShipmentModify.setOnClickListener {
+            RouteJumpUtil.jumpToLightRelease()
+        }
+        // 出货取消
+        mDataBinding.tvShipmentCancel.setOnClickListener {
+            RouteJumpUtil.jumpToShipmentCancel()
+        }
     }
 
     override fun getLayoutId(): Int {
