@@ -49,6 +49,7 @@ public class BaseApplication extends MultiDexApplication {
             return new ClassicsFooter(context).setDrawableSize(20);
         });
     }
+
     private static BaseApplication application; // 全局唯一的context
     private static Context mContext;//上下文
     private static Thread mMainThread;//主线程
@@ -174,15 +175,19 @@ public class BaseApplication extends MultiDexApplication {
     public static BaseApplication getApplication() {
         return application;
     }
+
     public static Context getContext() {
         return mContext;
     }
+
     public static void setContext(Context context) {
         BaseApplication.mContext = context;
     }
+
     public static long getMainThreadId() {
         return mMainThreadId;
     }
+
     public static Handler getMainHandler() {
         return mHandler;
     }
