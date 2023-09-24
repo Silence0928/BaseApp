@@ -1,7 +1,13 @@
 package com.lib_common.base;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IScanListener;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -11,14 +17,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lib_common.R;
 import com.lib_common.base.mvvm.BaseMvvmActivity;
 import com.lib_common.dialog.LoadingDialog;
+import com.lib_common.entity.ScanResult;
 import com.lib_common.view.layout.ActionBar;
 import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
+import com.example.iscandemo.iScanInterface;
+
+import java.util.Objects;
+
+import rxhttp.wrapper.utils.LogUtil;
 
 /**
  * 基类Activity 其它Activity继承此Activity
@@ -27,10 +40,25 @@ import org.greenrobot.eventbus.EventBus;
  * date 2022/11/9
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    //iscan 默认扫描结果广播
+    private static final String RES_ACTION = "android.intent.action.SCANRESULT";
+    private static final String RES_LABEL = "value";
     protected ActionBar mActionBar;
     protected LoadingDialog mLoadingDialog;
     protected MMKV mMMKV;
     protected ImmersionBar mImmersionBar;
+    private iScanInterface mIScanInterface;
+    BroadcastReceiver scanReceiver;
+    private final IScanListener mIScanListener = (data, type, decodeTime, keyKnowTime, imagePath) -> {
+        final ScanResult scanResult = new ScanResult();
+        scanResult.setData(data);
+        scanResult.setType(type);
+        scanResult.setDecodeTime(decodeTime);
+        scanResult.setKeyKnowTime(keyKnowTime);
+        scanResult.setImagePath(imagePath);
+        LogUtil.log("scanner result...." + JSON.toJSONString(scanResult));
+        runOnUiThread(() -> scanResultCallBack(scanResult));
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +81,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isRegisterEventBus()) {
             EventBus.getDefault().register(this);
         }
+        if (isRegisterScan()) {
+//            initScanner();
+        }
         mMMKV = MMKV.defaultMMKV();
     }
 
@@ -66,6 +97,60 @@ public abstract class BaseActivity extends AppCompatActivity {
             mImmersionBar.statusBarColor(color);
         }
         mImmersionBar.init();
+    }
+
+    /**
+     * 初始化扫描仪
+     */
+    protected void initScanner() {
+        LogUtil.log("start init scanner....");
+        mIScanInterface = new iScanInterface(this);
+        // 扫描成功是否播放声音
+        mIScanInterface.enablePlayBeep(true);
+        // 是否启用扫描按键
+        mIScanInterface.lockScanKey(true);
+        /*配置扫描结果输出方式
+         * mode  0：焦点输出   （没有焦点的时候会误触发UI）
+         *       1：广播输出    action：android.intent.action.SCANRESULT
+         *       2：模拟按键输出   （没有焦点的时候会误触发UI）
+         *       3：复制到粘贴板
+         */
+        mIScanInterface.setOutputMode(0);
+        mIScanInterface.registerScan(mIScanListener);
+        LogUtil.log("end init scanner....");
+        registerBroadcast();
+    }
+
+    protected void startScan() {
+        if (isRegisterScan()) {
+            mIScanInterface.scan_start();
+            mIScanInterface.setMultiBarEnable(true);
+        }
+    }
+
+    protected void stopScan() {
+        if (isRegisterScan()) {
+            mIScanInterface.scan_stop();
+            mIScanInterface.setMultiBarEnable(false);
+        }
+    }
+
+    private void registerBroadcast(){
+        //扫描结果广播监听注册
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(RES_ACTION);
+
+        //注册广播接受者
+        scanReceiver = new ScannerResultReceiver();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(scanReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+            } else {
+                registerReceiver(scanReceiver, intentFilter);
+            }
+        } else {
+            registerReceiver(scanReceiver, intentFilter);
+        }
     }
 
     /**
@@ -105,6 +190,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean isShowActionBar() {
         return true;
     }
+
+    /**
+     * 是否注册扫描仪
+     */
+    protected boolean isRegisterScan() {
+        return false;
+    }
+
+    protected void scanResultCallBack(ScanResult result) {}
 
     @Override
     public void setTitle(int titleId) {
@@ -202,6 +296,31 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isRegisterEventBus()) {
             EventBus.getDefault().unregister(this);
         }
+        if (isRegisterScan() && mIScanInterface != null) {
+            mIScanInterface.unregisterScan(mIScanListener);
+        }
         dismissLoading();
+    }
+
+    /**
+     * 扫描结果广播接收
+     */
+    //*********重要
+    private class ScannerResultReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("idata","intent.getAction()-->"+intent.getAction());//
+
+            if (Objects.equals(intent.getAction(), RES_ACTION)){
+                //获取扫描结果
+                String scan_data = intent.getStringExtra(RES_LABEL);
+                if(scan_data!=null){
+                    Log.e("idata","recv = " + scan_data);
+                    ScanResult result = new ScanResult();
+                    result.setData(scan_data);
+                    runOnUiThread(() -> scanResultCallBack(result));
+                }
+            }
+        }
     }
 }

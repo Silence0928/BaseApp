@@ -11,6 +11,7 @@ import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.entity.ScanResult
 import com.stas.whms.R
 import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
@@ -33,6 +34,14 @@ class StorageCollectionActivity : BaseMvvmActivity<ActivityStorageCollectionBind
 
     override fun getVariableId(): Int {
         return 0
+    }
+
+    override fun isRegisterScan(): Boolean {
+        return true
+    }
+
+    override fun scanResultCallBack(result: ScanResult?) {
+        mDataBinding.cetMadeFinishedTag.setText(result?.data)
     }
 
     /**

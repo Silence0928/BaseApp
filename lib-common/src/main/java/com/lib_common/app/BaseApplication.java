@@ -2,6 +2,7 @@ package com.lib_common.app;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.IScanListener;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
@@ -10,10 +11,12 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.example.iscandemo.iScanInterface;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.BuildConfig;
+import com.lib_common.entity.ScanResult;
 import com.lib_common.utils.ActivityStackManager;
-import com.lib_src.R;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -52,6 +55,16 @@ public class BaseApplication extends MultiDexApplication {
     private static long mMainThreadId;//主线程id
     private static Looper mMainLooper;//循环队列
     private static Handler mHandler;//主线程Handler
+    private final IScanListener mIScanListener = (data, type, decodeTime, keyKnowTime, imagePath) -> {
+        ScanResult scanResult = new ScanResult();
+        scanResult.setData(data);
+        scanResult.setType(type);
+        scanResult.setDecodeTime(decodeTime);
+        scanResult.setKeyKnowTime(keyKnowTime);
+        scanResult.setImagePath(imagePath);
+        Log.e("Application===", JSON.toJSONString(scanResult));
+//        scanResultCallBack(scanResult);
+    };
 
     @Override
     public void onCreate() {
@@ -72,6 +85,23 @@ public class BaseApplication extends MultiDexApplication {
         initRxHttp();
         init();
         MMKV.initialize(this);
+        initScan();
+    }
+
+    private void initScan() {
+        iScanInterface scanInterface = new iScanInterface(this);
+        // 扫描成功是否播放声音
+        scanInterface.enablePlayBeep(true);
+        // 是否启用扫描按键
+        scanInterface.lockScanKey(true);
+        /*配置扫描结果输出方式
+         * mode  0：焦点输出   （没有焦点的时候会误触发UI）
+         *       1：广播输出    action：android.intent.action.SCANRESULT
+         *       2：模拟按键输出   （没有焦点的时候会误触发UI）
+         *       3：复制到粘贴板
+         */
+        scanInterface.setOutputMode(1);
+        scanInterface.registerScan(mIScanListener);
     }
 
     private void init() {
@@ -163,4 +193,6 @@ public class BaseApplication extends MultiDexApplication {
     public void exitApp() {
         ActivityStackManager.getInstance().finishAllActivities();
     }
+
+
 }
