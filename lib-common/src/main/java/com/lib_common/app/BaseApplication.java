@@ -89,6 +89,9 @@ public class BaseApplication extends MultiDexApplication {
         initScan();
     }
 
+    /**
+     * 该初始化仅支持在IData设备上执行，其它设备会出现NotFoundDefClassException
+     */
     private void initScan() {
         iScanInterface scanInterface = new iScanInterface(this);
         // 扫描成功是否播放声音

@@ -11,14 +11,16 @@ import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.view.layout.dialog.BottomDialog
 import com.stas.whms.R
 import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityMoveAuditBinding
-import com.stas.whms.databinding.ActivityMoveCollectionBinding
 
 @Route(path = RoutePathConfig.ROUTE_MOVE_AUDIT)
 class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewModel>() {
+
+    private val items = listOf<String>("单号1", "单号2", "单号3", "单号4")
 
     override fun initView() {
         title = "移库审核"
@@ -26,6 +28,9 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
     }
 
     override fun onViewEvent() {
+        mDataBinding.cetMoveNo.setOnClickListener {
+            showRefundOrderNo()
+        }
     }
 
     override fun getLayoutId(): Int {
@@ -109,5 +114,15 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                 }
             }
         mDataBinding.tableMoveCollection.config.contentCellBackgroundFormat = backgroundFormat
+    }
+
+    private fun showRefundOrderNo() {
+        BottomDialog(this, items).builder()
+            .setTitle("移库单号")
+            .setCurrentItem(items.indexOf(mDataBinding.cetMoveNo.text))
+            .setNegativeButton("取消") { }
+            .setPositiveButton("确定") { name, position ->
+                mDataBinding.cetMoveNo.text = name
+            }.show()
     }
 }
