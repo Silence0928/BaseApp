@@ -61,4 +61,8 @@ public class RoutePathConfig {
      * 移库审核
      */
     public static final String ROUTE_MOVE_AUDIT = "/move/MoveAuditActivity";
+    /**
+     * 系统设置
+     */
+    public static final String ROUTE_SYS_SETTING = "/setting/SystemSettingActivity";
 }

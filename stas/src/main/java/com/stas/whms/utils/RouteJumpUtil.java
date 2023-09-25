@@ -95,4 +95,10 @@ public class RouteJumpUtil {
     public static void jumpToMoveAudit() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_MOVE_AUDIT).navigation();
     }
+    /**
+     * 系统设置
+     */
+    public static void jumpToSysSetting() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_SYS_SETTING).navigation();
+    }
 }

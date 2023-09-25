@@ -88,15 +88,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     private void registerBroadcast() {
         //扫描结果广播监听注册
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(RES_ACTION);
-
-        //注册广播接受者
-        scanReceiver = new ScannerResultReceiver();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(scanReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
-        } else {
-            registerReceiver(scanReceiver, intentFilter);
+        if ("IData".equalsIgnoreCase(Build.BRAND)) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(RES_ACTION);
+            //注册广播接受者
+            scanReceiver = new ScannerResultReceiver();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(scanReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+            } else {
+                registerReceiver(scanReceiver, intentFilter);
+            }
         }
     }
 

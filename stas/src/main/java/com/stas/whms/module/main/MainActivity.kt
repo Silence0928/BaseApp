@@ -1,6 +1,7 @@
 package com.stas.whms.module.main
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import android.window.OnBackInvokedDispatcher
@@ -23,6 +24,7 @@ import com.stas.whms.module.main.fragments.BaleFragment
 import com.stas.whms.module.main.fragments.HomeFragment
 import com.stas.whms.module.main.fragments.MineFragment
 import com.stas.whms.module.main.fragments.ShiftParkFragment
+import rxhttp.wrapper.utils.LogUtil
 
 /**
  * 主页
@@ -54,6 +56,7 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, BaseViewModel>() {
         mDataBinding.viewPager.offscreenPageLimit = fragments.size
         //默认选中首页
         mDataBinding.viewPager.setCurrentItem(0, false)
+        LogUtil.log("Build.MODEL=" + Build.MODEL + "  Build.BRAND=" + Build.BRAND)
     }
 
     override fun onViewEvent() {

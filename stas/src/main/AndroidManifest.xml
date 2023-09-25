@@ -78,6 +78,8 @@
             android:exported="false"/>
         <activity android:name=".module.move.MoveAuditActivity"
             android:exported="false"/>
+        <activity android:name=".module.SystemSettingActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_bg_color_gray">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="开启解码成功提示音"
+                    android:textColor="@color/black04"
+                    android:textSize="15sp" />
+
+                <com.lib_common.view.widget.SwitchButton
+                    android:id="@+id/sw_jmcg"
+                    android:layout_width="53dp"
+                    android:layout_height="34dp"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="开启解码失败提示音"
+                    android:textColor="@color/black04"
+                    android:textSize="15sp" />
+
+                <com.lib_common.view.widget.SwitchButton
+                    android:id="@+id/sw_jmsb"
+                    android:layout_width="53dp"
+                    android:layout_height="34dp"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="开启解码成功后震动"
+                    android:textColor="@color/black04"
+                    android:textSize="15sp" />
+
+                <com.lib_common.view.widget.SwitchButton
+                    android:id="@+id/sw_jmcgzd"
+                    android:layout_width="53dp"
+                    android:layout_height="34dp"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="开启省力模式"
+                    android:textColor="@color/black04"
+                    android:textSize="15sp" />
+
+                <com.lib_common.view.widget.SwitchButton
+                    android:id="@+id/sw_slms"
+                    android:layout_width="53dp"
+                    android:layout_height="34dp"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="开启扫描指示灯"
+                    android:textColor="@color/black04"
+                    android:textSize="15sp" />
+
+                <com.lib_common.view.widget.SwitchButton
+                    android:id="@+id/sw_smzsd"
+                    android:layout_width="53dp"
+                    android:layout_height="34dp"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

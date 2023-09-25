@@ -1,6 +1,7 @@
 package com.lib_common.app;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IScanListener;
 import android.os.Looper;
@@ -15,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.iscandemo.iScanInterface;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.BuildConfig;
+import com.lib_common.constants.MmkvConstants;
 import com.lib_common.entity.ScanResult;
 import com.lib_common.utils.ActivityStackManager;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -92,20 +94,32 @@ public class BaseApplication extends MultiDexApplication {
     /**
      * 该初始化仅支持在IData设备上执行，其它设备会出现NotFoundDefClassException
      */
-    private void initScan() {
-        iScanInterface scanInterface = new iScanInterface(this);
-        // 扫描成功是否播放声音
-        scanInterface.enablePlayBeep(true);
-        // 是否启用扫描按键
-        scanInterface.lockScanKey(true);
-        /*配置扫描结果输出方式
-         * mode  0：焦点输出   （没有焦点的时候会误触发UI）
-         *       1：广播输出    action：android.intent.action.SCANRESULT
-         *       2：模拟按键输出   （没有焦点的时候会误触发UI）
-         *       3：复制到粘贴板
-         */
-        scanInterface.setOutputMode(1);
-        scanInterface.registerScan(mIScanListener);
+    public void initScan() {
+        if ("IData".equalsIgnoreCase(Build.BRAND)) {
+            // 仅支持在IData设备上执行
+            MMKV mmkv = MMKV.defaultMMKV();
+            iScanInterface scanInterface = new iScanInterface(this);
+            // 扫描成功是否播放声音
+            scanInterface.enablePlayBeep(mmkv.decodeBool(MmkvConstants.MMKV_OPEN_DECODER_SUCCESS_BEEP, true));
+            // 扫描失败是否播放声音
+            scanInterface.enableFailurePlayBeep(mmkv.decodeBool(MmkvConstants.MMKV_OPEN_DECODER_FAILED_BEEP, false));
+            // 扫描成功是否震动
+            scanInterface.enablePlayVibrate(mmkv.decodeBool(MmkvConstants.MMKV_OPEN_DECODER_SUCCESS_VIBRATE, false));
+            // 开启省力模式
+            scanInterface.effortScan(mmkv.decodeBool(MmkvConstants.MMKV_OPEN_EFFORT_SCAN, true));
+            // 开启扫描指示灯
+            scanInterface.lightSet(mmkv.decodeBool(MmkvConstants.MMKV_OPEN_LIGHT_SET, false));
+            // 是否启用扫描按键
+            scanInterface.lockScanKey(true);
+            /*配置扫描结果输出方式
+             * mode  0：焦点输出   （没有焦点的时候会误触发UI）
+             *       1：广播输出    action：android.intent.action.SCANRESULT
+             *       2：模拟按键输出   （没有焦点的时候会误触发UI）
+             *       3：复制到粘贴板
+             */
+            scanInterface.setOutputMode(1);
+            scanInterface.registerScan(mIScanListener);
+        }
     }
 
     private void init() {

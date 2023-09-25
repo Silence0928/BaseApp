@@ -1,5 +1,6 @@
 package com.stas.whms.module.entry
 
+import android.text.Editable
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bin.david.form.core.TableConfig
@@ -12,6 +13,7 @@ import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.entity.ScanResult
+import com.lib_common.listener.SimpleTextWatcher
 import com.stas.whms.R
 import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
@@ -26,6 +28,15 @@ class StorageCollectionActivity : BaseMvvmActivity<ActivityStorageCollectionBind
     }
 
     override fun onViewEvent() {
+        mDataBinding.cetMadeFinishedTag.addTextChangedListener(object: SimpleTextWatcher(){
+            override fun afterTextChanged(editable: Editable?) {
+                super.afterTextChanged(editable)
+                if (editable.toString().isNotEmpty()) {
+                    getData(editable.toString())
+                }
+            }
+
+        })
     }
 
     override fun getLayoutId(): Int {
@@ -42,6 +53,10 @@ class StorageCollectionActivity : BaseMvvmActivity<ActivityStorageCollectionBind
 
     override fun scanResultCallBack(result: ScanResult?) {
         mDataBinding.cetMadeFinishedTag.setText(result?.data)
+    }
+
+    private fun getData(result: String) {
+
     }
 
     /**

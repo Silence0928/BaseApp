@@ -137,6 +137,22 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.lib_common.view.layout.SettingBar
+            android:id="@+id/sb_sys_setting"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:background="@color/white"
+            app:bar_leftIcon="@drawable/icon_setting"
+            app:bar_leftText="系统设置"
+            app:bar_leftSize="15sp"
+            app:bar_leftColor="@color/black_333333"
+            app:bar_lineVisible="false"
+            app:bar_rightIcon="@drawable/icon_more"
+            app:layout_constraintTop_toBottomOf="@+id/cl_version_update"/>
+
         <com.coorchice.library.SuperTextView
             android:id="@+id/stv_logout"
             android:layout_width="140dp"

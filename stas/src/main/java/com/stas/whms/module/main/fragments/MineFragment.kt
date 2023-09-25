@@ -16,8 +16,13 @@ class MineFragment: BaseMvvmFragment<FragmentMineBinding, BaseViewModel>() {
     }
 
     override fun onViewEvent() {
+        // 退出登录
         mDataBinding.stvLogout.setOnClickListener {
             logoutConfirm()
+        }
+        // 系统设置
+        mDataBinding.sbSysSetting.setOnClickListener {
+            RouteJumpUtil.jumpToSysSetting()
         }
     }
 
