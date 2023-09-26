@@ -3,6 +3,7 @@ package com.stas.whms.module.login
 import android.annotation.SuppressLint
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.hjq.toast.ToastUtils
 import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
@@ -12,7 +13,8 @@ import com.lib_common.utils.InputTextHelper
 import com.stas.whms.R
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityLoginBinding
-import com.stas.whms.utils.RouteJumpUtil
+import com.stas.whms.utils.StasHttpRequestUtil
+import rxhttp.wrapper.utils.LogUtil
 
 @Route(path = RoutePathConfig.ROUTE_LOGIN)
 class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>() {
@@ -89,8 +91,32 @@ class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>
     }
 
     private fun login(jobNum: String, pwd: String) {
-        RouteJumpUtil.jumpToMain()
-        finish()
+        val req = HashMap<String, String>()
+        req["UserID"] = jobNum
+        req["Password"] = pwd
+        Thread {
+            val result = StasHttpRequestUtil.login(JSON.toJSONString(req), null)
+            LogUtil.log(JSON.toJSONString(result))
+        }.start()
+//        val result = SoapClientUtil.execute("Login", req as Map<String, Any>?)
+//        LogUtil.log("login result: $result")
+//        RouteJumpUtil.jumpToMain()
+//        finish()
+//        StasHttpRequestUtil.login(this, JSON.toJSONString(req), object: RxHttpCallBack<String>{
+//            override fun onStart() {
+//            }
+//
+//            override fun onError(error: ErrorInfo?) {
+//                ToastUtils.show(error?.errorMsg)
+//            }
+//
+//            override fun onFinish() {
+//            }
+//
+//            override fun onSuccess(response: String?) {
+//                LogUtil.log("login result: $response")
+//            }
+//        })
     }
 
 

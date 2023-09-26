@@ -1,9 +1,9 @@
 package com.lib_common.net.rxhttp.response;
 
 public class ResponseNet<T> {
-    private int code;
-    private String msg;
-    private T data;
+    private int ErrorCode;
+    private String Reason;
+    private T DataTableSubset;
     private String message;
     private String error;
 
@@ -23,27 +23,27 @@ public class ResponseNet<T> {
         this.message = message;
     }
 
-    public int getCode() {
-        return code;
+    public int getErrorCode() {
+        return ErrorCode;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setErrorCode(int errorCode) {
+        this.ErrorCode = errorCode;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getReason() {
+        return Reason;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setReason(String reason) {
+        this.Reason = reason;
     }
 
-    public T getData() {
-        return data;
+    public T getDataTableSubset() {
+        return DataTableSubset;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setDataTableSubset(T dataTableSubset) {
+        this.DataTableSubset = dataTableSubset;
     }
 }

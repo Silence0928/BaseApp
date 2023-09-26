@@ -19,14 +19,14 @@ open class ResponseNetParser<T> : TypeParser<T> {
     @Throws(IOException::class)
     override fun onParse(response: okhttp3.Response): T {
         val data: ResponseNet<T> = response.convertTo(ResponseNet::class, *types)
-        var t = data.data //获取data字段
-        if (data.code == 200 || data.code == 1000) {
+        var t = data.dataTableSubset //获取data字段
+        if (data.errorCode == 200 || data.errorCode == 1000) {
             if (t == null && types != null && types.isNotEmpty() && types[0] == String::class.java) {
                 t = "" as T
             }
             return t
         }
-        if (data.code == 401) {
+        if (data.errorCode == 401) {
             // 认证失败
 //            Utils.loginAgain()
             if (t == null && types != null && types.isNotEmpty() && types[0] == String::class.java) {
@@ -35,8 +35,8 @@ open class ResponseNetParser<T> : TypeParser<T> {
             return t
         }
         throw NetParseException(
-            data.code.toString(),
-            getErrorMessage(data.msg, data.message, data.error),
+            data.errorCode.toString(),
+            getErrorMessage(data.reason, data.message, data.error),
             response,
             if (t == null) "" else if (types != null && types.isNotEmpty() && types[0] == String::class.java) t as String else JSON.toJSONString(
                 t

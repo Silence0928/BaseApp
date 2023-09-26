@@ -13,13 +13,13 @@ object HdApi {
    */
   @JvmField
   @DefaultDomain
-  var commonUrl = "https://gateway.yunxiaobao.com"
+  var commonUrl = "http://tempuri.org/"
 
   /**
    * 文件服务对应服务地址
    */
   @JvmField
   @Domain
-  var baseFileServerUrl = "https://file-server.yunxiaobao.com"
+  var baseFileServerUrl = "http://file-server.tempuri.org"
 
 }
