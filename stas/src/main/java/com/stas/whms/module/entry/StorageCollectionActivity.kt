@@ -3,6 +3,7 @@ package com.stas.whms.module.entry
 import android.text.Editable
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.bin.david.form.core.TableConfig
 import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
@@ -14,10 +15,14 @@ import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.entity.ScanResult
 import com.lib_common.listener.SimpleTextWatcher
+import com.lib_common.utils.AndroidUtil
+import com.lib_common.utils.DateUtils
 import com.stas.whms.R
+import com.stas.whms.bean.ScannerRequestInfo
 import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityStorageCollectionBinding
+import com.stas.whms.utils.StasHttpRequestUtil
 
 @Route(path = RoutePathConfig.ROUTE_STORAGE_COLLECTION)
 class StorageCollectionActivity : BaseMvvmActivity<ActivityStorageCollectionBinding, BaseViewModel>() {
@@ -56,7 +61,20 @@ class StorageCollectionActivity : BaseMvvmActivity<ActivityStorageCollectionBind
     }
 
     private fun getData(result: String) {
-
+        var req = ScannerRequestInfo()
+        req.PdaID = AndroidUtil.getIpAddress()
+        req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
+        req.QrCode = result
+        Thread {
+            val result = StasHttpRequestUtil.queryScannerResult(JSON.toJSONString(req))
+            runOnUiThread {
+                if (result.errorCode == 200) {
+                    ToastUtils.show("成功啦")
+                } else {
+                    ToastUtils.show(result.reason)
+                }
+            }
+        }.start()
     }
 
     /**

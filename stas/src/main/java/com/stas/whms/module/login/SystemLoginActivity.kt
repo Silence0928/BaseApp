@@ -19,10 +19,12 @@ import com.stas.whms.databinding.ActivityLoginBinding
 import com.stas.whms.utils.RouteJumpUtil
 import com.stas.whms.utils.StasHttpRequestUtil
 import rxhttp.wrapper.utils.LogUtil
+import java.lang.Exception
 
 @Route(path = RoutePathConfig.ROUTE_LOGIN)
-class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>() {
+class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>() {
     private var clickSystemSetting = false
+
     /**
      * 判断点击退出程序标识
      */
@@ -100,17 +102,22 @@ class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>
         req["Password"] = pwd
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.login(JSON.toJSONString(req))
-            if (result.errorCode == 200) {
-                dismissLoading()
-                val loginInfo = JSON.parseObject(result.obj.toString(), LoginInfo::class.java)
-                mMMKV.encode(MmkvConstants.MMKV_LOGIN_INFO, JSON.toJSONString(loginInfo))
-                RouteJumpUtil.jumpToMain()
-            } else {
+            try {
+                val result = StasHttpRequestUtil.login(JSON.toJSONString(req))
                 runOnUiThread {
                     dismissLoading()
-                    ToastUtils.show(result.reason)
+                    if (result.errorCode == 200) {
+                        val loginInfo =
+                            JSON.parseObject(result.obj.toString(), LoginInfo::class.java)
+                        mMMKV.encode(MmkvConstants.MMKV_LOGIN_INFO, JSON.toJSONString(loginInfo))
+                        RouteJumpUtil.jumpToMain()
+                    } else {
+                        ToastUtils.show(result.reason)
+                    }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                dismissLoading()
             }
         }.start()
     }

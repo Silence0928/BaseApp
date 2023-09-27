@@ -27,13 +27,12 @@ public class SoapClientUtil {
             if (envelope.bodyIn instanceof SoapObject) {
                 SoapObject object = (SoapObject) envelope.bodyIn;//System.out.println("获得服务数据");
                 String obj = object.getProperty(0).toString();
-                response = JSON.parseObject(obj, WebServiceResponse.class);
-//                if (obj instanceof WebServiceResponse) {
-//                    response = (WebServiceResponse) obj;
-//                } else {
-//                    response.setErrorCode(-1);
-//                    response.setReason("调用WebService服务失败");
-//                }
+                if ("Interface.JsonEntity.Response".equalsIgnoreCase(obj)) {
+                    response.setErrorCode(-1);
+                    response.setReason("数据格式异常，请稍候重试");
+                } else {
+                    response = JSON.parseObject(obj, WebServiceResponse.class);
+                }
             } else if (envelope.bodyIn instanceof SoapFault) {
                 SoapFault objectFault = (SoapFault) envelope.bodyIn;
                 response.setErrorCode(-1);

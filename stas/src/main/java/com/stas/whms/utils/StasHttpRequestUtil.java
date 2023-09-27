@@ -15,4 +15,22 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse login(String req) {
         return SoapClientUtil.execute(req, WebApi.loginUrl, WebMethodApi.loginMethod);
     }
+
+    /**
+     * 扫描结果查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryScannerResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.scannerUrl, WebMethodApi.scannerMethod);
+    }
+
+    /**
+     * 保存入库采集结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveInBound(String req) {
+        return SoapClientUtil.execute(req, WebApi.inboundSaveUrl, WebMethodApi.inboundSaveMethod);
+    }
 }

@@ -245,7 +245,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isRegisterEventBus()) {
             EventBus.getDefault().unregister(this);
         }
-        if (isRegisterScan()) {
+        if (scanReceiver != null) {
             unregisterReceiver(scanReceiver);
         }
         dismissLoading();

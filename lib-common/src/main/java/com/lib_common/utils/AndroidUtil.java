@@ -38,7 +38,11 @@ import androidx.core.content.FileProvider;
 import com.hjq.toast.ToastUtils;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 
@@ -411,5 +415,30 @@ public class AndroidUtil {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    /**
+     * 获取本机IPv4地址
+     *
+     * @return 本机IPv4地址；null：无网络连接
+     */
+    public static String getIpAddress() {
+        try {
+            NetworkInterface networkInterface;
+            InetAddress inetAddress;
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                networkInterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = networkInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
+                        return inetAddress.getHostAddress();
+                    }
+                }
+            }
+            return null;
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
