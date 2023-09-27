@@ -26,4 +26,8 @@ public class MmkvConstants {
      * 开启扫描指示灯
      */
     public static final String MMKV_OPEN_LIGHT_SET = "open_light_set";
+    /**
+     * 登录信息
+     */
+    public static final String MMKV_LOGIN_INFO = "login_info";
 }

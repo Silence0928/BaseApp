@@ -1,17 +1,21 @@
 package com.stas.whms.module.main.fragments
 
 import android.view.View
+import com.alibaba.fastjson.JSON
 import com.lib_common.base.fragment.BaseMvvmFragment
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.constants.MmkvConstants
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.stas.whms.R
+import com.stas.whms.bean.LoginInfo
 import com.stas.whms.databinding.FragmentMineBinding
 import com.stas.whms.utils.RouteJumpUtil
 
 class MineFragment: BaseMvvmFragment<FragmentMineBinding, BaseViewModel>() {
 
     override fun initView(rootView: View?) {
+        initHeadView()
         initVersionView()
     }
 
@@ -42,10 +46,21 @@ class MineFragment: BaseMvvmFragment<FragmentMineBinding, BaseViewModel>() {
     }
 
     private fun logout() {
+        mMMKV.encode(MmkvConstants.MMKV_LOGIN_INFO, "")
         RouteJumpUtil.jumpToLogin()
         activity?.finish()
     }
 
+    private fun initHeadView() {
+        val loginInfoStr = mMMKV.decodeString(MmkvConstants.MMKV_LOGIN_INFO)
+        if (loginInfoStr != null) {
+            val loginInfo = JSON.parseObject(loginInfoStr, LoginInfo::class.java)
+            if (loginInfo != null) {
+                mDataBinding.tvName.text = loginInfo.UserName
+                mDataBinding.tvLevel.text = if (loginInfo.Level == "1") "岗位：班长" else "岗位：操作员"
+            }
+        }
+    }
     private fun initVersionView() {
         "版本号：V${AndroidUtil.getAppVersionName(context)}".also { mDataBinding.tvVersion.text = it }
 //        val updateBean = mmkv.decodeParcelable(MmkvConsts.MMKV_UPDATE_INFO, UpdateBean::class.java)

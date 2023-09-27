@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.lib_common.R;
 import com.lib_common.base.BaseActivity;
+import com.tencent.mmkv.MMKV;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -43,6 +44,9 @@ public abstract class BaseMvvmActivity<DB extends ViewDataBinding, VM extends Ba
             if (getVariableId() != 0) {
                 mDataBinding.setVariable(getVariableId(), mViewModel);
             }
+        }
+        if (mMMKV == null) {
+            mMMKV = MMKV.defaultMMKV();
         }
         initView();
         observeDataChange();

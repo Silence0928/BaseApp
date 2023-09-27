@@ -1,4 +1,4 @@
-package com.stas.whms.module
+package com.stas.whms.module.setting
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.lib_common.app.BaseApplication

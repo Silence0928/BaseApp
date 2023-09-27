@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.lib_common.dialog.LoadingDialog;
+import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,10 +21,12 @@ import org.greenrobot.eventbus.EventBus;
 public abstract class BaseFragment extends Fragment {
     protected View mRootView;
     protected LoadingDialog mLoadingDialog;
+    protected MMKV mMMKV;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mMMKV = MMKV.defaultMMKV();
         if (!isDataBinding()) {
             mRootView = inflater.inflate(getLayoutId(), container);
             initView(mRootView);

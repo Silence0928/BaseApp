@@ -2,17 +2,21 @@ package com.stas.whms.module.login
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.webkit.JsResult
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.hjq.toast.ToastUtils
 import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.constants.MmkvConstants
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.InputTextHelper
 import com.stas.whms.R
+import com.stas.whms.bean.LoginInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityLoginBinding
+import com.stas.whms.utils.RouteJumpUtil
 import com.stas.whms.utils.StasHttpRequestUtil
 import rxhttp.wrapper.utils.LogUtil
 
@@ -94,29 +98,21 @@ class SystemLoginActivity: BaseMvvmActivity<ActivityLoginBinding, BaseViewModel>
         val req = HashMap<String, String>()
         req["UserID"] = jobNum
         req["Password"] = pwd
+        showLoading()
         Thread {
-            val result = StasHttpRequestUtil.login(JSON.toJSONString(req), null)
-            LogUtil.log(JSON.toJSONString(result))
+            val result = StasHttpRequestUtil.login(JSON.toJSONString(req))
+            if (result.errorCode == 200) {
+                dismissLoading()
+                val loginInfo = JSON.parseObject(result.obj.toString(), LoginInfo::class.java)
+                mMMKV.encode(MmkvConstants.MMKV_LOGIN_INFO, JSON.toJSONString(loginInfo))
+                RouteJumpUtil.jumpToMain()
+            } else {
+                runOnUiThread {
+                    dismissLoading()
+                    ToastUtils.show(result.reason)
+                }
+            }
         }.start()
-//        val result = SoapClientUtil.execute("Login", req as Map<String, Any>?)
-//        LogUtil.log("login result: $result")
-//        RouteJumpUtil.jumpToMain()
-//        finish()
-//        StasHttpRequestUtil.login(this, JSON.toJSONString(req), object: RxHttpCallBack<String>{
-//            override fun onStart() {
-//            }
-//
-//            override fun onError(error: ErrorInfo?) {
-//                ToastUtils.show(error?.errorMsg)
-//            }
-//
-//            override fun onFinish() {
-//            }
-//
-//            override fun onSuccess(response: String?) {
-//                LogUtil.log("login result: $response")
-//            }
-//        })
     }
 
 

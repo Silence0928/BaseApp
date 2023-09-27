@@ -12,6 +12,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lib_common.base.mvvm.BaseViewModel;
+import com.tencent.mmkv.MMKV;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -33,6 +34,9 @@ public abstract class BaseMvvmFragment<DB extends ViewDataBinding, VM extends Ba
         mDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         mRootView = mDataBinding.getRoot();
         mDataBinding.setLifecycleOwner(this);
+        if (mMMKV == null) {
+            mMMKV = MMKV.defaultMMKV();
+        }
         if (getViewModel() != null) {
             mViewModel = getViewModel();
             getLifecycle().addObserver(mViewModel); //注册ViewModel生命周期

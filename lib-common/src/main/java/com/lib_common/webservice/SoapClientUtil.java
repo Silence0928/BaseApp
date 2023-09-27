@@ -1,5 +1,6 @@
 package com.lib_common.webservice;
 
+import com.alibaba.fastjson.JSON;
 import com.lib_common.webservice.api.WebApi;
 import com.lib_common.webservice.response.WebServiceResponse;
 
@@ -25,13 +26,14 @@ public class SoapClientUtil {
             //获得服务返回的数据,并且开始解析
             if (envelope.bodyIn instanceof SoapObject) {
                 SoapObject object = (SoapObject) envelope.bodyIn;//System.out.println("获得服务数据");
-                Object obj = object.getProperty(-1);
-                if (obj instanceof WebServiceResponse) {
-                    response = (WebServiceResponse) obj;
-                } else {
-                    response.setErrorCode(-1);
-                    response.setReason("调用WebService服务失败");
-                }
+                String obj = object.getProperty(0).toString();
+                response = JSON.parseObject(obj, WebServiceResponse.class);
+//                if (obj instanceof WebServiceResponse) {
+//                    response = (WebServiceResponse) obj;
+//                } else {
+//                    response.setErrorCode(-1);
+//                    response.setReason("调用WebService服务失败");
+//                }
             } else if (envelope.bodyIn instanceof SoapFault) {
                 SoapFault objectFault = (SoapFault) envelope.bodyIn;
                 response.setErrorCode(-1);
