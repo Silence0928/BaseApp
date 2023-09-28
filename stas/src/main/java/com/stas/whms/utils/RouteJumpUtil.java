@@ -101,4 +101,10 @@ public class RouteJumpUtil {
     public static void jumpToSysSetting() {
         ARouter.getInstance().build(RoutePathConfig.ROUTE_SYS_SETTING).navigation();
     }
+    /**
+     * 单据明细
+     */
+    public static void jumpToDocumentDetail() {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_DOCUMENT_DETAIL).navigation();
+    }
 }

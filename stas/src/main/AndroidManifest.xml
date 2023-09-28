@@ -85,6 +85,8 @@
             android:exported="false"/>
         <activity android:name=".module.setting.SystemSettingActivity"
             android:exported="false"/>
+        <activity android:name=".module.entry.DocumentDetailActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

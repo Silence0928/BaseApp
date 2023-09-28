@@ -23,6 +23,7 @@ import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.ScannerRequestInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityStorageCollectionBinding
+import com.stas.whms.utils.RouteJumpUtil
 import com.stas.whms.utils.StasHttpRequestUtil
 
 @Route(path = RoutePathConfig.ROUTE_STORAGE_COLLECTION)
@@ -117,9 +118,8 @@ class StorageCollectionActivity :
     }
 
     private fun handleTotalNum() {
-        val totalSize = mDataList.size
+        val totalSize = mDataList.size + 1
         mDataBinding.cetTotalBoxNum.text = totalSize.toString()
-//        (mDataList.size + 1).toString().also { mDataBinding.cetTotalBoxNum.text = it }
         mDataBinding.cetTotalNum.text = getTotalNum()
     }
 
@@ -174,19 +174,21 @@ class StorageCollectionActivity :
         //注意：绑定数据的方法setData换成了setTableData。不再是List对象而是TableData对象
         mDataBinding.tableStorageCollection.setTableData(tableData)
         mDataBinding.tableStorageCollection.tableData
-            .setOnRowClickListener(OnRowClickListener<Any?> { column, o, col, row ->
+            .setOnRowClickListener { column, o, col, row ->
                 if (col == 5) {
-                    ToastUtils.show("删除行----" + (row + 1))
+                    // 删除
                     mDataList.removeAt(row)
-                    var i = 1;
+                    var i = 1
                     for (info in mDataList) {
                         info.idNum = i
                         i++
                     }
                     mDataBinding.tableStorageCollection.notifyDataChanged()
                     handleTotalNum()
+                } else {
+                    RouteJumpUtil.jumpToDocumentDetail()
                 }
-            })
+            }
         // 设置背景和字体颜色
         val backgroundFormat: BaseCellBackgroundFormat<CellInfo<*>?> =
             object : BaseCellBackgroundFormat<CellInfo<*>?>() {
@@ -211,6 +213,7 @@ class StorageCollectionActivity :
                 }
             }
         mDataBinding.tableStorageCollection.config.contentCellBackgroundFormat = backgroundFormat
+
     }
 
     override fun onBackPressed() {

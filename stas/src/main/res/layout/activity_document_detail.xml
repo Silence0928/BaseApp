@@ -38,7 +38,7 @@
             android:maxLength="50"
             tools:text=""
             android:hint="请输入单据号"
-            android:background="@drawable/bg_shape_et_white_5dp"
+            android:background="@drawable/bg_shape_et_gray_5dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/tv_document_no"
             app:layout_constraintRight_toRightOf="parent"/>

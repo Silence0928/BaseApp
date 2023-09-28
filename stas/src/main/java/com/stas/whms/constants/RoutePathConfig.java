@@ -26,6 +26,10 @@ public class RoutePathConfig {
      */
     public static final String ROUTE_ADJUSTMENT_LIBRARY = "/entry/AdjustmentLibraryActivity";
     /**
+     * 单据明细
+     */
+    public static final String ROUTE_DOCUMENT_DETAIL = "/entry/DocumentDetailActivity";
+    /**
      * 退库采集
      */
     public static final String ROUTE_REFUND_COLLECTION = "/refund/RefundCollectionActivity";

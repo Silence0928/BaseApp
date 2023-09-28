@@ -10,5 +10,6 @@ class GoodsInfo : Serializable {
     var PartsNo: String? = null // 电装品番
     var SupplierCode: String? = null // 生产结束标签对应的客户编号
     var TagSerialNo: String? = null // 回转番号
+    var InBoundTime: String? = null // 入库时间
     var del = "删除"
 }
