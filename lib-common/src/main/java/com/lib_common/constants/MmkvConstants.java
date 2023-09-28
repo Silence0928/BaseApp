@@ -30,4 +30,12 @@ public class MmkvConstants {
      * 登录信息
      */
     public static final String MMKV_LOGIN_INFO = "login_info";
+    /**
+     * 请求地址域名
+     */
+    public static final String MMKV_URL_NS = "url_ns";
+    /**
+     * 请求服务代码地址
+     */
+    public static final String MMKV_SERVICE_URL = "service_url";
 }

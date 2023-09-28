@@ -5,6 +5,20 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+            storePassword 'stas88888888'
+            keyAlias 'stas'
+            keyPassword 'stas88888888'
+        }
+        release {
+            storePassword 'stas88888888'
+            keyPassword 'stas88888888'
+            keyAlias 'stas'
+            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+        }
+    }
     namespace 'com.stas.whms'
     compileSdk 33
 

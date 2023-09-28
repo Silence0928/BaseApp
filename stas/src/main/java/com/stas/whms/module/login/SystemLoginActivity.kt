@@ -1,6 +1,7 @@
 package com.stas.whms.module.login
 
 import android.annotation.SuppressLint
+import android.text.Editable
 import android.view.View
 import android.webkit.JsResult
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -10,8 +11,10 @@ import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.constants.MmkvConstants
+import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.InputTextHelper
+import com.lib_common.webservice.api.WebApi
 import com.stas.whms.R
 import com.stas.whms.bean.LoginInfo
 import com.stas.whms.constants.RoutePathConfig
@@ -34,6 +37,8 @@ class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel
         title = "登录"
         mActionBar.leftView.visibility = View.INVISIBLE
         mDataBinding.tvVersion.text = "版本：V${AndroidUtil.getAppVersionName(this)}"
+        mDataBinding.etUrl.setText(WebApi.serviceAddressUrl)
+        mDataBinding.etUrlNs.setText(WebApi.webBaseUrl)
     }
 
     override fun onViewEvent() {
@@ -62,12 +67,26 @@ class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel
         mDataBinding.tvSystemSetting.setOnClickListener {
             if (clickSystemSetting) {
                 clickSystemSetting = false
-                mDataBinding.tvSystemSetting.text = "系统设置"
+                mDataBinding.tvSystemSetting.text = "环境设置"
                 mDataBinding.clSysSetting.visibility = View.GONE
             } else {
                 clickSystemSetting = true
-                mDataBinding.tvSystemSetting.text = "关闭系统设置"
+                mDataBinding.tvSystemSetting.text = "关闭环境设置"
                 mDataBinding.clSysSetting.visibility = View.VISIBLE
+            }
+        }
+        // 域名
+        mDataBinding.etUrlNs.setOnFocusChangeListener{ v, b ->
+            if (!b) {
+                WebApi.webBaseUrl = mDataBinding.etUrlNs.text.toString()
+                mMMKV.encode(MmkvConstants.MMKV_URL_NS, WebApi.webBaseUrl)
+            }
+        }
+        // 代码地址
+        mDataBinding.etUrl.setOnFocusChangeListener{ v, b ->
+            if (!b) {
+                WebApi.serviceAddressUrl = mDataBinding.etUrl.text.toString()
+                mMMKV.encode(MmkvConstants.MMKV_SERVICE_URL, WebApi.serviceAddressUrl)
             }
         }
 

@@ -26,6 +26,7 @@ import com.stas.whms.utils.StasHttpRequestUtil
 class DocumentDetailActivity :
     BaseMvvmActivity<ActivityDocumentDetailBinding, BaseViewModel>() {
     private var mDataList = arrayListOf<GoodsInfo>()
+    private var mTempDataList = arrayListOf<GoodsInfo>()
 
     @JvmField
     @Autowired
@@ -68,6 +69,7 @@ class DocumentDetailActivity :
                         goodsInfo.idNum = mDataList.size + 1
                         val tempList = arrayListOf<GoodsInfo>()
                         tempList.add(goodsInfo)
+                        mTempDataList.add(goodsInfo)
                         mDataBinding.tableGoods.addData(tempList, true)
                         handleTotalNum()
                     }
@@ -92,14 +94,14 @@ class DocumentDetailActivity :
     }
 
     private fun handleTotalNum() {
-        val totalSize = mDataList.size + 1
+        val totalSize = mTempDataList.size
         mDataBinding.cetTotalBoxNum.text = totalSize.toString()
         mDataBinding.cetTotalNum.text = getTotalNum()
     }
 
     private fun getTotalNum(): String {
         var totalCount = 0
-        for (g in mDataList) {
+        for (g in mTempDataList) {
             totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
         }
         return totalCount.toString()

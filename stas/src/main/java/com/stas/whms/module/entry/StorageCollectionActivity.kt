@@ -32,6 +32,7 @@ class StorageCollectionActivity :
     private val REQ_SCANNER_GET = 1
     private val REQ_SCANNER_SAVE = 2
     private var mDataList = arrayListOf<GoodsInfo>()
+    private var mTempDataList = arrayListOf<GoodsInfo>()
     override fun initView() {
         title = "入库采集"
 //        handleBindData()
@@ -90,13 +91,14 @@ class StorageCollectionActivity :
             if (response?.obj != null) {
                 val goodsInfo =
                     JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
-                if (isCanSave(goodsInfo)) {
+//                if (isCanSave(goodsInfo)) {
                     goodsInfo.idNum = mDataList.size + 1
                     val tempList = arrayListOf<GoodsInfo>()
                     tempList.add(goodsInfo)
+                    mTempDataList.add(goodsInfo)
                     mDataBinding.tableStorageCollection.addData(tempList, true)
                     handleTotalNum()
-                }
+//                }
             }
         } else if (fromSource == REQ_SCANNER_SAVE) {
             ToastUtils.show("保存成功")
@@ -118,14 +120,14 @@ class StorageCollectionActivity :
     }
 
     private fun handleTotalNum() {
-        val totalSize = mDataList.size + 1
+        val totalSize = mTempDataList.size
         mDataBinding.cetTotalBoxNum.text = totalSize.toString()
         mDataBinding.cetTotalNum.text = getTotalNum()
     }
 
     private fun getTotalNum(): String {
         var totalCount = 0
-        for (g in mDataList) {
+        for (g in mTempDataList) {
             totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
         }
         return totalCount.toString()
@@ -177,14 +179,20 @@ class StorageCollectionActivity :
             .setOnRowClickListener { column, o, col, row ->
                 if (col == 5) {
                     // 删除
-                    mDataList.removeAt(row)
-                    var i = 1
-                    for (info in mDataList) {
-                        info.idNum = i
-                        i++
-                    }
-                    mDataBinding.tableStorageCollection.notifyDataChanged()
-                    handleTotalNum()
+                    CommonAlertDialog(this).builder().setTitle("提示")
+                        .setMsg("是否确认删除？")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确认") {
+                            mDataList.removeAt(row)
+                            mTempDataList.removeAt(row)
+                            var i = 1
+                            for (info in mDataList) {
+                                info.idNum = i
+                                i++
+                            }
+                            mDataBinding.tableStorageCollection.notifyDataChanged()
+                            handleTotalNum()
+                        }.show()
                 } else {
                     RouteJumpUtil.jumpToDocumentDetail()
                 }

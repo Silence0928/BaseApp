@@ -36,6 +36,7 @@
                 android:layout_below="@id/iv_bg"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="76dp"
+                android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -149,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="28dp"
-                android:text="系统设置"
+                android:text="环境设置"
                 android:textColor="@color/blue_0091FF"
                 android:textSize="13sp"
                 app:layout_constraintRight_toRightOf="parent"
@@ -174,18 +175,40 @@
                     android:textColor="@color/black_666666"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <com.lib_common.view.widget.ClearEditText
+                    android:id="@+id/et_url_ns"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    android:hint="请输入域名"
+                    android:textColorHint="@color/black_999999"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_setting_url" />
+
+                <View
+                    android:id="@+id/v_url_ns_line"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_DDDDDD"
+                    app:layout_constraintLeft_toLeftOf="@+id/et_url_ns"
+                    app:layout_constraintRight_toRightOf="@+id/et_url_ns"
+                    app:layout_constraintTop_toBottomOf="@+id/et_url_ns" />
 
                 <com.lib_common.view.widget.ClearEditText
                     android:id="@+id/et_url"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:background="@color/white"
+                    android:layout_marginTop="10dp"
                     android:textSize="16sp"
                     android:hint="请输入环境地址"
                     android:textColorHint="@color/black_999999"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_setting_url" />
+                    app:layout_constraintTop_toBottomOf="@+id/v_url_ns_line" />
 
                <View
                     android:id="@+id/v_url_line"
@@ -253,7 +276,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="公司名称"
+                tools:text="公司名称"
                 android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@+id/tv_login"
                 app:layout_constraintBottom_toTopOf="@+id/tv_version"/>
