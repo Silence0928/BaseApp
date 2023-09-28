@@ -1,5 +1,7 @@
 package com.lib_common.webservice;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.alibaba.fastjson.JSON;
 import com.lib_common.webservice.api.WebApi;
 import com.lib_common.webservice.response.WebServiceResponse;
@@ -12,6 +14,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 public class SoapClientUtil {
     public static WebServiceResponse execute(String req, String url, String methodName) {
+        System.out.println("请求地址：" + url + "\n\n请求入参:" + req);
         WebServiceResponse response = new WebServiceResponse();
         SoapObject soapObject = new SoapObject(WebApi.webBaseUrl, methodName);
         soapObject.addProperty("param", req);
@@ -22,11 +25,11 @@ public class SoapClientUtil {
         HttpTransportSE httpTransportSE = new HttpTransportSE(WebApi.serviceAddressUrl, 60000);
         try {
             httpTransportSE.call(url, envelope);
-            System.out.println("调用WebService服务成功");
             //获得服务返回的数据,并且开始解析
             if (envelope.bodyIn instanceof SoapObject) {
                 SoapObject object = (SoapObject) envelope.bodyIn;//System.out.println("获得服务数据");
                 String obj = object.getProperty(0).toString();
+                System.out.println("\n请求结果：" + obj);
                 if ("Interface.JsonEntity.Response".equalsIgnoreCase(obj)) {
                     response.setErrorCode(-1);
                     response.setReason("数据格式异常，请稍候重试");

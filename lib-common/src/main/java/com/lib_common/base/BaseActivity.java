@@ -1,6 +1,7 @@
 package com.lib_common.base;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,21 +9,26 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.immersionbar.ImmersionBar;
+import com.hjq.toast.ToastUtils;
 import com.lib_common.R;
 import com.lib_common.base.mvvm.BaseMvvmActivity;
 import com.lib_common.dialog.LoadingDialog;
 import com.lib_common.entity.ScanResult;
 import com.lib_common.view.layout.ActionBar;
+import com.lib_common.view.layout.dialog.ErrorDialog;
+import com.lib_common.webservice.response.WebServiceResponse;
 import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +50,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected MMKV mMMKV;
     protected ImmersionBar mImmersionBar;
     BroadcastReceiver scanReceiver;
+    private static final int MIN_DELAY_TIME = 1000;  // 两次点击间隔不能少于500ms
+    private static long lastClickTime;
+
+    /**
+     * 避免快速点击
+     * @return
+     */
+    public static boolean isFastClick() {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -271,5 +293,102 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    EditText editText = null;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideInput(v, ev)) {
+                // 点击了EditText控件外部，使EditText失去焦点
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    hideSoftKeyboard();
+                    if (editText != null) {
+                        editText.clearFocus();
+                    }
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 此处必不可少，否则所有的组件都不会有TouchEvent了
+        return getWindow().superDispatchTouchEvent(ev) || onTouchEvent(ev);
+    }
+
+    /**
+     * 判断是否点击了EditText外部
+     *
+     * @param v
+     * @param event
+     * @return
+     */
+    private boolean isShouldHideInput(View v, MotionEvent event) {
+        if ((v instanceof EditText)) {
+            editText = (EditText) v;
+            int[] leftTop = {0, 0};
+            // 获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int right = left + v.getWidth();
+            int bottom = top + v.getHeight();
+            return !(event.getX() > left && event.getX() < right
+                    && event.getRawY() > top && event.getRawY() < bottom);
+        }
+        return false;
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public void hideSoftKeyboard() {
+        // 隐藏软键盘，避免软键盘引发的内存泄露
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (manager != null) {
+                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
+
+    /**
+     * WebService结果处理，含异常错误处理
+     * @param response
+     * @param fromSource
+     */
+    public void handleWebServiceResult(WebServiceResponse response, int fromSource) {
+        runOnUiThread(() -> {
+            if (response != null) {
+                if (response.getErrorCode() == 200) {
+                    handleWebServiceSuccess(response, fromSource);
+                } else if (response.getErrorCode() == 300) {
+                    // 发生错误，需班长解锁
+                    new ErrorDialog(this, new ErrorDialog.ErrorHandleCallBack() {
+                        @Override
+                        public void commitModify(Dialog dialog, String workNo, String pwd, String remark) {
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void cancel() {
+                            finish();
+                        }
+                    }).builder().show(response.getReason());
+                } else {
+                    ToastUtils.show(response.getReason());
+                }
+            }
+        });
+    }
+
+    /**
+     * 处理WebService成功回调
+     * @param response
+     * @param fromSource
+     */
+    protected void handleWebServiceSuccess(WebServiceResponse response, int fromSource) {
     }
 }
