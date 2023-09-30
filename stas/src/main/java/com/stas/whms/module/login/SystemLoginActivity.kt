@@ -119,6 +119,7 @@ class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel
         val req = HashMap<String, String>()
         req["UserID"] = jobNum
         req["Password"] = pwd
+        req["PdaID"] = AndroidUtil.getIpAddress()
         showLoading()
         Thread {
             try {

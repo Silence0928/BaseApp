@@ -7,7 +7,8 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+//            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+            storeFile file('G:\\Scan-demo\\whms\\BaseApp\\stas\\stas.jks')
             storePassword 'stas88888888'
             keyAlias 'stas'
             keyPassword 'stas88888888'
@@ -16,7 +17,7 @@ android {
             storePassword 'stas88888888'
             keyPassword 'stas88888888'
             keyAlias 'stas'
-            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+            storeFile file('G:\\Scan-demo\\whms\\BaseApp\\stas\\stas.jks')
         }
     }
     namespace 'com.stas.whms'

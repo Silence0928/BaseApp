@@ -41,6 +41,7 @@ public class SoapClientUtil {
                 response.setErrorCode(-1);
                 response.setReason(objectFault.getMessage());
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.setErrorCode(-1);

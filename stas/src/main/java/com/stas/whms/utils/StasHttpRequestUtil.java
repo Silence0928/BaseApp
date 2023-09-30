@@ -33,4 +33,20 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse saveInBound(String req) {
         return SoapClientUtil.execute(req, WebApi.inboundSaveUrl, WebMethodApi.inboundSaveMethod);
     }
+    /**
+     * 入库审核数据查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryInBoundAuditData(String req) {
+        return SoapClientUtil.execute(req, WebApi.inboundAuditDataUrl, WebMethodApi.inboundAuditGetMethod);
+    }
+    /**
+     * 入库审核数据保存
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveInBoundAuditData(String req) {
+        return SoapClientUtil.execute(req, WebApi.inboundAuditSaveUrl, WebMethodApi.inboundAuditSaveMethod);
+    }
 }
