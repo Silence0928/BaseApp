@@ -104,7 +104,8 @@ public class RouteJumpUtil {
     /**
      * 单据明细
      */
-    public static void jumpToDocumentDetail() {
-        ARouter.getInstance().build(RoutePathConfig.ROUTE_DOCUMENT_DETAIL).navigation();
+    public static void jumpToDocumentDetail(String docNo) {
+        ARouter.getInstance().build(RoutePathConfig.ROUTE_DOCUMENT_DETAIL)
+                .withString("documentNo", docNo).navigation();
     }
 }

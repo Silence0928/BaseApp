@@ -194,7 +194,7 @@ class StorageCollectionActivity :
                             handleTotalNum()
                         }.show()
                 } else {
-                    RouteJumpUtil.jumpToDocumentDetail()
+//                    RouteJumpUtil.jumpToDocumentDetail()
                 }
             }
         // 设置背景和字体颜色

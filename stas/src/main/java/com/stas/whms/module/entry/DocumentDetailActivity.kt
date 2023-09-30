@@ -5,6 +5,8 @@ import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONArray
+import com.alibaba.fastjson.JSONObject
 import com.bin.david.form.core.TableConfig
 import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
@@ -17,6 +19,7 @@ import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
 import com.stas.whms.R
 import com.stas.whms.bean.GoodsInfo
+import com.stas.whms.bean.InBoundAuditRequestInfo
 import com.stas.whms.bean.ScannerRequestInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityDocumentDetailBinding
@@ -30,10 +33,11 @@ class DocumentDetailActivity :
 
     @JvmField
     @Autowired
-    var documentNo : String? = null
+    var documentNo: String? = null
     override fun initView() {
         title = "单据明细"
         initDataTable()
+        mDataBinding.cetDocumentNo.text = documentNo
         getData()
     }
 
@@ -54,25 +58,19 @@ class DocumentDetailActivity :
 
     private fun getData() {
         if (TextUtils.isEmpty(documentNo)) return
-        var req = ScannerRequestInfo()
+        val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
-        req.QrCode =
-            "DISC5060020000010091000210125104151120712305152071530815408155092132140074     CW298000-03524C0000004P100 1032507 00000000"
+        req.DocNo = documentNo
+        req.TextID = "4"
         Thread {
-            val result = StasHttpRequestUtil.queryScannerResult(JSON.toJSONString(req))
+            val result = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
             if (result?.errorCode == 200) {
-                if (result.obj != null) {
-                    val goodsInfo =
-                        JSON.parseObject(result.obj.toString(), GoodsInfo::class.java)
-                    if (isCanSave(goodsInfo)) {
-                        goodsInfo.idNum = mDataList.size + 1
-                        val tempList = arrayListOf<GoodsInfo>()
-                        tempList.add(goodsInfo)
-                        mTempDataList.add(goodsInfo)
-                        mDataBinding.tableGoods.addData(tempList, true)
-                        handleTotalNum()
-                    }
+                if (result.data != null) {
+                    val jArray = JSONObject.parseArray(result.data, GoodsInfo::class.java)
+                    mTempDataList = jArray as ArrayList<GoodsInfo>
+                    mDataBinding.tableGoods.addData(jArray, true)
+                    handleTotalNum()
                 }
             } else {
                 ToastUtils.show(result?.reason)
@@ -113,12 +111,12 @@ class DocumentDetailActivity :
         coId.isFixed = true
         coId.isAutoCount = true
         //一致是因为需要用字段名来解析List对象
-        val coPartsNo = Column<String>("品番", "PartsNo")
+        val coPartsNo = Column<String>("电装品番", "PartsNo")
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
         val coBoxSum = Column<String>("包装数", "BoxSum")
         val coFromProCode = Column<String>("前工程", "FromProCode")
-        val coCollectionTime = Column<String>("入库时间", "del")
-        val coCollectionPeople = Column<String>("采集人", "del")
+        val coCollectionTime = Column<String>("入库时间", "CreateDT")
+        val coCollectionPeople = Column<String>("采集人", "CreateBy")
         //endregion
         mDataBinding.tableGoods.setZoom(true, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableGoods.config.setShowXSequence(false) //去掉表格顶部字母

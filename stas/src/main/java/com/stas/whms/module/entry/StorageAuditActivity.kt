@@ -1,9 +1,12 @@
 package com.stas.whms.module.entry
 
+import android.text.Editable
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.bin.david.form.core.TableConfig
 import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
@@ -15,12 +18,14 @@ import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.constants.Constants
 import com.lib_common.dialog.BottomListDialog
 import com.lib_common.dialog.DateSelectDialog
+import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.InBoundAuditRequestInfo
+import com.stas.whms.bean.SaveInBoundAuditReqInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityStorageAuditBinding
 import com.stas.whms.utils.RouteJumpUtil
@@ -54,6 +59,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         }
         // 入库单号
         mDataBinding.cetStorageOrderNo.setOnClickListener {
+            if (mOrderNoList.isEmpty()) {
+                ToastUtils.show("没有待审核的入库单号")
+                return@setOnClickListener
+            }
             BottomListDialog(this).setItems(mOrderNoList)
                 .setOnConfirmSelectListener { position: Int, name: String? ->
                     mDataBinding.cetStorageOrderNo.text = name
@@ -77,6 +86,22 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                 getData(REQ_IN_BOUND_GET)
             }
         }
+        mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
+            override fun afterTextChanged(editable: Editable?) {
+                super.afterTextChanged(editable)
+                "${editable?.length}/100".also { mDataBinding.tvLimit.text = it }
+            }
+        })
+        // 保存
+        mDataBinding.stvSaveStorageCollection.setOnClickListener {
+            if (!isFinishing) {
+                saveData()
+            }
+        }
+        // 取消
+        mDataBinding.stvCancelStorageCollection.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun getLayoutId(): Int {
@@ -91,15 +116,16 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
      * type=1 查询单号  =2查询入库数据
      */
     private fun getData(type: Int) {
-        var req = InBoundAuditRequestInfo()
+        val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.Date = mDataBinding.cetStorageDate.text.toString()
         req.DocNo = if (type == REQ_IN_BOUND_GET) mDataBinding.cetStorageOrderNo.text.toString() else null
         req.TextID = if (type == REQ_IN_BOUND_NO_GET) "2" else "3"
         req.QrCode = if (type == REQ_IN_BOUND_GET)
-            "DISC5060020000010091000210125104151120712305152071530815408155092132140074     CW298000-03524C0000004P100 1032507 00000000"
+            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         else null
+        showLoading()
         Thread {
             val result = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
             handleWebServiceResult(result, type)
@@ -109,17 +135,23 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET) {
-            if (response?.data != null && response.data!!.size > 0) {
-                val dataList = response.data!! as List<*>
+            if (response?.data != null) {
+                val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                 if (fromSource == REQ_IN_BOUND_NO_GET) {
-                    for (a in response.data) {
+                    for (a in jArray) {
                         if (a is GoodsInfo) {
                             mOrderNoList.add(a.DocNo!!)
                         }
                     }
+                    mDataBinding.cetStorageOrderNo.text = mOrderNoList[0]
                 } else {
-                    mTempDataList = response.data as ArrayList<GoodsInfo>
-                    mDataBinding.tableStorageCollection.addData(response.data, true)
+                    var i = 1
+                    for (a in jArray) {
+                        a.idNum = i
+                        i++
+                    }
+                    mTempDataList = jArray as ArrayList<GoodsInfo>
+                    mDataBinding.tableStorageCollection.addData(jArray, true)
                     handleTotalNum()
                 }
             }
@@ -148,7 +180,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             return
         }
         Thread {
-            val result = StasHttpRequestUtil.saveInBoundAuditData(JSON.toJSONString(mDataList))
+            val req = SaveInBoundAuditReqInfo()
+            req.Remark = mDataBinding.cetRemark.text.toString().trim()
+            req.Data = mDataList
+            val result = StasHttpRequestUtil.saveInBoundAuditData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_IN_BOUND_SAVE)
         }.start()
     }
@@ -186,7 +221,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         mDataBinding.tableStorageCollection.setTableData(tableData)
         mDataBinding.tableStorageCollection.tableData
             .setOnRowClickListener { column, o, col, row ->
-                RouteJumpUtil.jumpToDocumentDetail()
+                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
             }
         // 设置背景和字体颜色
         val backgroundFormat: BaseCellBackgroundFormat<CellInfo<*>?> =

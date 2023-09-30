@@ -361,6 +361,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void handleWebServiceResult(WebServiceResponse response, int fromSource) {
         runOnUiThread(() -> {
+            dismissLoading();
             if (response != null) {
                 if (response.getErrorCode() == 200) {
                     handleWebServiceSuccess(response, fromSource);

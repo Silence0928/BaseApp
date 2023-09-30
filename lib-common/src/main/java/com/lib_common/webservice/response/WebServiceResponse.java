@@ -8,7 +8,15 @@ public class WebServiceResponse implements Serializable {
     private int errorCode;
     private String reason;
     private Object obj;
-    private List<Object> data;
+    private String data; // json数组
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 
     public String getStatus() {
         return status;
@@ -42,11 +50,4 @@ public class WebServiceResponse implements Serializable {
         this.obj = obj;
     }
 
-    public List<Object> getData() {
-        return data;
-    }
-
-    public void setData(List<Object> data) {
-        this.data = data;
-    }
 }

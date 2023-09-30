@@ -26,7 +26,7 @@
             android:textSize="14sp"
             android:layout_marginTop="10dp"/>
 
-        <com.lib_common.view.widget.ClearEditText
+        <TextView
             android:id="@+id/cet_document_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
