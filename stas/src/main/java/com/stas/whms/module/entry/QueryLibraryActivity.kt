@@ -59,7 +59,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.text = result?.data
+        mDataBinding.cetMadeFinishedTag.setText(result?.data)
     }
 
     /**

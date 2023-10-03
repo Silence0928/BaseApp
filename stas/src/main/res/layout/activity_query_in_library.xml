@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.lib_common.view.widget.ClearEditText
             android:id="@+id/cet_made_finished_tag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
