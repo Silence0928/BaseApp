@@ -71,6 +71,7 @@ class StorageCollectionActivity :
 
     override fun scanResultCallBack(result: ScanResult?) {
         mDataBinding.cetMadeFinishedTag.setText(result?.data)
+        getData(result?.data!!)
     }
 
     private fun getData(result: String) {

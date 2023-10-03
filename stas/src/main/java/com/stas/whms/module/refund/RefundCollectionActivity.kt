@@ -13,6 +13,7 @@ import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.entity.ScanResult
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
 import com.lib_common.view.layout.dialog.CommonAlertDialog
@@ -64,6 +65,15 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         return 0
     }
 
+    override fun isRegisterScan(): Boolean {
+        return true
+    }
+
+    override fun scanResultCallBack(result: ScanResult?) {
+        mDataBinding.cetMadeFinishedTag.setText(result?.data)
+        getData(result?.data!!)
+    }
+
     private fun getData(result: String) {
         if (TextUtils.isEmpty(result)) return
         var req = ScannerRequestInfo()
@@ -72,7 +82,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         req.QrCode =
             "DISC5060020000010091000210125104151120712305152071530815408155092132140074     CW298000-03524C0000004P100 1032507 00000000"
         Thread {
-            val result = StasHttpRequestUtil.queryScannerResult(JSON.toJSONString(req))
+            val result = StasHttpRequestUtil.queryReturnScannerResult(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_GET)
         }.start()
     }
@@ -130,7 +140,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
             return
         }
         Thread {
-            val result = StasHttpRequestUtil.saveInBound(JSON.toJSONString(mDataList))
+            val result = StasHttpRequestUtil.saveReturn(JSON.toJSONString(mDataList))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
     }

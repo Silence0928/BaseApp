@@ -18,6 +18,7 @@ import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.constants.Constants
 import com.lib_common.dialog.BottomListDialog
 import com.lib_common.dialog.DateSelectDialog
+import com.lib_common.entity.ScanResult
 import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
@@ -110,6 +111,14 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
 
     override fun getVariableId(): Int {
         return 0
+    }
+
+    override fun isRegisterScan(): Boolean {
+        return true
+    }
+
+    override fun scanResultCallBack(result: ScanResult?) {
+        mDataBinding.cetMadeFinishedTag.setText(result?.data)
     }
 
     /**
