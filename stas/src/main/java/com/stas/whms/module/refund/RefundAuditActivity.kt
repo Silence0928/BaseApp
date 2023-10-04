@@ -97,7 +97,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         })
         // 保存
         mDataBinding.stvSaveRefundCollection.setOnClickListener {
-            if (!isFinishing) {
+            if (!isFastClick()) {
                 saveData()
             }
         }

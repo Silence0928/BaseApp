@@ -54,7 +54,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
         }
         // 保存
         mDataBinding.stvSaveStorageCollection.setOnClickListener {
-            if (!isFinishing) {
+            if (!isFastClick()) {
                 saveData()
             }
         }
@@ -138,13 +138,14 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
-            if (response?.obj != null) {
-                mGoodsInfo = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
-                if (mGoodsInfo != null) {
-                    mDataBinding.cetRotaryDesignation.text = mGoodsInfo?.TagSerialNo
-                    mDataBinding.cetForeworkNum.text = mGoodsInfo?.FromProCode
-                    mDataBinding.cetInLibraryState.text = mGoodsInfo?.Status
-                    mDataBinding.cetGoodsNum.setText(mGoodsInfo?.BoxSum)
+            if (response?.data != null) {
+                val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
+                if (jArray != null && jArray.size > 0) {
+                    mGoodsInfo = jArray[0]
+                    mDataBinding.cetRotaryDesignation.text = jArray[0].TagSerialNo
+                    mDataBinding.cetForeworkNum.text = jArray[0].FromProCode
+                    mDataBinding.cetInLibraryState.text = jArray[0].Status
+                    mDataBinding.cetGoodsNum.setText(jArray[0].BoxSum)
                 }
             }
         } else if (fromSource == REQ_SCANNER_GET_REASON) {
@@ -156,7 +157,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
                 }
             }
             if (mReasonList.size > 0) {
-                mDataBinding.cetReason.setText(mReasonList[0])
+                mDataBinding.cetReason.text = mReasonList[0]
             }
         } else {
             ToastUtils.show("保存成功")

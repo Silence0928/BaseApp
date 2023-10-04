@@ -94,7 +94,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         })
         // 保存
         mDataBinding.stvSaveStorageCollection.setOnClickListener {
-            if (!isFinishing) {
+            if (!isFastClick()) {
                 saveData()
             }
         }

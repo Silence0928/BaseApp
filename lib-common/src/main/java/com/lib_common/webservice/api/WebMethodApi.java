@@ -26,4 +26,8 @@ public class WebMethodApi {
     public static final String queryAdjustmentLibraryMethod = "InstockChange_Get";
     // 在库调整保存
     public static final String saveAdjustmentLibraryMethod = "InstockChange_Save";
+    // 出货准备查询
+    public static final String queryShipmentPrepareMethod = "OutDocBind_Get";
+    // 出货准备保存
+    public static final String saveShipmentPrepareMethod = "OutDocBind_Save";
 }

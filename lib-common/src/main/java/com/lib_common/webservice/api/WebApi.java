@@ -29,4 +29,8 @@ public class WebApi {
     public static final String queryAdjustmentLibraryDataUrl = webBaseUrl + WebMethodApi.queryAdjustmentLibraryMethod;
     // 在库数据保存
     public static final String saveAdjustmentLibraryDataUrl = webBaseUrl + WebMethodApi.saveAdjustmentLibraryMethod;
+    // 出货准备数据获取
+    public static final String queryShipmentPrepareDataUrl = webBaseUrl + WebMethodApi.queryShipmentPrepareMethod;
+    // 出货准备数据保存
+    public static final String saveShipmentPrepareDataUrl = webBaseUrl + WebMethodApi.saveShipmentPrepareMethod;
 }

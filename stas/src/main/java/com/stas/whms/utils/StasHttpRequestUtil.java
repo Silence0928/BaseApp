@@ -103,4 +103,20 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse saveAdjustmentLibrariesData(String req) {
         return SoapClientUtil.execute(req, WebApi.saveAdjustmentLibraryDataUrl, WebMethodApi.saveAdjustmentLibraryMethod);
     }
+    /**
+     * 出货准备查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryShipmentPrepareResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryShipmentPrepareDataUrl, WebMethodApi.queryShipmentPrepareMethod);
+    }
+    /**
+     * 出货准备保存
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveShipmentPrepareData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveShipmentPrepareDataUrl, WebMethodApi.saveShipmentPrepareMethod);
+    }
 }
