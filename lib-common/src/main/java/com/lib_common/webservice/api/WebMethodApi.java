@@ -22,4 +22,8 @@ public class WebMethodApi {
     public static final String returnAuditSaveMethod = "ReturnCheck_Save";
     // 在库查询
     public static final String queryLibraryMethod = "Instock_Get";
+    // 在库调整查询
+    public static final String queryAdjustmentLibraryMethod = "InstockChange_Get";
+    // 在库调整保存
+    public static final String saveAdjustmentLibraryMethod = "InstockChange_Save";
 }

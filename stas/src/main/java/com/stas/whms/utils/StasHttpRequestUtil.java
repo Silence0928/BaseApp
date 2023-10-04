@@ -87,4 +87,20 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse queryLibrariesData(String req) {
         return SoapClientUtil.execute(req, WebApi.queryLibraryDataUrl, WebMethodApi.queryLibraryMethod);
     }
+    /**
+     * 在库调整查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryAdjustmentLibrariesData(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryAdjustmentLibraryDataUrl, WebMethodApi.queryAdjustmentLibraryMethod);
+    }
+    /**
+     * 在库调整保存
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveAdjustmentLibrariesData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveAdjustmentLibraryDataUrl, WebMethodApi.saveAdjustmentLibraryMethod);
+    }
 }

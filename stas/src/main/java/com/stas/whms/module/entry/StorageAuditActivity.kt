@@ -3,7 +3,6 @@ package com.stas.whms.module.entry
 import android.text.Editable
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
@@ -191,7 +190,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         Thread {
             val req = SaveInBoundAuditReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
-            req.Data = mDataList
+            req.ListData = mDataList
             val result = StasHttpRequestUtil.saveInBoundAuditData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_IN_BOUND_SAVE)
         }.start()

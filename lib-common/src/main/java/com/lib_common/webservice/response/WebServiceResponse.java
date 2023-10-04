@@ -7,7 +7,7 @@ public class WebServiceResponse implements Serializable {
     private String status;
     private int errorCode;
     private String reason;
-    private Object obj;
+    private String obj; // 单实体
     private String data; // json数组
 
     public String getData() {
@@ -42,11 +42,11 @@ public class WebServiceResponse implements Serializable {
         this.reason = reason;
     }
 
-    public Object getObj() {
+    public String getObj() {
         return obj;
     }
 
-    public void setObj(Object obj) {
+    public void setObj(String obj) {
         this.obj = obj;
     }
 

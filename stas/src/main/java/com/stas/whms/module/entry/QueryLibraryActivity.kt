@@ -119,7 +119,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         coId.isAutoCount = true
         val coPartsNo = Column<String>("品番", "PartsNo")
         val coDocNo = Column<String>("回转号", "TagSerialNo")
-        val coState = Column<String>("状态", "State")
+        val coState = Column<String>("状态", "Status")
         val coBoxSum = Column<String>("包装数", "BoxSum")
         val coFromProCode = Column<String>("前工程", "FromProCode")
         val coCreateBy = Column<String>("采集人", "CreateBy")

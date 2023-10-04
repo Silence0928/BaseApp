@@ -80,7 +80,7 @@ class StorageCollectionActivity :
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.QrCode =
-            "DISC5060020000010091000210125104151120712305152071530815408155092132140074     CW298000-03524C0000004P100 1032507 00000000"
+            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         Thread {
             val result = StasHttpRequestUtil.queryScannerResult(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_GET)

@@ -14,5 +14,6 @@ class GoodsInfo : Serializable {
     var InBoundTime: String? = null // 入库时间
     var CreateDT: String? = null // 入库时间
     var CreateBy: String? = null // 入库人
+    var Status: String? = null // 状态
     var del = "删除"
 }

@@ -25,4 +25,8 @@ public class WebApi {
     public static final String returnAuditSaveUrl = webBaseUrl + WebMethodApi.returnAuditSaveMethod;
     // 在库数据获取
     public static final String queryLibraryDataUrl = webBaseUrl + WebMethodApi.queryLibraryMethod;
+    // 在库数据获取
+    public static final String queryAdjustmentLibraryDataUrl = webBaseUrl + WebMethodApi.queryAdjustmentLibraryMethod;
+    // 在库数据保存
+    public static final String saveAdjustmentLibraryDataUrl = webBaseUrl + WebMethodApi.saveAdjustmentLibraryMethod;
 }
