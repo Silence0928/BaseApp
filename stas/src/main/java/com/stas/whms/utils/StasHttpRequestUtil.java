@@ -151,4 +151,36 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse saveMoveAuditData(String req) {
         return SoapClientUtil.execute(req, WebApi.saveMoveAuditUrl, WebMethodApi.saveMoveAuditDataMethod);
     }
+    /**
+     * 捆包照合结果查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryBaleDataResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryBaleDataUrl, WebMethodApi.queryBaleDataMethod);
+    }
+    /**
+     * 保存捆包照合采集结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveBaleData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveBaleUrl, WebMethodApi.saveBaleDataMethod);
+    }
+    /**
+     * 出货采集
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryShipmentDataResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryShipmentDataUrl, WebMethodApi.queryShipmentDataMethod);
+    }
+    /**
+     * 保存出货采集结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveShipmentData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveShipmentUrl, WebMethodApi.saveShipmentDataMethod);
+    }
 }

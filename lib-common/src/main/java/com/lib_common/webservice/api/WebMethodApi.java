@@ -38,4 +38,12 @@ public class WebMethodApi {
     public static final String queryMoveAuditDataMethod = "MoveCheck_Get";
     // 移库审核保存
     public static final String saveMoveAuditDataMethod = "MoveCheck_Save";
+    // 捆包照合查询
+    public static final String queryBaleDataMethod = "Bunding_Get";
+    // 捆包照合保存
+    public static final String saveBaleDataMethod = "Bunding_Save";
+    // 出货查询
+    public static final String queryShipmentDataMethod = "Outbind_Get";
+    // 出货保存
+    public static final String saveShipmentDataMethod = "Outbind_Save";
 }

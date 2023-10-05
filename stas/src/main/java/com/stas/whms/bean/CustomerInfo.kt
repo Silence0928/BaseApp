@@ -9,5 +9,7 @@ class CustomerInfo : Serializable {
     var CustomLabel: String? = null // 客户看板编号
     var QtySum: String? = null // 总数量
     var BoxSum: String? = null // 总箱数
+    var TagSerialNo: String? = null // 回转番号
+    var PartsNo: String? = null // 电装品番
     var del = "删除"
 }
