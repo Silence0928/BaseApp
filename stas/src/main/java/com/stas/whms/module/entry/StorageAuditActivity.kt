@@ -21,6 +21,7 @@ import com.lib_common.entity.ScanResult
 import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
+import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
 import com.stas.whms.bean.GoodsInfo
@@ -246,6 +247,17 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             }
         mDataBinding.tableStorageCollection.config.contentCellBackgroundFormat = backgroundFormat
 
+    }
+
+    override fun onBackPressed() {
+        if (mDataList.size > 0) {
+            CommonAlertDialog(this).builder().setTitle("提示")
+                .setMsg("取消将清空已采集数据，是否确认？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确认") { finish() }.show()
+        } else {
+            finish()
+        }
     }
 
 }

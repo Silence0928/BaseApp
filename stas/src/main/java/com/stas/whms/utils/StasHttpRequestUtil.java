@@ -119,4 +119,36 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse saveShipmentPrepareData(String req) {
         return SoapClientUtil.execute(req, WebApi.saveShipmentPrepareDataUrl, WebMethodApi.saveShipmentPrepareMethod);
     }
+    /**
+     * 移库结果查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryMoveDataResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryMoveDataUrl, WebMethodApi.queryMoveDataMethod);
+    }
+    /**
+     * 保存移库采集结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveMoveData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveMoveUrl, WebMethodApi.saveMoveDataMethod);
+    }
+    /**
+     * 移库审核结果查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryMoveAuditDataResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryMoveAuditDataUrl, WebMethodApi.queryMoveAuditDataMethod);
+    }
+    /**
+     * 保存移库审核采集结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveMoveAuditData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveMoveAuditUrl, WebMethodApi.saveMoveAuditDataMethod);
+    }
 }

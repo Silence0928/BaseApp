@@ -92,14 +92,16 @@ class StorageCollectionActivity :
             if (response?.obj != null) {
                 val goodsInfo =
                     JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
-//                if (isCanSave(goodsInfo)) {
+                if (isCanSave(goodsInfo)) {
                     goodsInfo.idNum = mDataList.size + 1
                     val tempList = arrayListOf<GoodsInfo>()
                     tempList.add(goodsInfo)
                     mTempDataList.add(goodsInfo)
                     mDataBinding.tableStorageCollection.addData(tempList, true)
                     handleTotalNum()
-//                }
+                } else {
+                    ToastUtils.show("采集的数据已存在，请重新扫描")
+                }
             }
         } else if (fromSource == REQ_SCANNER_SAVE) {
             ToastUtils.show("保存成功")

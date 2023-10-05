@@ -33,4 +33,12 @@ public class WebApi {
     public static final String queryShipmentPrepareDataUrl = webBaseUrl + WebMethodApi.queryShipmentPrepareMethod;
     // 出货准备数据保存
     public static final String saveShipmentPrepareDataUrl = webBaseUrl + WebMethodApi.saveShipmentPrepareMethod;
+    // 移库采集
+    public static final String queryMoveDataUrl = webBaseUrl + WebMethodApi.queryMoveDataMethod;
+    // 移库采集保存
+    public static final String saveMoveUrl = webBaseUrl + WebMethodApi.saveMoveDataMethod;
+    // 移库审核采集
+    public static final String queryMoveAuditDataUrl = webBaseUrl + WebMethodApi.queryMoveAuditDataMethod;
+    // 移库审核采集保存
+    public static final String saveMoveAuditUrl = webBaseUrl + WebMethodApi.saveMoveAuditDataMethod;
 }

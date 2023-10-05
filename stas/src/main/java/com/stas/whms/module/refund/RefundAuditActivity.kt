@@ -303,4 +303,15 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         mDataBinding.tableRefundCollection.config.contentCellBackgroundFormat = backgroundFormat
 
     }
+
+    override fun onBackPressed() {
+        if (mDataList.size > 0) {
+            CommonAlertDialog(this).builder().setTitle("提示")
+                .setMsg("取消将清空已采集数据，是否确认？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确认") { finish() }.show()
+        } else {
+            finish()
+        }
+    }
 }

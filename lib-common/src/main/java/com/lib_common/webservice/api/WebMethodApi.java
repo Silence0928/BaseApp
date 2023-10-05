@@ -30,4 +30,12 @@ public class WebMethodApi {
     public static final String queryShipmentPrepareMethod = "OutDocBind_Get";
     // 出货准备保存
     public static final String saveShipmentPrepareMethod = "OutDocBind_Save";
+    // 移库查询
+    public static final String queryMoveDataMethod = "Move_Get";
+    // 移库保存
+    public static final String saveMoveDataMethod = "Move_Save";
+    // 移库审核查询
+    public static final String queryMoveAuditDataMethod = "MoveCheck_Get";
+    // 移库审核保存
+    public static final String saveMoveAuditDataMethod = "MoveCheck_Save";
 }
