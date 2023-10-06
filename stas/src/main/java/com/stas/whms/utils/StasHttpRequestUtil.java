@@ -183,4 +183,36 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse saveShipmentData(String req) {
         return SoapClientUtil.execute(req, WebApi.saveShipmentUrl, WebMethodApi.saveShipmentDataMethod);
     }
+    /**
+     * 照合解除查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryLightReleaseDataResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryLightReleaseDataUrl, WebMethodApi.queryLightReleaseDataMethod);
+    }
+    /**
+     * 保存照合解除结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveLightReleaseData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveLightReleaseUrl, WebMethodApi.saveLightReleaseDataMethod);
+    }
+    /**
+     * 出货取消查询
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse queryShipmentCancelDataResult(String req) {
+        return SoapClientUtil.execute(req, WebApi.queryShipmentCancelDataUrl, WebMethodApi.queryShipmentCancelDataMethod);
+    }
+    /**
+     * 保存出货取消结果
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse saveShipmentCancelData(String req) {
+        return SoapClientUtil.execute(req, WebApi.saveShipmentCancelUrl, WebMethodApi.saveShipmentCancelDataMethod);
+    }
 }

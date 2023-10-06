@@ -28,7 +28,8 @@ import com.stas.whms.utils.StasHttpRequestUtil
 class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, BaseViewModel>() {
 
     private val REQ_SCANNER_GET = 1
-    private val REQ_SCANNER_SAVE = 2
+    private val REQ_SCANNER_GET_2 = 2
+    private val REQ_SCANNER_SAVE = 3
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
 
@@ -41,7 +42,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         // 查询
         mDataBinding.stvQueryStorageCollection.setOnClickListener {
             if (!isFastClick()) {
-                getData(REQ_SCANNER_GET)
+                getData(REQ_SCANNER_GET_2)
             }
         }
     }
@@ -60,6 +61,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
 
     override fun scanResultCallBack(result: ScanResult?) {
         mDataBinding.cetMadeFinishedTag.setText(result?.data)
+        getData(REQ_SCANNER_GET)
     }
 
     /**
@@ -71,9 +73,10 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.DocNo = mDataBinding.cetForeworkNumber.text.toString()
         req.FromProCode = mDataBinding.cetRotaryDesignation.text.toString()
-        req.TextID = "1"
+        req.TextID = if (type == REQ_SCANNER_GET) "1" else "3"
         req.QrCode =
-            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+            if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+            else null
         showLoading()
         Thread {
             val result = StasHttpRequestUtil.queryLibrariesData(JSON.toJSONString(req))

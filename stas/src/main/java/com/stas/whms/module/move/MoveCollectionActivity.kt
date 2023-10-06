@@ -71,7 +71,6 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
         getData(result?.data!!)
     }
 
@@ -93,6 +92,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
             if (response?.obj != null) {
                 val goodsInfo =
                     JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
+                mDataBinding.cetMadeFinishedTag.setText(goodsInfo?.PartsNo)
                 if (isCanSave(goodsInfo)) {
                     goodsInfo.idNum = mDataList.size + 1
                     val tempList = arrayListOf<GoodsInfo>()

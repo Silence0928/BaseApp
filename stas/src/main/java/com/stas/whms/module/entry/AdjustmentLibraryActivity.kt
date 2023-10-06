@@ -83,7 +83,6 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
         getData(REQ_SCANNER_GET)
     }
 
@@ -142,6 +141,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
                 val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                 if (jArray != null && jArray.size > 0) {
                     mGoodsInfo = jArray[0]
+                    mDataBinding.cetMadeFinishedTag.setText(jArray[0].PartsNo)
                     mDataBinding.cetRotaryDesignation.text = jArray[0].TagSerialNo
                     mDataBinding.cetForeworkNum.text = jArray[0].FromProCode
                     mDataBinding.cetInLibraryState.text = jArray[0].Status

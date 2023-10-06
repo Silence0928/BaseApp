@@ -70,7 +70,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_shipment_instruction" />
 
-                <com.lib_common.view.widget.ClearEditText
+                <TextView
                     android:id="@+id/cet_denso"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -254,7 +254,7 @@
                     android:orientation="vertical">
 
                     <com.lib_common.view.widget.ClearEditText
-                        android:id="@+id/et_evaluate_driver_content"
+                        android:id="@+id/cet_remark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"

@@ -49,4 +49,12 @@ public class WebApi {
     public static final String queryShipmentDataUrl = webBaseUrl + WebMethodApi.queryShipmentDataMethod;
     // 出货采集保存
     public static final String saveShipmentUrl = webBaseUrl + WebMethodApi.saveShipmentDataMethod;
+    // 照合解除查询
+    public static final String queryLightReleaseDataUrl = webBaseUrl + WebMethodApi.queryLightReleaseDataMethod;
+    // 照合解除保存
+    public static final String saveLightReleaseUrl = webBaseUrl + WebMethodApi.saveLightReleaseDataMethod;
+    // 出货取消查询
+    public static final String queryShipmentCancelDataUrl = webBaseUrl + WebMethodApi.queryLightReleaseDataMethod;
+    // 出货取消保存
+    public static final String saveShipmentCancelUrl = webBaseUrl + WebMethodApi.saveLightReleaseDataMethod;
 }

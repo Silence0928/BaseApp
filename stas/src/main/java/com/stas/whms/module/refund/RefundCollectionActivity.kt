@@ -70,7 +70,6 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
         getData(result?.data!!)
     }
 
@@ -82,8 +81,8 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         req.QrCode =
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         Thread {
-            val result = StasHttpRequestUtil.queryReturnScannerResult(JSON.toJSONString(req))
-            handleWebServiceResult(result, REQ_SCANNER_GET)
+            val response = StasHttpRequestUtil.queryReturnScannerResult(JSON.toJSONString(req))
+            handleWebServiceResult(response, REQ_SCANNER_GET)
         }.start()
     }
 
@@ -92,6 +91,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
             if (response?.obj != null) {
                 val goodsInfo =
                     JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
+                mDataBinding.cetMadeFinishedTag.setText(goodsInfo?.PartsNo)
                 if (isCanSave(goodsInfo)) {
                     goodsInfo.idNum = mDataList.size + 1
                     val tempList = arrayListOf<GoodsInfo>()

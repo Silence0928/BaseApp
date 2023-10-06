@@ -18,6 +18,16 @@ public class UserInfo {
     private String sexy;
 
     private String del = "删除";
+    private Boolean isChecked = false;
+
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
+    }
 
     public UserInfo(int id, String name, int age, String phone, String sexy){
         this.Id = id;

@@ -11,4 +11,5 @@ open class ScannerRequestInfo: Serializable {
     var Date: String? = null // 时间戳，精确到毫秒 2023-09-09 12:12:12:1111
     var FromProCode: String? = null // 前工程号
     var TagSerialNo: String? = null // 回转番号
+    var PartsNo: String? = null // 电装品番
 }

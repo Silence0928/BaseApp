@@ -12,4 +12,7 @@ class CustomerInfo : Serializable {
     var TagSerialNo: String? = null // 回转番号
     var PartsNo: String? = null // 电装品番
     var del = "删除"
+    var checked = false // 是否选中
+    var SingleBoxSum: String? = null // 单箱数量
+    var Num: String? = null // 数量
 }
