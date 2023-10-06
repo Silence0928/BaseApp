@@ -55,6 +55,10 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         }
         // 出货取消原因
         mDataBinding.cetRefundReason.setOnClickListener {
+            if (mReasonStrList.size == 0) {
+                ToastUtils.show("无可选择的出货取消原因")
+                return@setOnClickListener
+            }
             BottomListDialog(this).setItems(mReasonStrList)
                 .setOnConfirmSelectListener { position: Int, name: String? ->
                     mDataBinding.cetRefundReason.text = name

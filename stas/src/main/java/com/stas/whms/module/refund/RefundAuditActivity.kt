@@ -66,6 +66,10 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         }
         // 退库原因
         mDataBinding.cetRefundReason.setOnClickListener {
+            if (mReasonList.size == 0) {
+                ToastUtils.show("无可选择的退库原因")
+                return@setOnClickListener
+            }
             BottomListDialog(this).setItems(mReasonList)
                 .setOnConfirmSelectListener { position: Int, name: String? ->
                     mDataBinding.cetRefundReason.text = name
