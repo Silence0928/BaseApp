@@ -20,6 +20,7 @@ import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
 import com.lib_common.view.layout.dialog.CommonAlertDialog
+import com.lib_common.view.layout.dialog.vehicleno.VehicleNoKeyBoardDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
 import com.stas.whms.bean.CustomerInfo
@@ -39,13 +40,29 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
     private val REQ_SCANNER_SAVE = 4
     private var mCustomerDataList = arrayListOf<CustomerInfo>()
     private var mTempDataList = arrayListOf<CustomerInfo>()
+    private lateinit var mVehicleNoKeyBoard: VehicleNoKeyBoardDialog // 车牌号键盘
+    private var mVehicleNo: String? = null // 车牌号
 
     override fun initView() {
         title = "出货"
         initDataTable()
+        // 车牌键盘
+        mVehicleNoKeyBoard = VehicleNoKeyBoardDialog(this)
     }
 
     override fun onViewEvent() {
+        // 车牌号
+        mDataBinding.cetCarNo.setOnFocusChangeListener { view, b ->
+            if (!b) {
+                mDataBinding.cetCarNo.setText(mDataBinding.cetCarNo.text.toString().uppercase())
+            }
+        }
+//        mDataBinding.cetCarNo.addTextChangedListener (object: SimpleTextWatcher() {
+//            override fun afterTextChanged(editable: Editable?) {
+//                super.afterTextChanged(editable)
+//                mDataBinding.cetCarNo.setText(editable.toString().uppercase())
+//            }
+//        })
         // 备注
         mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
             override fun afterTextChanged(editable: Editable?) {
@@ -86,6 +103,24 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
 //            mDataBinding.cetCustomerBoard.setText(result?.data)
             getData("901423101F2020  160786ZU", REQ_SCANNER_GET_2)
         }
+    }
+
+    /**
+     * 隐藏输入键盘
+     */
+    private fun hideVehicleNoKeyBoardView() {
+        if (mVehicleNoKeyBoard.isShowing) {
+            mVehicleNoKeyBoard.dismiss()
+        }
+    }
+
+    private fun showVehicleNoKeyBoard() {
+        // 隐藏软键盘
+        hideSoftKeyboard()
+        // 显示车牌号输入键盘
+        mVehicleNoKeyBoard.show()
+        mVehicleNoKeyBoard.setVehicleNoView(mDataBinding.cetCarNo, false)
+        mVehicleNoKeyBoard.setTitle("输入车牌号")
     }
 
     private fun getData(result: String, type : Int) {

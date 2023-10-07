@@ -69,4 +69,33 @@
         <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
     </style>
+    <style name="key_board_key">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/black04</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="vehicle_no_dialog" parent="@android:style/Theme.Dialog">
+        <!-- 有无边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@color/white</item>
+        <!-- 模糊 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--无标题 -->
+        <item name="android:windowNoTitle">true</item>
+
+        <!-- 进入和退出的动画 -->
+        <!--        <item name="android:windowAnimationStyle">@style/MyDialogAnimation</item>-->
+        <!-- 动画效果 -->
+        <item name="android:windowEnterAnimation">@anim/window_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/window_scale_out</item>
+    </style>
 </resources>
