@@ -36,18 +36,20 @@ import java.util.Date
 @Route(path = RoutePathConfig.ROUTE_STORAGE_AUDIT)
 class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseViewModel>() {
 
-    private val REQ_IN_BOUND_GET = 1001
+    private val REQ_IN_BOUND_GET_END = 1001
     private val REQ_IN_BOUND_NO_GET = 1002
-    private val REQ_IN_BOUND_SAVE = 1003
+    private val REQ_IN_BOUND_GET = 1003
+    private val REQ_IN_BOUND_SAVE = 1004
     private var mOrderNoList = arrayListOf<String>()
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
+    private var mProductEnd: GoodsInfo? = null
 
     override fun initView() {
         title = "入库审核"
         initDataTable()
         mDataBinding.cetStorageDate.text = DateUtils.getFormatDate(DateUtils.getDateBefore(1), Constants.DATE_FORMAT_LINE)
-        getData(REQ_IN_BOUND_NO_GET)
+        getData(null, REQ_IN_BOUND_NO_GET)
     }
 
     override fun onViewEvent() {
@@ -55,7 +57,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         mDataBinding.cetStorageDate.setOnClickListener {
             DateSelectDialog(this) { date: Date?, v: View? ->
                 mDataBinding.cetStorageDate.text = DateUtils.getFormatDate(date, Constants.DATE_FORMAT_LINE)
-                getData(REQ_IN_BOUND_NO_GET)
+                getData(null, REQ_IN_BOUND_NO_GET)
             }.build().show()
         }
         // 入库单号
@@ -84,7 +86,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                     ToastUtils.show("请输入制造完了标签")
                     return@setOnClickListener
                 }
-                getData(REQ_IN_BOUND_GET)
+                getData(null, REQ_IN_BOUND_GET)
             }
         }
         mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
@@ -118,32 +120,39 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
+        getData(result?.data, REQ_IN_BOUND_GET_END)
     }
 
     /**
      * type=1 查询单号  =2查询入库数据
      */
-    private fun getData(type: Int) {
+    private fun getData(result: String?, type: Int) {
         val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.Date = mDataBinding.cetStorageDate.text.toString()
-        req.DocNo = if (type == REQ_IN_BOUND_GET) mDataBinding.cetStorageOrderNo.text.toString() else null
-        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "2" else "3"
-        req.QrCode = if (type == REQ_IN_BOUND_GET)
+        req.DocNo = mDataBinding.cetStorageOrderNo.text.toString()
+        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "2" else if (type == REQ_IN_BOUND_GET_END) "3" else "4"
+        req.ProductEnd = mProductEnd
+        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         else null
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
-            handleWebServiceResult(result, type)
+            val response = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
+            handleWebServiceResult(response, type)
         }.start()
     }
 
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
-        if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET) {
+        if (fromSource == REQ_IN_BOUND_GET_END) {// 制造完了标签
+            if (response?.obj != null) {
+                mProductEnd =
+                    JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
+                mDataBinding.cetMadeFinishedTag.setText(mProductEnd?.PartsNo)
+            }
+        } else if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET) {
             if (response?.data != null) {
                 val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                 if (fromSource == REQ_IN_BOUND_NO_GET) {

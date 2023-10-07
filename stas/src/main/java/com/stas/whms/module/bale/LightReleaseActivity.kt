@@ -80,6 +80,20 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 "${editable?.length}/100".also { mDataBinding.tvLimit.text = it }
             }
         })
+        // 查询
+        mDataBinding.stvQuery.setOnClickListener {
+            if (!isFastClick()) {
+                if (mDataBinding.cetShipmentInstruction.text.toString().isEmpty()) {
+                    ToastUtils.show("请先扫描出货指示书")
+                    return@setOnClickListener
+                }
+                if (mDataBinding.cetDenso.text.toString().isEmpty()) {
+                    ToastUtils.show("请选择电装品番")
+                    return@setOnClickListener
+                }
+                getData(null, REQ_SCANNER_GET_3)
+            }
+        }
         // 保存
         mDataBinding.stvSaveStorageCollection.setOnClickListener {
             if (!isFastClick()) {
@@ -108,7 +122,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         getData("27300078170Z", REQ_SCANNER_GET)
     }
 
-    private fun getData(result: String, type : Int) {
+    private fun getData(result: String?, type : Int) {
         if (TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()

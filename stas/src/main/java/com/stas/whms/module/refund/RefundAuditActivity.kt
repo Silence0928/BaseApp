@@ -33,21 +33,23 @@ import com.stas.whms.utils.StasHttpRequestUtil
 
 @Route(path = RoutePathConfig.ROUTE_REFUND_AUDIT)
 class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseViewModel>() {
-    private val REQ_IN_BOUND_GET = 1001 // 查询退库数据
-    private val REQ_IN_BOUND_NO_GET = 1002 // 查询退库单号
+    private val REQ_IN_BOUND_NO_GET = 1001 // 查询退库单号
+    private val REQ_IN_BOUND_GET_END = 1002 // 查询制造完了标签数据
     private val REQ_IN_BOUND_REASON_GET = 1003 // 查询退库原因
-    private val REQ_IN_BOUND_SAVE = 1004 // 保存
+    private val REQ_IN_BOUND_GET = 1004 // 查询退库数据
+    private val REQ_IN_BOUND_SAVE = 1005 // 保存
     private var mOrderNoList = arrayListOf<String>()
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mReasonInfoList = arrayListOf<ReasonInfo>()
     private var mReasonList = arrayListOf<String>()
+    private var mProductEnd: GoodsInfo? = null
 
     override fun initView() {
         title = "退库审核"
         initDataTable()
-        getData(REQ_IN_BOUND_NO_GET)
-        getData(REQ_IN_BOUND_REASON_GET)
+        getData(null, REQ_IN_BOUND_NO_GET)
+        getData(null, REQ_IN_BOUND_REASON_GET)
     }
 
     override fun onViewEvent() {
@@ -87,10 +89,10 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                     return@setOnClickListener
                 }
                 if (madeFinishedTag.isEmpty()) {
-                    ToastUtils.show("请输入制造完了标签")
+                    ToastUtils.show("请扫描制造完了标签")
                     return@setOnClickListener
                 }
-                getData(REQ_IN_BOUND_GET)
+                getData(null, REQ_IN_BOUND_GET)
             }
         }
         mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
@@ -124,31 +126,38 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
+        getData(result?.data, REQ_IN_BOUND_GET_END)
     }
 
     /**
      * type=1 查询单号  =2查询退库数据 =3查询原因
      */
-    private fun getData(type: Int) {
+    private fun getData(result: String?, type: Int) {
         val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
-        req.DocNo = if (type == REQ_IN_BOUND_GET) mDataBinding.cetRefundOrderNo.text.toString() else null
-        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "1" else if (type == REQ_IN_BOUND_REASON_GET) "3" else "2"
-        req.QrCode = if (type == REQ_IN_BOUND_GET)
+        req.DocNo = mDataBinding.cetRefundOrderNo.text.toString()
+        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "1" else if (type == REQ_IN_BOUND_GET_END) "2"  else if (type == REQ_IN_BOUND_REASON_GET) "3" else "4"
+        req.ProductEnd = mProductEnd
+        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         else null
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.queryReturnAuditData(JSON.toJSONString(req))
-            handleWebServiceResult(result, type)
+            val response = StasHttpRequestUtil.queryReturnAuditData(JSON.toJSONString(req))
+            handleWebServiceResult(response, type)
         }.start()
     }
 
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
-        if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET || fromSource == REQ_IN_BOUND_REASON_GET) {
+        if (fromSource == REQ_IN_BOUND_GET_END) {// 制造完了标签
+            if (response?.obj != null) {
+                mProductEnd =
+                    JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
+                mDataBinding.cetMadeFinishedTag.setText(mProductEnd?.PartsNo)
+            }
+        } else if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET || fromSource == REQ_IN_BOUND_REASON_GET) {
             if (response?.data != null) {
                 if (fromSource == REQ_IN_BOUND_NO_GET) {
                     val jArray = JSONObject.parseArray(response.data, DocInfo::class.java)

@@ -46,7 +46,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/bg_shape_et_white_5dp"
-                    android:hint="请输入"
+                    android:hint="请扫描"
+                    android:enabled="false"
                     android:maxLength="50"
                     android:padding="10dp"
                     android:textColor="@color/black_333333"
@@ -77,14 +78,14 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/bg_shape_et_white_5dp"
-                    android:hint="请输入"
+                    android:hint="请选择"
                     android:maxLength="50"
                     android:padding="10dp"
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
                     app:layout_constraintLeft_toLeftOf="@+id/cet_shipment_instruction"
                     app:layout_constraintLeft_toRightOf="@+id/tv_denso"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/stv_query"
                     app:layout_constraintTop_toBottomOf="@+id/tv_shipment_instruction"
                     tools:text="" />
 
@@ -95,8 +96,23 @@
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/ic_down_gray"
                     app:layout_constraintBottom_toBottomOf="@+id/cet_denso"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/stv_query"
                     app:layout_constraintTop_toTopOf="@+id/cet_denso" />
+
+                <com.coorchice.library.SuperTextView
+                    android:id="@+id/stv_query"
+                    android:layout_width="60dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:text="查询"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cet_denso"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/cet_denso"
+                    app:stv_corner="5dp"
+                    app:stv_solid="@color/main_color" />
 
                 <com.bin.david.form.core.SmartTable
                     android:id="@+id/table_light_release"

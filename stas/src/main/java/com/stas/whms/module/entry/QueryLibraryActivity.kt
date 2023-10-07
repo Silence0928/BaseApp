@@ -32,6 +32,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
     private val REQ_SCANNER_SAVE = 3
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
+    private var mProductEnd: GoodsInfo? = null
 
     override fun initView() {
         title = "在库查询"
@@ -42,7 +43,11 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         // 查询
         mDataBinding.stvQueryStorageCollection.setOnClickListener {
             if (!isFastClick()) {
-                getData(REQ_SCANNER_GET_2)
+                if (mDataBinding.cetMadeFinishedTag.text.toString().isEmpty()) {
+                    ToastUtils.show("请先扫描制造完了标签")
+                    return@setOnClickListener
+                }
+                getData(null, REQ_SCANNER_GET_2)
             }
         }
     }
@@ -60,33 +65,37 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
-        getData(REQ_SCANNER_GET)
+        getData(result?.data, REQ_SCANNER_GET)
     }
 
     /**
      * type=1 查询单号  =2查询入库数据
      */
-    private fun getData(type: Int) {
+    private fun getData(result: String?, type: Int) {
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.DocNo = mDataBinding.cetForeworkNumber.text.toString()
         req.FromProCode = mDataBinding.cetRotaryDesignation.text.toString()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "3"
+        req.ProductEnd = mProductEnd
         req.QrCode =
             if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
             else null
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.queryLibrariesData(JSON.toJSONString(req))
-            handleWebServiceResult(result, type)
+            val response = StasHttpRequestUtil.queryLibrariesData(JSON.toJSONString(req))
+            handleWebServiceResult(response, type)
         }.start()
     }
 
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
+            mProductEnd =
+                JSON.parseObject(response?.obj.toString(), GoodsInfo::class.java)
+            mDataBinding.cetMadeFinishedTag.setText(mProductEnd?.PartsNo)
+        } else if (fromSource == REQ_SCANNER_GET_2) {
             if (response?.data != null) {
                 val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                 var i = 1

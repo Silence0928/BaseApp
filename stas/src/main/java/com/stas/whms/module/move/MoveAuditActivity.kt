@@ -10,7 +10,6 @@ import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.table.TableData
-import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
@@ -19,16 +18,13 @@ import com.lib_common.entity.ScanResult
 import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
-import com.lib_common.view.layout.dialog.BottomDialog
 import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
 import com.stas.whms.bean.DocInfo
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.InBoundAuditRequestInfo
-import com.stas.whms.bean.ReasonInfo
 import com.stas.whms.bean.SaveInBoundAuditReqInfo
-import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityMoveAuditBinding
 import com.stas.whms.utils.RouteJumpUtil
@@ -37,17 +33,18 @@ import com.stas.whms.utils.StasHttpRequestUtil
 @Route(path = RoutePathConfig.ROUTE_MOVE_AUDIT)
 class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewModel>() {
 
-    private val items = listOf<String>("单号1", "单号2", "单号3", "单号4")
-    private val REQ_IN_BOUND_GET = 1001 // 查询移库单号
-    private val REQ_IN_BOUND_NO_GET = 1002 // 查询移库数据
-    private val REQ_IN_BOUND_SAVE = 1003 // 保存
+    private val REQ_IN_BOUND_NO_GET = 1001 // 查询移库单号
+    private val REQ_IN_BOUND_GET_END = 1002 // 制造完了标签
+    private val REQ_IN_BOUND_GET = 1003 // 查询移库数据
+    private val REQ_IN_BOUND_SAVE = 1004 // 保存
     private var mOrderNoList = arrayListOf<String>()
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
+    private var mProductEnd: GoodsInfo? = null
     override fun initView() {
         title = "移库审核"
         initDataTable()
-        getData(REQ_IN_BOUND_NO_GET)
+        getData(null, REQ_IN_BOUND_NO_GET)
     }
 
     override fun onViewEvent() {
@@ -61,18 +58,32 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                 .setOnConfirmSelectListener { position: Int, name: String? ->
                     mDataBinding.cetMoveNo.text = name
                     if (mDataBinding.cetMadeFinishedTag.text.toString().isNotEmpty()) {
-                        getData(REQ_IN_BOUND_GET)
+                        getData(null, REQ_IN_BOUND_GET)
                     }
                 }
                 .setCurrentItem(if (mOrderNoList.size > 0) mOrderNoList.indexOf(mDataBinding.cetMoveNo.text.toString()) else 0)
                 .show()
         }
-        mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
+        mDataBinding.cetRemark.addTextChangedListener(object : SimpleTextWatcher() {
             override fun afterTextChanged(editable: Editable?) {
                 super.afterTextChanged(editable)
                 "${editable?.length}/100".also { mDataBinding.tvLimit.text = it }
             }
         })
+        // 查询
+        mDataBinding.stvQuery.setOnClickListener {
+            if (!isFastClick()) {
+                if (mDataBinding.cetMadeFinishedTag.text.toString().isEmpty()) {
+                    ToastUtils.show("请扫描制造完了标签")
+                    return@setOnClickListener
+                }
+                if (mDataBinding.cetMoveNo.text.toString().isEmpty()) {
+                    ToastUtils.show("请选择移库单号")
+                    return@setOnClickListener
+                }
+                getData(null, REQ_IN_BOUND_GET)
+            }
+        }
         // 保存
         mDataBinding.stvSaveMoveCollection.setOnClickListener {
             if (!isFastClick()) {
@@ -98,33 +109,40 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        mDataBinding.cetMadeFinishedTag.setText(result?.data)
-        if (result?.data?.isNotEmpty() == true && mDataBinding.cetMoveNo.text.toString().isNotEmpty()) {
-            getData(REQ_IN_BOUND_GET)
+        if (result?.data?.isNotEmpty() == true) {
+            getData(result?.data, REQ_IN_BOUND_GET_END)
         }
     }
 
     /**
      * type=1 查询单号  =2查询移库数据
      */
-    private fun getData(type: Int) {
+    private fun getData(result: String?, type: Int) {
         val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
-        req.DocNo = if (type == REQ_IN_BOUND_GET) mDataBinding.cetMoveNo.text.toString() else null
-        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "1" else "2"
-        req.QrCode = if (type == REQ_IN_BOUND_GET)
+        req.DocNo = mDataBinding.cetMoveNo.text.toString()
+        req.TextID =
+            if (type == REQ_IN_BOUND_NO_GET) "1" else if (type == REQ_IN_BOUND_GET_END) "2" else "3"
+        req.ProductEnd = mProductEnd
+        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         else null
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.queryMoveAuditDataResult(JSON.toJSONString(req))
-            handleWebServiceResult(result, type)
+            val response = StasHttpRequestUtil.queryMoveAuditDataResult(JSON.toJSONString(req))
+            handleWebServiceResult(response, type)
         }.start()
     }
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
-        if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET) {
+        if (fromSource == REQ_IN_BOUND_GET_END) {// 制造完了标签
+            if (response?.obj != null) {
+                mProductEnd =
+                    JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
+                mDataBinding.cetMadeFinishedTag.setText(mProductEnd?.PartsNo)
+            }
+        } else if (fromSource == REQ_IN_BOUND_GET || fromSource == REQ_IN_BOUND_NO_GET) {
             if (response?.data != null) {
                 if (fromSource == REQ_IN_BOUND_NO_GET) {
                     val jArray = JSONObject.parseArray(response.data, DocInfo::class.java)
@@ -235,7 +253,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
 //                            handleTotalNum()
 //                        }.show()
 //                } else {
-                    RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
+                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
 //                }
             }
         // 设置背景和字体颜色
