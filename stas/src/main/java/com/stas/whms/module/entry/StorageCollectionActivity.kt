@@ -80,6 +80,7 @@ class StorageCollectionActivity :
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.QrCode =
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+        showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryScannerResult(JSON.toJSONString(req))
             handleWebServiceResult(response, REQ_SCANNER_GET)
@@ -140,6 +141,7 @@ class StorageCollectionActivity :
             ToastUtils.show("请采集制品箱后，点击保存")
             return
         }
+        showLoading()
         Thread {
             val result = StasHttpRequestUtil.saveInBound(JSON.toJSONString(mDataList))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)

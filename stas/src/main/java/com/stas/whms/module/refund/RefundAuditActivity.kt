@@ -217,6 +217,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
             ToastUtils.show("无待审核的退库单！")
             return
         }
+        showLoading()
         Thread {
             val req = SaveInBoundAuditReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()

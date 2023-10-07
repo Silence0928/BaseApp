@@ -197,6 +197,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             ToastUtils.show("无待审核的入库单！")
             return
         }
+        showLoading()
         Thread {
             val req = SaveInBoundAuditReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()

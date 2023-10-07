@@ -191,6 +191,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
             ToastUtils.show("无待审核的移库单！")
             return
         }
+        showLoading()
         Thread {
             val req = SaveInBoundAuditReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()

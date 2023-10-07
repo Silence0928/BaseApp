@@ -63,6 +63,7 @@ class DocumentDetailActivity :
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.DocNo = documentNo
         req.TextID = "4"
+        showLoading()
         Thread {
             val result = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
             if (result?.errorCode == 200) {

@@ -129,6 +129,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.QrCode = result
+        showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryLightReleaseDataResult(JSON.toJSONString(req))
             handleWebServiceResult(response, type)

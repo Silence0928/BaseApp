@@ -29,7 +29,6 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
 
     private val REQ_SCANNER_GET = 1
     private val REQ_SCANNER_GET_2 = 2
-    private val REQ_SCANNER_SAVE = 3
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mProductEnd: GoodsInfo? = null
@@ -43,10 +42,6 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         // 查询
         mDataBinding.stvQueryStorageCollection.setOnClickListener {
             if (!isFastClick()) {
-                if (mDataBinding.cetMadeFinishedTag.text.toString().isEmpty()) {
-                    ToastUtils.show("请先扫描制造完了标签")
-                    return@setOnClickListener
-                }
                 getData(null, REQ_SCANNER_GET_2)
             }
         }
@@ -77,7 +72,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.DocNo = mDataBinding.cetForeworkNumber.text.toString()
         req.FromProCode = mDataBinding.cetRotaryDesignation.text.toString()
-        req.TextID = if (type == REQ_SCANNER_GET) "1" else "3"
+        req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.ProductEnd = mProductEnd
         req.QrCode =
             if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "

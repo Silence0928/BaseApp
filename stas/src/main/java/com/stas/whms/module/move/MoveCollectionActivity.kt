@@ -81,6 +81,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.QrCode =
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+        showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryMoveDataResult(JSON.toJSONString(req))
             handleWebServiceResult(response, REQ_SCANNER_GET)
@@ -142,6 +143,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
             ToastUtils.show("请采集制品箱后，点击保存")
             return
         }
+        showLoading()
         Thread {
             val req = SaveInBoundAuditReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString()

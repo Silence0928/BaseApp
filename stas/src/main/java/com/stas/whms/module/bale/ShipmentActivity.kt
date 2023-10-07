@@ -95,6 +95,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.QrCode = result
+        showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryShipmentDataResult(JSON.toJSONString(req))
             handleWebServiceResult(response, type)
@@ -111,6 +112,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             ToastUtils.show("请扫描客户看板！")
             return
         }
+        showLoading()
         Thread {
             val req = SaveShipmentPrepareReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()

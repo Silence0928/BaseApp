@@ -45,6 +45,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     override fun initView() {
         title = "出货取消"
         initDataTable()
+        getData(null, REQ_SCANNER_GET_2)
     }
 
     override fun onViewEvent() {
@@ -94,7 +95,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         getData(result?.data!!, REQ_SCANNER_GET)
     }
 
-    private fun getData(result: String, type: Int) {
+    private fun getData(result: String?, type: Int) {
         if (TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
@@ -103,6 +104,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         req.QrCode =
             if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
             else null
+        showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryShipmentCancelDataResult(JSON.toJSONString(req))
             handleWebServiceResult(response, REQ_SCANNER_GET)
@@ -136,6 +138,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             ToastUtils.show("请选择待保存的品番数据")
             return
         }
+        showLoading()
         Thread {
 //            val outPlanList = arrayListOf<ShipmentInfo>()
 //            outPlanList.add(mShipmentIntroduction!!)

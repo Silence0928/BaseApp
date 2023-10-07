@@ -110,6 +110,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
             ToastUtils.show("数量不能为空")
             return
         }
+        showLoading()
         Thread {
             val req = SaveInBoundAuditReqInfo()
             val listData = arrayListOf<GoodsInfo>()
