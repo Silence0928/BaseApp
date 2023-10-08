@@ -31,7 +31,7 @@
 
         <provider
             android:name=".provider.CommonFileProvider"
-            android:authorities="${applicationId}_photo_picker"
+            android:authorities="${applicationId}"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
