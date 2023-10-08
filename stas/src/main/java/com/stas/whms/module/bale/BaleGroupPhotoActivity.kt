@@ -11,7 +11,6 @@ import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.table.TableData
-import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
@@ -22,12 +21,10 @@ import com.lib_common.utils.DateUtils
 import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
-import com.stas.whms.bean.CustomerInfo
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
 import com.stas.whms.bean.ShipmentInfo
-import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityBaleGroupPhotoBinding
 import com.stas.whms.utils.StasHttpRequestUtil
@@ -39,9 +36,10 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     private val REQ_SCANNER_GET_2 = 2
     private val REQ_SCANNER_GET_3 = 3
     private val REQ_SCANNER_SAVE = 4
-    private var mCustomerDataList = arrayListOf<CustomerInfo>()
-    private var mTempDataList = arrayListOf<CustomerInfo>()
-    private var mShipmentIntroduction: CustomerInfo? = null // 出货指示书
+    private var mCustomerDataList = arrayListOf<GoodsInfo>()
+    private var mTempDataList = arrayListOf<GoodsInfo>()
+    private var mOutPlanList = arrayListOf<ShipmentInfo>() // 出货指示书
+    private var mProductEnd: GoodsInfo? = null
 
     override fun initView() {
         title = "捆包照合"
@@ -102,13 +100,10 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         val text1 = mDataBinding.cetShipmentInstruction.text.toString()
         val text2 = mDataBinding.cetProductionSignage.text.toString()
         if (text1.isEmpty()) {
-//            mDataBinding.cetShipmentInstruction.setText(result?.data)
             getData("27300078170Z", REQ_SCANNER_GET)
         } else if (text2.isEmpty()) {
-//            mDataBinding.cetProductionSignage.setText(result?.data)
             getData("DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         ", REQ_SCANNER_GET_2)
         } else {
-//            mDataBinding.cetCustomerBoard.setText(result?.data)
             getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
         }
     }
@@ -119,6 +114,8 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else if (type == REQ_SCANNER_GET_2) "2" else "3"
+        req.OutPlanList = mOutPlanList // 出货指示书
+        req.ProductEnd = mProductEnd
         req.QrCode = result
         showLoading()
         Thread {
@@ -139,12 +136,10 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         }
         showLoading()
         Thread {
-//            val outPlanList = arrayListOf<ShipmentInfo>()
-//            outPlanList.add(mShipmentIntroduction!!)
             val req = SaveShipmentPrepareReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
-            req.CustemerReceipt = mDataBinding.cetShipmentInstruction.text.toString()
-//            req.OutPlanList = outPlanList
+            req.OutPlanList = mOutPlanList
+            req.ProductEnd = mProductEnd
             req.CustomLabelList = mTempDataList
             val result = StasHttpRequestUtil.saveBaleData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
@@ -153,25 +148,28 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
-            if (response?.obj != null) {
-                mShipmentIntroduction = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
-                mDataBinding.cetShipmentInstruction.setText(mShipmentIntroduction?.CustemerReceipt)
+            if (response?.data != null) {
+                val jArray = JSONObject.parseArray(response.data, ShipmentInfo::class.java)
+                mOutPlanList = jArray as ArrayList<ShipmentInfo>
+                if (jArray != null && jArray.size > 0) {
+                    mDataBinding.cetShipmentInstruction.setText(jArray[0].Customer)
+                }
             }
         } else if (fromSource == REQ_SCANNER_GET_2) {
             if (response?.obj != null) { // 生产看板
-                val obj2 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
-                mDataBinding.cetProductionSignage.setText(obj2.TagSerialNo)
+                mProductEnd = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
+                mDataBinding.cetProductionSignage.setText(mProductEnd?.TagSerialNo)
             }
         } else if (fromSource == REQ_SCANNER_GET_3) {
             if (response?.obj != null) { // 客户看板编号
-                val obj3 = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
+                val obj3 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
                 if (obj3 != null) {
                     mDataBinding.cetProductionSignage.setText("")
                     mDataBinding.cetCustomerBoard.setText("")
                     if (isCanSave(obj3)) {
                         mTempDataList.add(obj3)
                         obj3.idNum = mTempDataList.size
-                        val array2 = arrayListOf<CustomerInfo>()
+                        val array2 = arrayListOf<GoodsInfo>()
                         array2.add(obj3)
                         mDataBinding.tableBalePhoto.addData(array2, true)
                         handleTotalNum()
@@ -187,7 +185,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         }
     }
 
-    private fun isCanSave(goods: CustomerInfo?): Boolean {
+    private fun isCanSave(goods: GoodsInfo?): Boolean {
         if (mTempDataList.size == 0) return true
         if (goods == null) return false
         var canSave = true
@@ -246,8 +244,8 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         mDataBinding.tableBalePhoto.config.setShowTableTitle(false) // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
-        val tableData: TableData<CustomerInfo> =
-            TableData<CustomerInfo>(
+        val tableData: TableData<GoodsInfo> =
+            TableData<GoodsInfo>(
                 "出货信息",
                 mCustomerDataList,
                 coId,

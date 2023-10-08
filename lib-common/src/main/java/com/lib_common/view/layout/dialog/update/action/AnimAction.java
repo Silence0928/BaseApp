@@ -1,7 +1,7 @@
 package com.lib_common.view.layout.dialog.update.action;
 
 
-import com.huoda.shipper.common.R;
+import com.lib_common.R;
 
 /**
  * author : Android 轮子哥

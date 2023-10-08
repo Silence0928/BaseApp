@@ -148,7 +148,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                     val jArray = JSONObject.parseArray(response.data, DocInfo::class.java)
                     for (a in jArray) {
                         if (a is DocInfo) {
-                            mOrderNoList.add(a.DocNoName!!)
+                            mOrderNoList.add(a.DocNo!!)
                         }
                     }
                     if (mOrderNoList.size > 0) {

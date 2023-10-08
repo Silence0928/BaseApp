@@ -1,12 +1,16 @@
 package com.stas.whms.module.main.fragments
 
+import android.text.TextUtils
 import android.view.View
 import com.alibaba.fastjson.JSON
+import com.lib_common.base.BaseActivity
+import com.lib_common.base.BaseActivity.isFastClick
 import com.lib_common.base.fragment.BaseMvvmFragment
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.constants.MmkvConstants
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.view.layout.dialog.CommonAlertDialog
+import com.lib_common.view.layout.dialog.update.download.UpdateBean
 import com.stas.whms.R
 import com.stas.whms.bean.LoginInfo
 import com.stas.whms.databinding.FragmentMineBinding
@@ -63,26 +67,26 @@ class MineFragment: BaseMvvmFragment<FragmentMineBinding, BaseViewModel>() {
     }
     private fun initVersionView() {
         "版本号：V${AndroidUtil.getAppVersionName(context)}".also { mDataBinding.tvVersion.text = it }
-//        val updateBean = mmkv.decodeParcelable(MmkvConsts.MMKV_UPDATE_INFO, UpdateBean::class.java)
-//        if (updateBean != null && !TextUtils.isEmpty(updateBean.updateVersion)) {
-//            // 比较新旧版本，若大于等于新版本，不做处理
-//            val newVersion = updateBean.updateVersion.replace(".", "").toInt()
-//            val currentVersion = AndroidUtil.getVersionCode(context)
-//            if (currentVersion < newVersion) {
-//                mDataBinding.tvVersionStatus.text = "更新版本"
-//                mDataBinding.tvVersionStatusFlag.visibility = View.VISIBLE
-//                mDataBinding.clVersionUpdate.setOnClickListener {
-//                    if (!isFastClick()) {
-//                        showVersionUpdateDialog(updateBean, true)
-//                    }
-//                }
-//            } else {
-//                mDataBinding.tvVersionStatus.text = "已是最新版本"
-//                mDataBinding.tvVersionStatusFlag.visibility = View.GONE
-//            }
-//        } else {
+        val updateBean = mMMKV.decodeParcelable(MmkvConstants.MMKV_UPDATE_INFO, UpdateBean::class.java)
+        if (updateBean != null && !TextUtils.isEmpty(updateBean.updateVersion)) {
+            // 比较新旧版本，若大于等于新版本，不做处理
+            val newVersion = updateBean.updateVersion.replace(".", "").toInt()
+            val currentVersion = AndroidUtil.getVersionCode(context)
+            if (currentVersion < newVersion) {
+                mDataBinding.tvVersionStatus.text = "更新版本"
+                mDataBinding.tvVersionStatusFlag.visibility = View.VISIBLE
+                mDataBinding.clVersionUpdate.setOnClickListener {
+                    if (!isFastClick()) {
+                        (activity as BaseActivity).showVersionUpdateDialog(updateBean, true)
+                    }
+                }
+            } else {
+                mDataBinding.tvVersionStatus.text = "已是最新版本"
+                mDataBinding.tvVersionStatusFlag.visibility = View.GONE
+            }
+        } else {
             mDataBinding.tvVersionStatus.text = "已是最新版本"
             mDataBinding.tvVersionStatusFlag.visibility = View.GONE
-//        }
+        }
     }
 }

@@ -1,9 +1,9 @@
 package com.lib_common.view.layout.dialog.update.download;
 
-import static com.yunxiaobao.tms.lib_common.util.download.DownLoadState.DOWN_LOADING;
-import static com.yunxiaobao.tms.lib_common.util.download.DownLoadState.DOWN_LOAD_COMPLETE;
-import static com.yunxiaobao.tms.lib_common.util.download.DownLoadState.DOWN_LOAD_FAILED;
-import static com.yunxiaobao.tms.lib_common.util.download.DownLoadState.START_DOWN_LOAD;
+import static com.lib_common.view.layout.dialog.update.download.DownLoadState.DOWN_LOADING;
+import static com.lib_common.view.layout.dialog.update.download.DownLoadState.DOWN_LOAD_COMPLETE;
+import static com.lib_common.view.layout.dialog.update.download.DownLoadState.DOWN_LOAD_FAILED;
+import static com.lib_common.view.layout.dialog.update.download.DownLoadState.START_DOWN_LOAD;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -26,9 +26,8 @@ import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 
-import com.huoda.shipper.common.R;
-import com.yunxiaobao.tms.lib_common.constants.Comments;
-import com.yunxiaobao.tms.lib_common.util.activitylauncher.ActivityLauncher;
+import com.lib_common.constants.Constants;
+import com.lib_common.view.layout.dialog.update.download.activitylauncher.ActivityLauncher;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -167,7 +166,7 @@ public class DownloadInstaller {
 
         //https://developer.android.com/studio/build/application-id?hl=zh-cn
 //        authority = applicationID + ".provider";
-        authority = Comments.PROVIDER_AUTHORITIES;
+        authority = Constants.PROVIDER_AUTHORITIES;
 
         //前缀要统一 一下 + AppUtils.getAppName(mContext)+"/Download/"
         storagePrefix = context.getExternalCacheDir() + "/";
@@ -237,17 +236,17 @@ public class DownloadInstaller {
                 //后面有时间再完善异常的处理
                 String errMsg;
                 if (e instanceof FileNotFoundException) {
-                    errMsg = getStringFrom(R.string.download_failure_file_not_found);
+                    errMsg = getStringFrom(com.lib_src.R.string.download_failure_file_not_found);
                 } else if (e instanceof ConnectException) {
-                    errMsg = getStringFrom(R.string.download_failure_net_deny);
+                    errMsg = getStringFrom(com.lib_src.R.string.download_failure_net_deny);
                 } else if (e instanceof UnknownHostException) {
-                    errMsg = getStringFrom(R.string.download_failure_net_deny);
+                    errMsg = getStringFrom(com.lib_src.R.string.download_failure_net_deny);
                 } else if (e instanceof UnknownServiceException) {
-                    errMsg = getStringFrom(R.string.download_failure_net_deny);
+                    errMsg = getStringFrom(com.lib_src.R.string.download_failure_net_deny);
                 } else if (e.toString().contains("Permission denied")) {
-                    errMsg = getStringFrom(R.string.download_failure_storage_permission_deny);
+                    errMsg = getStringFrom(com.lib_src.R.string.download_failure_storage_permission_deny);
                 } else {
-                    errMsg = getStringFrom(R.string.apk_update_download_failed);
+                    errMsg = getStringFrom(com.lib_src.R.string.apk_update_download_failed);
                 }
                 notifyError(errMsg);
                 toastError(errMsg);
@@ -268,7 +267,7 @@ public class DownloadInstaller {
             public void onFailure(Call call, IOException e, long totalLength, long downloadLength) {
                 Message message = new Message();
                 message.what = DOWN_LOAD_FAILED;
-                message.obj = getStringFrom(R.string.apk_update_download_failed);
+                message.obj = getStringFrom(com.lib_src.R.string.apk_update_download_failed);
                 mHandler.sendMessage(message);
             }
 
@@ -355,7 +354,7 @@ public class DownloadInstaller {
         public void downLoadFailed(String errMsg) {
             downLoadStatusMap.put(downloadApkUrlMd5, UpdateStatus.DOWNLOAD_ERROR);
             if (downloadProgressCallBack != null) {
-                downloadProgressCallBack.downloadException(new Exception(getStringFrom(R.string.apk_update_download_failed)));
+                downloadProgressCallBack.downloadException(new Exception(getStringFrom(com.lib_src.R.string.apk_update_download_failed)));
             }
         }
     });
@@ -473,13 +472,13 @@ public class DownloadInstaller {
         }
 
         builder = new NotificationCompat.Builder(mContext, downloadApkUrl);
-        builder.setContentTitle(mContext.getResources().getString(R.string.apk_update_tips_title)) //设置通知标题
-                .setSmallIcon(R.drawable.download)
+        builder.setContentTitle(mContext.getResources().getString(com.lib_src.R.string.apk_update_tips_title)) //设置通知标题
+                .setSmallIcon(com.lib_src.R.drawable.download)
                 .setDefaults(Notification.DEFAULT_LIGHTS) //设置通知的提醒方式： 呼吸灯
                 .setPriority(NotificationCompat.PRIORITY_MAX) //设置通知的优先级：最大
                 .setAutoCancel(true)  //
                 .setOngoing(true)     // 不可以删除
-                .setContentText(mContext.getResources().getString(R.string.apk_update_downloading_progress))
+                .setContentText(mContext.getResources().getString(com.lib_src.R.string.apk_update_downloading_progress))
                 .setChannelId(downloadApkUrlMd5)
                 .setProgress(100, 0, false);
         notification = builder.build();//构建通知对象
@@ -492,7 +491,7 @@ public class DownloadInstaller {
      * @param errorMsg 错误信息
      */
     private void notifyError(String errorMsg) {
-        builder.setContentTitle(mContext.getResources().getString(R.string.apk_update_tips_error_title));
+        builder.setContentTitle(mContext.getResources().getString(com.lib_src.R.string.apk_update_tips_error_title));
         builder.setContentText(errorMsg);
         notification = builder.build();
         notificationManager.notify(downloadApkNotifyId, notification);
@@ -506,7 +505,7 @@ public class DownloadInstaller {
      */
     private void updateNotify(int progress) {
         builder.setProgress(100, progress, false);
-        builder.setContentText(mContext.getResources().getString(R.string.apk_update_downloading_progress) + " 「" + progress + "%」");
+        builder.setContentText(mContext.getResources().getString(com.lib_src.R.string.apk_update_downloading_progress) + " 「" + progress + "%」");
         notification = builder.build();
 
         //点击通知栏到安装界面，可能下载好了，用户没有安装
@@ -520,7 +519,7 @@ public class DownloadInstaller {
                 intent.setDataAndType(Uri.parse("file://" + new File(storageApkPath).toString()), intentType);
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            notification.contentIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+            notification.contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         }
         notificationManager.notify(downloadApkNotifyId, notification);
     }

@@ -137,7 +137,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.DocNo = mDataBinding.cetRefundOrderNo.text.toString()
-        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "1" else if (type == REQ_IN_BOUND_GET_END) "2"  else if (type == REQ_IN_BOUND_REASON_GET) "3" else "4"
+        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "1" else if (type == REQ_IN_BOUND_GET_END) "2"  else if (type == REQ_IN_BOUND_REASON_GET) "4" else "3"
         req.ProductEnd = mProductEnd
         req.QrCode = if (type == REQ_IN_BOUND_GET_END)
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
@@ -162,8 +162,8 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                 if (fromSource == REQ_IN_BOUND_NO_GET) {
                     val jArray = JSONObject.parseArray(response.data, DocInfo::class.java)
                     for (a in jArray) {
-                        if (a is DocInfo) {
-                            mOrderNoList.add(a.DocNoName!!)
+                        if (a is DocInfo && a.DocNo?.isNotEmpty() == true) {
+                            mOrderNoList.add(a.DocNo!!)
                         }
                     }
                     if (mOrderNoList.size > 0) {
@@ -173,7 +173,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                     val jArray = JSONObject.parseArray(response.data, ReasonInfo::class.java)
                     for (a in jArray) {
                         mReasonInfoList.add(a)
-                        if (a is ReasonInfo) {
+                        if (a is ReasonInfo && a.ReasonName?.isNotEmpty() == true) {
                             mReasonList.add(a.ReasonName!!)
                         }
                     }

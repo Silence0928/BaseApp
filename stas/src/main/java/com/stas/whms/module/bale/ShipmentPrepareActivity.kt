@@ -11,7 +11,6 @@ import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.table.TableData
-import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
@@ -22,16 +21,11 @@ import com.lib_common.utils.DateUtils
 import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
-import com.stas.whms.bean.CustomerInfo
 import com.stas.whms.bean.GoodsInfo
-import com.stas.whms.bean.ReasonInfo
-import com.stas.whms.bean.SaveInBoundAuditReqInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
 import com.stas.whms.bean.ShipmentInfo
-import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
-import com.stas.whms.databinding.ActivityRefundAuditBinding
 import com.stas.whms.databinding.ActivityShipmentPrepareBinding
 import com.stas.whms.utils.StasHttpRequestUtil
 
@@ -42,8 +36,8 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
     private val REQ_SCANNER_GET_3 = 3
     private val REQ_SCANNER_SAVE = 4
     private var mDataList = arrayListOf<ShipmentInfo>()
-    private var mCustomerDataList = arrayListOf<CustomerInfo>()
-    private var mTempDataList = arrayListOf<CustomerInfo>()
+    private var mCustomerDataList = arrayListOf<GoodsInfo>()
+    private var mTempDataList = arrayListOf<GoodsInfo>()
 
     override fun initView() {
         title = "出货准备"
@@ -102,16 +96,14 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
+        // 出货指示书、客户受领书采集一次，客户看板采集多次
         val text1 = mDataBinding.cetStorageDate.text.toString()
         val text2 = mDataBinding.cetCustomerAcceptLetter.text.toString()
         if (text1.isEmpty()) {
-            mDataBinding.cetStorageDate.setText(result?.data)
             getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
         } else if (text2.isEmpty()) {
-            mDataBinding.cetCustomerAcceptLetter.text = result?.data
             getData("27300078170Z", REQ_SCANNER_GET_2)
         } else {
-            mDataBinding.cetCustomerBulletinBoard.text = result?.data
             getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
         }
     }
@@ -164,19 +156,23 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
                     mDataBinding.tableShipment.addData(jArray, true)
                 }
             }
+            if (response?.obj != null) { // 出货指示书
+                val obj1 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
+                mDataBinding.cetStorageDate.text = obj1.CustemerReceipt
+            }
         } else if (fromSource == REQ_SCANNER_GET_2) {
             if (response?.obj != null) { // 客户受领书
-                val obj1 = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
+                val obj1 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
                 mDataBinding.cetCustomerAcceptLetter.text = obj1.CustemerReceipt
             }
         } else if (fromSource == REQ_SCANNER_GET_3) {
             if (response?.obj != null) { // 客户看板编号
-                val obj2 = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
+                val obj2 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
                 if (obj2 != null) {
                     mDataBinding.cetCustomerBulletinBoard.text = obj2.CustomLabel
                     mTempDataList.add(obj2)
                     obj2.idNum = mTempDataList.size
-                    val array2 = arrayListOf<CustomerInfo>()
+                    val array2 = arrayListOf<GoodsInfo>()
                     array2.add(obj2)
                     mDataBinding.tableCustomer.addData(array2, true)
                 }
@@ -280,8 +276,8 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         mDataBinding.tableCustomer.config.setShowTableTitle(false) // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
-        val tableData: TableData<CustomerInfo> =
-            TableData<CustomerInfo>(
+        val tableData: TableData<GoodsInfo> =
+            TableData<GoodsInfo>(
                 "客户信息",
                 mCustomerDataList,
                 coId,

@@ -11,7 +11,6 @@ import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.table.TableData
-import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
@@ -23,11 +22,9 @@ import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.view.layout.dialog.vehicleno.VehicleNoKeyBoardDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
-import com.stas.whms.bean.CustomerInfo
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
-import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityShipmentBinding
 import com.stas.whms.utils.RouteJumpUtil
@@ -38,10 +35,11 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
     private val REQ_SCANNER_GET = 1
     private val REQ_SCANNER_GET_2 = 2
     private val REQ_SCANNER_SAVE = 4
-    private var mCustomerDataList = arrayListOf<CustomerInfo>()
-    private var mTempDataList = arrayListOf<CustomerInfo>()
+    private var mCustomerDataList = arrayListOf<GoodsInfo>()
+    private var mTempDataList = arrayListOf<GoodsInfo>()
     private lateinit var mVehicleNoKeyBoard: VehicleNoKeyBoardDialog // 车牌号键盘
     private var mVehicleNo: String? = null // 车牌号
+    private var mProductEnd: GoodsInfo? = null
 
     override fun initView() {
         title = "出货"
@@ -130,6 +128,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.QrCode = result
+        req.ProductEnd = mProductEnd
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryShipmentDataResult(JSON.toJSONString(req))
@@ -139,6 +138,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
 
     private fun saveData() {
         val shipmentProInt = mDataBinding.cetShipmentInstruction.text.toString()
+        val trackNo = mDataBinding.cetCarNo.text.toString().trim().replace(" ", "")
         if (shipmentProInt.isEmpty()) {
             ToastUtils.show("请扫描客户受领书！")
             return
@@ -147,12 +147,17 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             ToastUtils.show("请扫描客户看板！")
             return
         }
+        if (trackNo.isEmpty()) {
+            ToastUtils.show("请输入车牌号！")
+            return
+        }
         showLoading()
         Thread {
             val req = SaveShipmentPrepareReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
             req.CustemerReceipt = mDataBinding.cetShipmentInstruction.text.toString()
             req.CustomLabelList = mTempDataList
+            req.TruckNo = mDataBinding.cetCarNo.text.toString().trim().replace(" ", "")
             val result = StasHttpRequestUtil.saveShipmentData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
@@ -161,18 +166,18 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
             if (response?.obj != null) {
-                val obj1 = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
-                mDataBinding.cetShipmentInstruction.setText(obj1?.CustemerReceipt)
+                mProductEnd = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
+                mDataBinding.cetShipmentInstruction.setText(mProductEnd?.CustemerReceipt)
             }
         } else if (fromSource == REQ_SCANNER_GET_2) {
             if (response?.obj != null) { // 客户看板编号
-                val obj3 = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
+                val obj3 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
                 if (obj3 != null) {
                     mDataBinding.cetCustomerBoard.setText("")
                     if (isCanSave(obj3)) {
                         mTempDataList.add(obj3)
                         obj3.idNum = mTempDataList.size
-                        val array2 = arrayListOf<CustomerInfo>()
+                        val array2 = arrayListOf<GoodsInfo>()
                         array2.add(obj3)
                         mDataBinding.tableCustomer.addData(array2, true)
                         handleTotalNum()
@@ -187,7 +192,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         }
     }
 
-    private fun isCanSave(goods: CustomerInfo?): Boolean {
+    private fun isCanSave(goods: GoodsInfo?): Boolean {
         if (mTempDataList.size == 0) return true
         if (goods == null) return false
         var canSave = true
@@ -241,8 +246,8 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         mDataBinding.tableCustomer.config.setShowTableTitle(false) // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
-        val tableData: TableData<CustomerInfo> =
-            TableData<CustomerInfo>(
+        val tableData: TableData<GoodsInfo> =
+            TableData<GoodsInfo>(
                 "出货信息",
                 mCustomerDataList,
                 coId,

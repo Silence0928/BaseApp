@@ -40,6 +40,10 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, BaseViewModel>() {
      */
     private var mBackKeyPressedTimes: Long = 0
 
+    override fun isCheckAppUpdate(): Boolean {
+        return true
+    }
+
     override fun initView() {
         title = "首页"
         mActionBar.leftView.visibility = View.INVISIBLE

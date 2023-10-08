@@ -16,5 +16,12 @@ class GoodsInfo : Serializable {
     var CreateBy: String? = null // 入库人
     var Status: String? = null // 状态
     var Remark: String? = null // 备注
+    var CustemerReceipt: String? = null // 客户受领书
+    var CustomLabel: String? = null // 客户看板编号
+    var QtySum: String? = null // 总数量
+    var checked = false // 是否选中
+    var SingleBoxSum: String? = null // 单箱数量
+    var Num: String? = null // 数量
+    var Qty: String? = null // 箱内数量
     var del = "删除"
 }

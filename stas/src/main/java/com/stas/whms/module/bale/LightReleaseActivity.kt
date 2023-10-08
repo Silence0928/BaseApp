@@ -13,7 +13,6 @@ import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.format.draw.ImageResDrawFormat
 import com.bin.david.form.data.table.TableData
-import com.bin.david.form.data.table.TableData.OnRowClickListener
 import com.bin.david.form.utils.DensityUtils
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
@@ -26,14 +25,11 @@ import com.lib_common.utils.DateUtils
 import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
-import com.stas.whms.bean.CustomerInfo
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
-import com.stas.whms.bean.UserInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityLightReleaseBinding
-import com.stas.whms.utils.RouteJumpUtil
 import com.stas.whms.utils.StasHttpRequestUtil
 
 
@@ -43,9 +39,9 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     private val REQ_SCANNER_GET_2 = 2
     private val REQ_SCANNER_GET_3 = 3
     private val REQ_SCANNER_SAVE = 4
-    private var mCustomerDataList = arrayListOf<CustomerInfo>()
-    private var mTempDataList = arrayListOf<CustomerInfo>()
-    private var mShipmentIntroduction: CustomerInfo? = null // 出货指示书
+    private var mCustomerDataList = arrayListOf<GoodsInfo>()
+    private var mTempDataList = arrayListOf<GoodsInfo>()
+    private var mShipmentIntroduction: GoodsInfo? = null // 出货指示书
     private var mPartsNoList = arrayListOf<String>() // 电装品番
 
     override fun initView() {
@@ -136,8 +132,8 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         }.start()
     }
 
-    private fun getCheckedData(): List<CustomerInfo> {
-        val listData = arrayListOf<CustomerInfo>()
+    private fun getCheckedData(): List<GoodsInfo> {
+        val listData = arrayListOf<GoodsInfo>()
         if (mTempDataList.size > 0) {
             for (i in mTempDataList) {
                 if (i.checked) {
@@ -178,7 +174,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         if (fromSource == REQ_SCANNER_GET) {
             mDataBinding.cetDenso.text = ""
             if (response?.obj != null) {
-                mShipmentIntroduction = JSONObject.parseObject(response.obj, CustomerInfo::class.java)
+                mShipmentIntroduction = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
                 mDataBinding.cetShipmentInstruction.setText(mShipmentIntroduction?.CustemerReceipt)
             }
             if (mTempDataList.size > 0) {
@@ -193,9 +189,9 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 mDataBinding.tableLightRelease.notifyDataChanged()
             }
             if (response?.data != null) {
-                val obj3 = JSONObject.parseArray(response.data, CustomerInfo::class.java)
+                val obj3 = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                 if (obj3 != null) {
-                    mTempDataList = obj3 as ArrayList<CustomerInfo>
+                    mTempDataList = obj3 as ArrayList<GoodsInfo>
                     mDataBinding.tableLightRelease.addData(obj3, true)
                     handleTotalNum()
                     handlePlanTotalNum()
@@ -262,8 +258,8 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         mDataBinding.tableLightRelease.config.setShowTableTitle(false) // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
-        val tableData: TableData<CustomerInfo> =
-            TableData<CustomerInfo>(
+        val tableData: TableData<GoodsInfo> =
+            TableData<GoodsInfo>(
                 "出货信息",
                 mCustomerDataList,
                 coChecked,

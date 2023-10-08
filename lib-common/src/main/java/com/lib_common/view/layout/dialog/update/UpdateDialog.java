@@ -245,6 +245,7 @@ public class UpdateDialog {
                 updateClick.onDismiss();
             } else if (v == mUpdateView) {
                 if (!forceUpdate) {
+                    Constants.isShowUpdateDialog = false;
                     updateClick.onClickUpDate();
                     dismiss();
                     return;

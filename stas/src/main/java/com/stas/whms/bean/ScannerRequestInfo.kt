@@ -13,4 +13,5 @@ open class ScannerRequestInfo: Serializable {
     var TagSerialNo: String? = null // 回转番号
     var PartsNo: String? = null // 电装品番
     var ProductEnd: GoodsInfo? = null // 制造完了标签实体类
+    var OutPlanList: List<ShipmentInfo>? = null // 出货指示书
 }
