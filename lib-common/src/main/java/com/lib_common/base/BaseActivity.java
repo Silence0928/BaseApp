@@ -6,8 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,21 +20,39 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.R;
 import com.lib_common.base.mvvm.BaseMvvmActivity;
+import com.lib_common.constants.Constants;
+import com.lib_common.constants.MmkvConstants;
+import com.lib_common.dialog.CommonAlertDialog;
 import com.lib_common.dialog.LoadingDialog;
 import com.lib_common.entity.ScanResult;
+import com.lib_common.utils.AndroidUtil;
 import com.lib_common.view.layout.ActionBar;
 import com.lib_common.view.layout.dialog.ErrorDialog;
+import com.lib_common.view.layout.dialog.update.BaseDialog;
+import com.lib_common.view.layout.dialog.update.UpdateDialog;
+import com.lib_common.view.layout.dialog.update.download.AppUtils;
+import com.lib_common.view.layout.dialog.update.download.DownloadInstaller;
+import com.lib_common.view.layout.dialog.update.download.DownloadProgressCallBack;
+import com.lib_common.view.layout.dialog.update.download.UpdateBean;
+import com.lib_common.webservice.SoapClientUtil;
+import com.lib_common.webservice.api.WebApi;
+import com.lib_common.webservice.api.WebMethodApi;
 import com.lib_common.webservice.response.WebServiceResponse;
 import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -52,9 +72,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     BroadcastReceiver scanReceiver;
     private static final int MIN_DELAY_TIME = 1000;  // 两次点击间隔不能少于500ms
     private static long lastClickTime;
+    private static long lastCheckAPPUpdateTime; // 记录上次请求升级接口的时间
+    private static final int APP_CHECK_UPDATE_DELAY_TIME = 3000;  // 请求升级接口间隔时间
+    private BaseDialog updateDialog; // 升级弹窗
 
     /**
      * 避免快速点击
+     *
      * @return
      */
     public static boolean isFastClick() {
@@ -92,6 +116,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             registerBroadcast();
         }
         mMMKV = MMKV.defaultMMKV();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isCheckAppUpdate()) {
+            initAPPCheckUpdate();
+        }
     }
 
     /**
@@ -356,6 +388,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * WebService结果处理，含异常错误处理
+     *
      * @param response
      * @param fromSource
      */
@@ -387,9 +420,200 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 处理WebService成功回调
+     *
      * @param response
      * @param fromSource
      */
     protected void handleWebServiceSuccess(WebServiceResponse response, int fromSource) {
+    }
+
+    /**
+     * 是否检测APP升级，默认检测
+     *
+     * @return
+     */
+    protected boolean isCheckAppUpdate() {
+        return false;
+    }
+
+    /**
+     * 升级弹窗关闭
+     */
+    protected void dismissUpdateDialog() {
+    }
+
+    /**
+     * APP升级
+     */
+    public void initAPPCheckUpdate() {
+        if (Constants.isNotificationBack && !TextUtils.isEmpty(Constants.appUpdateUrl)) {
+            Constants.isNotificationBack = false;
+            showInstall(Constants.appUpdateUrl);
+            return;
+        }
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - lastCheckAPPUpdateTime) >= APP_CHECK_UPDATE_DELAY_TIME) {
+            // 满足时间，获取APP版本升级信息
+            lastCheckAPPUpdateTime = currentTime;
+            if (updateDialog != null && updateDialog.isShowing()) {
+                return;
+            }
+            getAPPVersionInfo();
+        }
+    }
+
+    private void getAPPVersionInfo() {
+        Map<String, String> req = new HashMap<>();
+        req.put("versionId", AndroidUtil.getAppVersionName(this));
+        WebServiceResponse response = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.scannerUrl, WebMethodApi.scannerMethod);
+        if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
+            UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);
+            mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
+            checkVersion(res);
+        } else {
+            dismissUpdateDialog();
+        }
+    }
+
+    /**
+     * 新版本检测
+     *
+     * @param updateBean
+     */
+    private void checkVersion(UpdateBean updateBean) {
+        showVersionUpdateDialog(updateBean, false);
+    }
+
+    protected void showVersionUpdateDialog(UpdateBean updateBean, boolean isUpdateVersion) {
+        if (updateBean == null || TextUtils.isEmpty(updateBean.getForceUpdate())) {
+            dismissUpdateDialog();
+            return;
+        }
+        String updateVersion = "";
+        if (isUpdateVersion) {
+            // 系统管理-检测新版本用
+            updateVersion = updateBean.getUpdateVersion();
+            updateBean.setForceUpdate("1");
+        } else {
+            updateVersion = updateBean.getNewVersion();
+        }
+        if (!TextUtils.isEmpty(updateVersion)) {
+            // 比较新旧版本，若大于等于新版本，不做处理
+            int newVersion = Integer.parseInt(updateVersion.replace(".", ""));
+            int currentVersion = AppUtils.getVersionCode(this);
+            if (currentVersion >= newVersion) {
+                dismissUpdateDialog();
+                return;
+            }
+        }
+        switch (updateBean.getForceUpdate()) {
+            // 1：普通更新 2：强制更新
+            case "1":
+                if (!Constants.isShowUpdateDialog && !isUpdateVersion) {
+                    dismissUpdateDialog();
+                    return;
+                }
+                updateDialog = new UpdateDialog.Builder(this)
+                        // 版本名
+                        .setVersionName("运销宝企业APP已升级至" + updateVersion + ":")
+                        .setNewVersion(updateVersion)
+                        // 是否强制更新
+                        .setForceUpdate(false)
+                        // 更新日志
+                        .setUpdateLog(updateBean.getUpdateDesc())
+                        // 下载 url
+                        .setDownloadUrl(updateBean.getUpdateLink())
+                        .setClickUpDate(new UpdateDialog.Builder.updateClick() {
+                            @Override
+                            public void onClickUpDate() {
+                                dismissUpdateDialog();
+                                Constants.appUpdateUrl = updateBean.getUpdateLink();
+                                showInstall(Constants.appUpdateUrl);
+                            }
+
+                            @Override
+                            public void onDismiss() {
+                                dismissUpdateDialog();
+                            }
+                        })
+                        .show();
+                break;
+            case "2":
+                updateDialog = new UpdateDialog.Builder(this)
+                        // 版本名
+                        .setVersionName("运销宝企业APP已升级至" + updateVersion + ":")
+                        .setNewVersion(updateVersion)
+                        // 是否强制更新
+                        .setForceUpdate(true)
+                        // 更新日志
+                        .setUpdateLog(updateBean.getUpdateDesc())
+                        // 下载 url
+                        .setDownloadUrl(updateBean.getUpdateLink())
+                        .show();
+                break;
+            default:
+                dismissUpdateDialog();
+                break;
+        }
+
+    }
+
+    private void showInstall(String url) {
+        boolean Jurisdiction = NotificationManagerCompat.from(this).areNotificationsEnabled();
+        if (!Jurisdiction) {
+            new CommonAlertDialog(this).setTitle("通知设置")
+                    .setMessage("是否打开通知栏提示获得更好的下载体验?")
+                    .setCancelable(false)
+                    .setCancelText("暂不开启")
+                    .setOnCancelClickListener(s -> {
+                        downLoad(url);
+                    })
+                    .setConfirmText("立即设置")
+                    .setOnConfirmClickListener(s -> {
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                            Constants.isNotificationBack = true;
+                            Intent intent = new Intent();
+                            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                            intent.putExtra("app_package", this.getPackageName());
+                            intent.putExtra("app_uid", this.getApplicationInfo().uid);
+//                            startActivityForResult(intent, ACTIVITY_RESULT_NOTI);
+                            startActivity(intent);
+                        } else {
+                            Intent localIntent = new Intent();
+                            localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                            localIntent.setData(Uri.fromParts("package", this.getPackageName(), null));
+//                            startActivityForResult(localIntent, ACTIVITY_RESULT_NOTI);
+                            startActivity(localIntent);
+                            Constants.isNotificationBack = true;
+                        }
+                    }).show();
+        } else {
+            downLoad(url);
+        }
+    }
+
+    private void downLoad(String url) {
+        //一般的弹出对话框提示升级
+        //如果是企业内部应用升级，肯定是要这个权限; 其他情况不要太流氓，TOAST 提示
+        new DownloadInstaller(this, url, true, new DownloadProgressCallBack() {
+            @Override
+            public void downloadProgress(int progress) {
+            }
+
+            @Override
+            public void downloadException(Exception e) {
+            }
+
+            @Override
+            public void downloading() {
+                ToastUtils.showShort("正在下载App");
+            }
+
+
+            @Override
+            public void onInstallStart() {
+            }
+        }).start(this);
     }
 }

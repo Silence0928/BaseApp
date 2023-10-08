@@ -71,6 +71,11 @@ public class CommonAlertDialog {
         return this;
     }
 
+    public CommonAlertDialog setCancelable(boolean cancel) {
+        mDialog.setCancelable(cancel);
+        return this;
+    }
+
     /**
      * 设置富文本消息
      */

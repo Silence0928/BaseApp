@@ -38,4 +38,8 @@ public class MmkvConstants {
      * 请求服务代码地址
      */
     public static final String MMKV_SERVICE_URL = "service_url";
+    /**
+     * 升级信息
+     */
+    public static final String MMKV_UPDATE_INFO = "update_info";
 }
