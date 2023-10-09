@@ -118,6 +118,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
      * type=1 查询单号  =2查询移库数据
      */
     private fun getData(result: String?, type: Int) {
+        if (type == REQ_IN_BOUND_GET_END && result?.isEmpty() == true) return
         val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()

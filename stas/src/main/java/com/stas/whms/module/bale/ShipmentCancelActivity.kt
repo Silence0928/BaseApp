@@ -27,6 +27,7 @@ import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.ReasonInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
+import com.stas.whms.bean.ShipmentInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityShipmentCancelBinding
 import com.stas.whms.utils.StasHttpRequestUtil
@@ -37,15 +38,16 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     private val REQ_SCANNER_GET = 1
     private val REQ_SCANNER_GET_2 = 2
     private val REQ_SCANNER_SAVE = 3
-    private var mDataList = arrayListOf<GoodsInfo>()
-    private var mTempDataList = arrayListOf<GoodsInfo>()
+    private var mDataList = arrayListOf<ShipmentInfo>()
+    private var mTempDataList = arrayListOf<ShipmentInfo>()
     private var mReasonDataList = arrayListOf<ReasonInfo>()
     private var mReasonStrList = arrayListOf<String>()
 
     override fun initView() {
         title = "出货取消"
         initDataTable()
-        getData(null, REQ_SCANNER_GET_2)
+        getData("11", REQ_SCANNER_GET)
+        getData("11", REQ_SCANNER_GET_2)
     }
 
     override fun onViewEvent() {
@@ -96,23 +98,23 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     }
 
     private fun getData(result: String?, type: Int) {
-        if (TextUtils.isEmpty(result)) return
+        if (type == REQ_SCANNER_GET && TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.QrCode =
-            if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+            if (type == REQ_SCANNER_GET) "08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576"
             else null
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryShipmentCancelDataResult(JSON.toJSONString(req))
-            handleWebServiceResult(response, REQ_SCANNER_GET)
+            handleWebServiceResult(response, type)
         }.start()
     }
 
-    private fun getCheckedData(): List<GoodsInfo> {
-        val listData = arrayListOf<GoodsInfo>()
+    private fun getCheckedData(): List<ShipmentInfo> {
+        val listData = arrayListOf<ShipmentInfo>()
         if (mTempDataList.size > 0) {
             for (i in mTempDataList) {
                 if (i.checked) {
@@ -146,7 +148,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
             req.CustemerReceipt = mDataBinding.cetRefundInstruction.text.toString()
 //            req.OutPlanList = outPlanList
-            req.CustomLabelList = mTempDataList
+            req.OutPlanList = mTempDataList
             val result = StasHttpRequestUtil.saveShipmentCancelData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
@@ -154,11 +156,23 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
 
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
+            if (mTempDataList.size > 0) {
+                mTempDataList.clear()
+                mDataList.clear()
+                mDataBinding.tableShipmentCancel.notifyDataChanged()
+                mDataBinding.cetRefundInstruction.setText("")
+            }
             if (response?.data != null) {
-                val obj3 = JSONObject.parseArray(response.data, GoodsInfo::class.java)
-                if (obj3 != null) {
-                    mTempDataList = obj3 as ArrayList<GoodsInfo>
-                    mDataBinding.tableShipmentCancel.addData(obj3, true)
+                val obj3 = JSONObject.parseArray(response.data, ShipmentInfo::class.java)
+                if (obj3 != null && obj3.size > 0) {
+                    mTempDataList = obj3 as ArrayList<ShipmentInfo>
+                    var i = 1
+                     for (t in obj3) {
+                        t.idNum = i
+                        i ++
+                    }
+                    mDataBinding.tableShipmentCancel.addData(obj3, false)
+                    mDataBinding.cetRefundInstruction.setText(mTempDataList[0]?.PartsNo)
                 }
             }
         } else if (fromSource == REQ_SCANNER_GET_2) {
@@ -171,7 +185,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                             mReasonStrList.add(a.ReasonName!!)
                         }
                     }
-                    mDataBinding.cetRefundReason.text = mReasonDataList[0].ReasonName
+                    mDataBinding.cetRefundReason.text = mReasonStrList[0]
                 }
             }
         } else {
@@ -198,10 +212,9 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             })
         coChecked.isFixed = true
         val coPartsNo = Column<String>("电装品番", "PartsNo")
-        val coCustomLabel = Column<String>("客户编号", "CustomLabel")
+        val coCustomLabel = Column<String>("客户看板编号", "Customer")
         val coNum = Column<String>("数量", "Num")
-        val coBoxSum = Column<String>("箱数", "BoxSum")
-        val coSingleBoxNum = Column<String>("单箱数量", "SingleBoxNum")
+        val coBoxSum = Column<String>("已采集数量", "ActualNum")
         //endregion
         mDataBinding.tableShipmentCancel.setZoom(true, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableShipmentCancel.config.setShowXSequence(false) //去掉表格顶部字母
@@ -209,8 +222,8 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         mDataBinding.tableShipmentCancel.config.setShowTableTitle(false) // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
-        val tableData: TableData<GoodsInfo> =
-            TableData<GoodsInfo>(
+        val tableData: TableData<ShipmentInfo> =
+            TableData<ShipmentInfo>(
                 "出货信息",
                 mDataList,
                 coChecked,
@@ -218,8 +231,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                 coPartsNo,
                 coCustomLabel,
                 coNum,
-                coBoxSum,
-                coSingleBoxNum
+                coBoxSum
             )
         //注意：绑定数据的方法setData换成了setTableData。不再是List对象而是TableData对象
         mDataBinding.tableShipmentCancel.setTableData(tableData)
@@ -253,9 +265,14 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             CommonAlertDialog(this).builder().setTitle("提示")
                 .setMsg("取消将清空已采集数据，是否确认？")
                 .setNegativeButton("取消", null)
-                .setPositiveButton("确认") { finish() }.show()
+                .setPositiveButton("确认") {
+                    finish()
+                }.show()
         } else {
             finish()
         }
+    }
+
+    private fun clearResource() {
     }
 }

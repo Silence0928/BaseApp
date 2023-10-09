@@ -34,13 +34,13 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
 
     override fun initView() {
         title = "在库调整"
-        getData(REQ_SCANNER_GET_REASON)
+        getData(null, REQ_SCANNER_GET_REASON)
     }
 
     override fun onViewEvent() {
         mDataBinding.cetMadeFinishedTag.setOnFocusChangeListener { view, b ->
             if (!b) {
-                getData(REQ_SCANNER_GET)
+//                getData(REQ_SCANNER_GET)
             }
         }
         // 退库原因
@@ -83,10 +83,11 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        getData(REQ_SCANNER_GET)
+        getData(result?.data, REQ_SCANNER_GET)
     }
 
-    private fun getData(type: Int) {
+    private fun getData(res: String?, type: Int) {
+        if (type == REQ_SCANNER_GET && res?.isEmpty() == true) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()

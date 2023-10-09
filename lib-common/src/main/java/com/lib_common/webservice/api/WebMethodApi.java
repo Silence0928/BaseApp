@@ -47,11 +47,11 @@ public class WebMethodApi {
     // 出货保存
     public static final String saveShipmentDataMethod = "Outbind_Save";
     // 照合解除查询
-    public static final String queryLightReleaseDataMethod = "Relese_Get";
+    public static final String queryLightReleaseDataMethod = "Unbind_Get";
     // 照合解除保存
-    public static final String saveLightReleaseDataMethod = "Relese_Save";
+    public static final String saveLightReleaseDataMethod = "Unbind_Save";
     // 出货取消查询
-    public static final String queryShipmentCancelDataMethod = "Relese_Get";
+    public static final String queryShipmentCancelDataMethod = "Cancel_Get";
     // 出货取消保存
-    public static final String saveShipmentCancelDataMethod = "Relese_Save";
+    public static final String saveShipmentCancelDataMethod = "Cancel_Save";
 }

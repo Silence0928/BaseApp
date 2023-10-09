@@ -15,35 +15,35 @@ public class UpdateBean implements Serializable, Parcelable {
 
 
     /**
-     * newVersion : 0.4.2
-     * forceUpdate : 1
-     * appName : TMSApp
-     * updateLink : http://webapi.i-tms.cn/updateapp/tmsapp/i-tms.apk
-     * lastForceUpdateVer : 0
-     * updateDesc : 1.加入添加合作车辆；\r\n2.优化性能
-     * updateVersion: 1.4.4
+     * NewVersion : 1.4.2
+     * ForceUpdate : 1
+     * AppName : TMSApp
+     * UpdateLink : http://webapi.i-tms.cn/updateapp/tmsapp/i-tms.apk
+     * LastForceUpdateVersion : 1.1.1
+     * UpdateDes : 1.加入添加合作车辆；\r\n2.优化性能
+     * UpdateVersion: 1.4.4
      */
 
-    private String newVersion;
-    private String forceUpdate;
-    private String appName;
-    private String updateLink;
-    private String lastForceUpdateVer;
-    private String updateDesc;
-    private String updateVersion;
+    private String NewVersion; // 最新版本号
+    private String ForceUpdate; // 是否强制升级  0-不升级  1-普通升级  2-强制升级
+    private String AppName; // 应用名称
+    private String UpdateLink; // 更新包下载地址
+    private String LastForceUpdateVersion; // 上次强制升级版本号 该版本号小于等于newVersion
+    private String UpdateDes; // 更新提示信息
+    private String UpdateVersion; // 待升级版本号  该版本号大于等于newVersion
 
     public UpdateBean() {
         super();
     }
 
     protected UpdateBean(Parcel in) {
-        newVersion = in.readString();
-        forceUpdate = in.readString();
-        appName = in.readString();
-        updateLink = in.readString();
-        lastForceUpdateVer = in.readString();
-        updateDesc = in.readString();
-        updateVersion = in.readString();
+        NewVersion = in.readString();
+        ForceUpdate = in.readString();
+        AppName = in.readString();
+        UpdateLink = in.readString();
+        LastForceUpdateVersion = in.readString();
+        UpdateDes = in.readString();
+        UpdateVersion = in.readString();
     }
 
     public static final Creator<UpdateBean> CREATOR = new Creator<UpdateBean>() {
@@ -59,59 +59,59 @@ public class UpdateBean implements Serializable, Parcelable {
     };
 
     public String getUpdateVersion() {
-        return updateVersion;
+        return UpdateVersion;
     }
 
     public void setUpdateVersion(String updateVersion) {
-        this.updateVersion = updateVersion;
+        this.UpdateVersion = updateVersion;
     }
 
     public String getNewVersion() {
-        return newVersion;
+        return NewVersion;
     }
 
     public void setNewVersion(String newVersion) {
-        this.newVersion = newVersion;
+        this.NewVersion = newVersion;
     }
 
     public String getForceUpdate() {
-        return forceUpdate;
+        return ForceUpdate;
     }
 
     public void setForceUpdate(String forceUpdate) {
-        this.forceUpdate = forceUpdate;
+        this.ForceUpdate = forceUpdate;
     }
 
     public String getAppName() {
-        return appName;
+        return AppName;
     }
 
     public void setAppName(String appName) {
-        this.appName = appName;
+        this.AppName = appName;
     }
 
     public String getUpdateLink() {
-        return updateLink;
+        return UpdateLink;
     }
 
     public void setUpdateLink(String updateLink) {
-        this.updateLink = updateLink;
+        this.UpdateLink = updateLink;
     }
 
-    public String getLastForceUpdateVer() {
-        return lastForceUpdateVer;
+    public String getLastForceUpdateVersion() {
+        return LastForceUpdateVersion;
     }
 
-    public void setLastForceUpdateVer(String lastForceUpdateVer) {
-        this.lastForceUpdateVer = lastForceUpdateVer;
+    public void setLastForceUpdateVersion(String lastForceUpdateVersion) {
+        this.LastForceUpdateVersion = lastForceUpdateVersion;
     }
 
-    public String getUpdateDesc() {
-        return updateDesc;
+    public String getUpdateDes() {
+        return UpdateDes;
     }
 
-    public void setUpdateDesc(String updateDesc) {
-        this.updateDesc = updateDesc;
+    public void setUpdateDes(String updateDes) {
+        this.UpdateDes = updateDes;
     }
 
     @Override
@@ -121,12 +121,12 @@ public class UpdateBean implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(newVersion);
-        dest.writeString(forceUpdate);
-        dest.writeString(appName);
-        dest.writeString(updateLink);
-        dest.writeString(lastForceUpdateVer);
-        dest.writeString(updateDesc);
-        dest.writeString(updateVersion);
+        dest.writeString(NewVersion);
+        dest.writeString(ForceUpdate);
+        dest.writeString(AppName);
+        dest.writeString(UpdateLink);
+        dest.writeString(LastForceUpdateVersion);
+        dest.writeString(UpdateDes);
+        dest.writeString(UpdateVersion);
     }
 }

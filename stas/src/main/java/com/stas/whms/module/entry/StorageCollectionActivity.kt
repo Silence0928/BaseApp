@@ -42,7 +42,7 @@ class StorageCollectionActivity :
     override fun onViewEvent() {
         mDataBinding.cetMadeFinishedTag.setOnFocusChangeListener { view, b ->
             if (!b) {
-                getData(mDataBinding.cetMadeFinishedTag.text.toString().trim())
+//                getData(mDataBinding.cetMadeFinishedTag.text.toString().trim())
             }
         }
         // 保存

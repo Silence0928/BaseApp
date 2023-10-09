@@ -1,15 +1,15 @@
 package com.stas.whms
 
-import android.content.Intent
 import android.os.Looper
-import android.os.Process
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import com.lib_common.app.BaseApplication
-import com.stas.whms.module.login.SystemLoginActivity
+import com.lib_common.utils.ActivityStackManager
 import java.util.concurrent.ScheduledThreadPoolExecutor
- class StasApplication: BaseApplication() {
+import kotlin.system.exitProcess
+
+class StasApplication: BaseApplication() {
     private val TAG = "StasApplication"
 
     private val executor = ScheduledThreadPoolExecutor(3)
@@ -51,10 +51,13 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
      * 重启应用
      */
     fun restartApp() {
-        val intent = Intent(applicationContext, SystemLoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        applicationContext.startActivity(intent)
-        Process.killProcess(Process.myPid())
+        ActivityStackManager.getInstance().finishAllActivities()
+        applicationContext.startActivity(
+            applicationContext.packageManager.getLaunchIntentForPackage(
+                applicationContext.packageName
+            )
+        )
+        exitProcess(0)
     }
 
 }

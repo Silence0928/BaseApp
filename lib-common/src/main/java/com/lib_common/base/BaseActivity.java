@@ -23,8 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.R;
@@ -34,7 +32,6 @@ import com.lib_common.constants.MmkvConstants;
 import com.lib_common.dialog.CommonAlertDialog;
 import com.lib_common.dialog.LoadingDialog;
 import com.lib_common.entity.ScanResult;
-import com.lib_common.utils.AndroidUtil;
 import com.lib_common.view.layout.ActionBar;
 import com.lib_common.view.layout.dialog.ErrorDialog;
 import com.lib_common.view.layout.dialog.update.BaseDialog;
@@ -43,16 +40,11 @@ import com.lib_common.view.layout.dialog.update.download.AppUtils;
 import com.lib_common.view.layout.dialog.update.download.DownloadInstaller;
 import com.lib_common.view.layout.dialog.update.download.DownloadProgressCallBack;
 import com.lib_common.view.layout.dialog.update.download.UpdateBean;
-import com.lib_common.webservice.SoapClientUtil;
-import com.lib_common.webservice.api.WebApi;
-import com.lib_common.webservice.api.WebMethodApi;
 import com.lib_common.webservice.response.WebServiceResponse;
 import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -478,7 +470,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         res.setForceUpdate("1");
         res.setNewVersion("1.1.1");
         res.setUpdateVersion("1.1.2");
-        res.setLastForceUpdateVer("1.0.0");
+        res.setLastForceUpdateVersion("1.0.0");
         res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
         mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
         checkVersion(res);
@@ -529,7 +521,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         // 是否强制更新
                         .setForceUpdate(false)
                         // 更新日志
-                        .setUpdateLog(updateBean.getUpdateDesc())
+                        .setUpdateLog(updateBean.getUpdateDes())
                         // 下载 url
                         .setDownloadUrl(updateBean.getUpdateLink())
                         .setClickUpDate(new UpdateDialog.Builder.updateClick() {
@@ -555,7 +547,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         // 是否强制更新
                         .setForceUpdate(true)
                         // 更新日志
-                        .setUpdateLog(updateBean.getUpdateDesc())
+                        .setUpdateLog(updateBean.getUpdateDes())
                         // 下载 url
                         .setDownloadUrl(updateBean.getUpdateLink())
                         .show();

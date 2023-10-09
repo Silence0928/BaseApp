@@ -23,5 +23,6 @@ class GoodsInfo : Serializable {
     var SingleBoxSum: String? = null // 单箱数量
     var Num: String? = null // 数量
     var Qty: String? = null // 箱内数量
+    var ActualNum: String? = null // 已采集的实际数量
     var del = "删除"
 }

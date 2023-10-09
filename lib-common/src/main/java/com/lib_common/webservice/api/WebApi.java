@@ -54,7 +54,7 @@ public class WebApi {
     // 照合解除保存
     public static final String saveLightReleaseUrl = webBaseUrl + WebMethodApi.saveLightReleaseDataMethod;
     // 出货取消查询
-    public static final String queryShipmentCancelDataUrl = webBaseUrl + WebMethodApi.queryLightReleaseDataMethod;
+    public static final String queryShipmentCancelDataUrl = webBaseUrl + WebMethodApi.queryShipmentCancelDataMethod;
     // 出货取消保存
-    public static final String saveShipmentCancelUrl = webBaseUrl + WebMethodApi.saveLightReleaseDataMethod;
+    public static final String saveShipmentCancelUrl = webBaseUrl + WebMethodApi.saveShipmentCancelDataMethod;
 }

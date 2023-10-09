@@ -28,6 +28,7 @@ import com.stas.whms.R
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
+import com.stas.whms.bean.ShipmentInfo
 import com.stas.whms.constants.RoutePathConfig
 import com.stas.whms.databinding.ActivityLightReleaseBinding
 import com.stas.whms.utils.StasHttpRequestUtil
@@ -37,16 +38,16 @@ import com.stas.whms.utils.StasHttpRequestUtil
 class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseViewModel>() {
     private val REQ_SCANNER_GET = 1
     private val REQ_SCANNER_GET_2 = 2
-    private val REQ_SCANNER_GET_3 = 3
-    private val REQ_SCANNER_SAVE = 4
+    private val REQ_SCANNER_SAVE = 3
     private var mCustomerDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
-    private var mShipmentIntroduction: GoodsInfo? = null // 出货指示书
+    private var mOutPlanList = arrayListOf<ShipmentInfo>() // 出货指示书
     private var mPartsNoList = arrayListOf<String>() // 电装品番
 
     override fun initView() {
         title = "照合解除"
         initDataTable()
+        getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
     }
 
     override fun onViewEvent() {
@@ -87,7 +88,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                     ToastUtils.show("请选择电装品番")
                     return@setOnClickListener
                 }
-                getData(null, REQ_SCANNER_GET_3)
+                getData(null, REQ_SCANNER_GET_2)
             }
         }
         // 保存
@@ -119,11 +120,13 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     }
 
     private fun getData(result: String?, type : Int) {
-        if (TextUtils.isEmpty(result)) return
+        if (type == REQ_SCANNER_GET && TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
+        req.OutPlanList = mOutPlanList
+        req.PartsNo = mDataBinding.cetDenso.text.toString()
         req.QrCode = result
         showLoading()
         Thread {
@@ -158,14 +161,11 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
             return
         }
         Thread {
-//            val outPlanList = arrayListOf<ShipmentInfo>()
-//            outPlanList.add(mShipmentIntroduction!!)
             val req = SaveShipmentPrepareReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
-            req.CustemerReceipt = mDataBinding.cetShipmentInstruction.text.toString()
-//            req.OutPlanList = outPlanList
-            req.CustomLabelList = mTempDataList
-            val result = StasHttpRequestUtil.saveBaleData(JSON.toJSONString(req))
+            req.OutPlanList = mOutPlanList
+            req.ProductEndList = mTempDataList
+            val result = StasHttpRequestUtil.saveLightReleaseData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
     }
@@ -173,9 +173,21 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
             mDataBinding.cetDenso.text = ""
-            if (response?.obj != null) {
-                mShipmentIntroduction = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
-                mDataBinding.cetShipmentInstruction.setText(mShipmentIntroduction?.CustemerReceipt)
+            if (response?.data != null) {
+                val arrayJ = JSONObject.parseArray(response.data, ShipmentInfo::class.java)
+                mOutPlanList = arrayJ as ArrayList<ShipmentInfo>
+                mPartsNoList.clear()
+                mDataBinding.cetShipmentInstruction.setText("")
+                mDataBinding.cetDenso.text = ""
+                    if (mOutPlanList.size > 0) {
+                    for (i in mOutPlanList) {
+                        if (i.PartsNo?.isNotEmpty() == true) {
+                            mPartsNoList.add(i.PartsNo!!)
+                        }
+                    }
+                    mDataBinding.cetShipmentInstruction.setText(mOutPlanList[0].Customer)
+                    mDataBinding.cetDenso.text = mPartsNoList[0]
+                }
             }
             if (mTempDataList.size > 0) {
                 mTempDataList.clear()
@@ -192,6 +204,11 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 val obj3 = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                 if (obj3 != null) {
                     mTempDataList = obj3 as ArrayList<GoodsInfo>
+                    var i = 1
+                    for (t in obj3) {
+                        t.idNum = i
+                        i ++
+                    }
                     mDataBinding.tableLightRelease.addData(obj3, true)
                     handleTotalNum()
                     handlePlanTotalNum()
@@ -212,21 +229,21 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     private fun getTotalNum(): String {
         var totalCount = 0
         for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
 
     private fun handlePlanTotalNum() {
-        val totalSize = mTempDataList.size
-        mDataBinding.cetPlanTotalBoxNum.text = totalSize.toString()
+        mDataBinding.cetPlanTotalBoxNum.text = getCheckedData().size.toString()
         mDataBinding.cetPlanTotalNum.text = getPlanTotalNum()
     }
 
     private fun getPlanTotalNum(): String {
         var totalCount = 0
-        for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+        var checkList = getCheckedData()
+        for (g in checkList) {
+            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
@@ -250,7 +267,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         val coPartsNo = Column<String>("电装品番", "PartsNo")
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
         val coCustomLabel = Column<String>("客户看板编号", "CustomLabel")
-        val coBoxSum = Column<String>("数量", "BoxSum")
+        val coBoxSum = Column<String>("数量", "Qty")
         //endregion
         mDataBinding.tableLightRelease.setZoom(true, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableLightRelease.config.setShowXSequence(false) //去掉表格顶部字母
@@ -273,10 +290,14 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         mDataBinding.tableLightRelease.setTableData(tableData)
         mDataBinding.tableLightRelease.tableData
             .setOnRowClickListener { column, o, col, row ->
-                if (col == 0) {
+                if (col == 0 && !isFastClick()) {
                     // 选择
-                    mCustomerDataList[row].checked = !mCustomerDataList[row].checked
-                    mDataBinding.tableLightRelease.notifyDataChanged()
+                    val dataList = mDataBinding.tableLightRelease.tableData.t
+                     if (dataList != null && dataList.size > 0) {
+                        val data = dataList[row] as GoodsInfo
+                        data.checked = !data.checked
+                        mDataBinding.tableLightRelease.notifyDataChanged()
+                    }
                 }
             }
         // 设置背景和字体颜色
