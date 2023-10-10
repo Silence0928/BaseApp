@@ -54,4 +54,6 @@ public class WebMethodApi {
     public static final String queryShipmentCancelDataMethod = "Cancel_Get";
     // 出货取消保存
     public static final String saveShipmentCancelDataMethod = "Cancel_Save";
+    // APP升级
+    public static final String upgradeMethod = "Upgrade";
 }

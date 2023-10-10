@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -23,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.toast.ToastUtils;
 import com.lib_common.R;
@@ -32,6 +35,7 @@ import com.lib_common.constants.MmkvConstants;
 import com.lib_common.dialog.CommonAlertDialog;
 import com.lib_common.dialog.LoadingDialog;
 import com.lib_common.entity.ScanResult;
+import com.lib_common.utils.AndroidUtil;
 import com.lib_common.view.layout.ActionBar;
 import com.lib_common.view.layout.dialog.ErrorDialog;
 import com.lib_common.view.layout.dialog.update.BaseDialog;
@@ -40,11 +44,16 @@ import com.lib_common.view.layout.dialog.update.download.AppUtils;
 import com.lib_common.view.layout.dialog.update.download.DownloadInstaller;
 import com.lib_common.view.layout.dialog.update.download.DownloadProgressCallBack;
 import com.lib_common.view.layout.dialog.update.download.UpdateBean;
+import com.lib_common.webservice.SoapClientUtil;
+import com.lib_common.webservice.api.WebApi;
+import com.lib_common.webservice.api.WebMethodApi;
 import com.lib_common.webservice.response.WebServiceResponse;
 import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -455,25 +464,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void getAPPVersionInfo() {
-//        Map<String, String> req = new HashMap<>();
-//        req.put("versionId", AndroidUtil.getAppVersionName(this));
-//        WebServiceResponse response = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.scannerUrl, WebMethodApi.scannerMethod);
-//        if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
-//            UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);
-//            mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
-//            checkVersion(res);
-//        } else {
-//            dismissUpdateDialog();
-//        }
-        UpdateBean res = new UpdateBean();
-        res.setAppName("仓储管理");
-        res.setForceUpdate("1");
-        res.setNewVersion("1.1.1");
-        res.setUpdateVersion("1.1.2");
-        res.setLastForceUpdateVersion("1.0.0");
-        res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
-        mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
-        checkVersion(res);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                Map<String, String> req = new HashMap<>();
+                req.put("versionId", AndroidUtil.getAppVersionName(getBaseContext()));
+                final WebServiceResponse response = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.upgradeUrl, WebMethodApi.upgradeMethod);
+                runOnUiThread(() -> {
+                    if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
+                        UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);
+                        res.setForceUpdate("1");
+                        res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
+                        mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
+                        checkVersion(res);
+                    } else {
+                        dismissUpdateDialog();
+                    }
+                });
+                Looper.loop();
+            }
+        }).start();
     }
 
     /**

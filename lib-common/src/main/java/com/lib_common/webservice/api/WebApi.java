@@ -57,4 +57,6 @@ public class WebApi {
     public static final String queryShipmentCancelDataUrl = webBaseUrl + WebMethodApi.queryShipmentCancelDataMethod;
     // 出货取消保存
     public static final String saveShipmentCancelUrl = webBaseUrl + WebMethodApi.saveShipmentCancelDataMethod;
+    // 出货取消保存
+    public static final String upgradeUrl = webBaseUrl + WebMethodApi.upgradeMethod;
 }

@@ -15,6 +15,7 @@ import com.bin.david.form.data.format.draw.ImageResDrawFormat
 import com.bin.david.form.data.table.TableData
 import com.bin.david.form.utils.DensityUtils
 import com.hjq.toast.ToastUtils
+import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.dialog.BottomListDialog
@@ -47,7 +48,10 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     override fun initView() {
         title = "照合解除"
         initDataTable()
-        getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
+        getData(
+            "08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576",
+            REQ_SCANNER_GET
+        )
     }
 
     override fun onViewEvent() {
@@ -71,7 +75,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 .show()
         }
         // 备注
-        mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
+        mDataBinding.cetRemark.addTextChangedListener(object : SimpleTextWatcher() {
             override fun afterTextChanged(editable: Editable?) {
                 super.afterTextChanged(editable)
                 "${editable?.length}/100".also { mDataBinding.tvLimit.text = it }
@@ -119,7 +123,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         getData("27300078170Z", REQ_SCANNER_GET)
     }
 
-    private fun getData(result: String?, type : Int) {
+    private fun getData(result: String?, type: Int) {
         if (type == REQ_SCANNER_GET && TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
@@ -146,6 +150,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         }
         return listData
     }
+
     private fun saveData() {
         val shipmentProInt = mDataBinding.cetShipmentInstruction.text.toString()
         if (shipmentProInt.isEmpty()) {
@@ -179,7 +184,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 mPartsNoList.clear()
                 mDataBinding.cetShipmentInstruction.setText("")
                 mDataBinding.cetDenso.text = ""
-                    if (mOutPlanList.size > 0) {
+                if (mOutPlanList.size > 0) {
                     for (i in mOutPlanList) {
                         if (i.PartsNo?.isNotEmpty() == true) {
                             mPartsNoList.add(i.PartsNo!!)
@@ -207,10 +212,9 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                     var i = 1
                     for (t in obj3) {
                         t.idNum = i
-                        i ++
+                        i++
                     }
                     mDataBinding.tableLightRelease.addData(obj3, true)
-                    handleTotalNum()
                     handlePlanTotalNum()
                 }
             }
@@ -221,28 +225,27 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     }
 
     private fun handleTotalNum() {
-        val totalSize = mTempDataList.size
-        mDataBinding.cetTotalBoxNum.text = totalSize.toString()
+        mDataBinding.cetTotalBoxNum.text = getCheckedData().size.toString()
         mDataBinding.cetTotalNum.text = getTotalNum()
     }
 
     private fun getTotalNum(): String {
         var totalCount = 0
-        for (g in mTempDataList) {
+        var checkList = getCheckedData()
+        for (g in checkList) {
             totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
 
     private fun handlePlanTotalNum() {
-        mDataBinding.cetPlanTotalBoxNum.text = getCheckedData().size.toString()
+        mDataBinding.cetPlanTotalBoxNum.text = mTempDataList.size.toString()
         mDataBinding.cetPlanTotalNum.text = getPlanTotalNum()
     }
 
     private fun getPlanTotalNum(): String {
         var totalCount = 0
-        var checkList = getCheckedData()
-        for (g in checkList) {
+        for (g in mTempDataList) {
             totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
@@ -253,16 +256,17 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         val coId = Column<String>("序号", "idNum")
         coId.isFixed = true
         coId.isAutoCount = true
-        val size = DensityUtils.dp2px(this,15f)
-        val coChecked = Column<Boolean>("选择", "checked", object: ImageResDrawFormat<Boolean>(size, size){
-            override fun getContext(): Context {
-                return this@LightReleaseActivity
-            }
+        val size = DensityUtils.dp2px(this, 15f)
+        val coChecked =
+            Column<Boolean>("选择", "checked", object : ImageResDrawFormat<Boolean>(size, size) {
+                override fun getContext(): Context {
+                    return this@LightReleaseActivity
+                }
 
-            override fun getResourceID(t: Boolean, value: String?, position: Int): Int {
-                return if (t) com.lib_src.R.drawable.icon_checked else com.lib_src.R.drawable.icon_unchecked
-            }
-        })
+                override fun getResourceID(t: Boolean, value: String?, position: Int): Int {
+                    return if (t) com.lib_src.R.drawable.icon_checked else com.lib_src.R.drawable.icon_unchecked
+                }
+            })
         coChecked.isFixed = true
         val coPartsNo = Column<String>("电装品番", "PartsNo")
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
@@ -290,14 +294,19 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         mDataBinding.tableLightRelease.setTableData(tableData)
         mDataBinding.tableLightRelease.tableData
             .setOnRowClickListener { column, o, col, row ->
-                if (col == 0 && !isFastClick()) {
-                    // 选择
-                    val dataList = mDataBinding.tableLightRelease.tableData.t
-                     if (dataList != null && dataList.size > 0) {
-                        val data = dataList[row] as GoodsInfo
-                        data.checked = !data.checked
-                        mDataBinding.tableLightRelease.notifyDataChanged()
-                    }
+                if (col == 0 && !column.isParent) {
+                    // 选择,添加延迟是为了避免频繁刷新导致数组越界
+                    showLoading()
+                    BaseApplication.getMainHandler().postDelayed({
+                        val dataList = mDataBinding.tableLightRelease.tableData.t
+                        if (dataList != null && dataList.size > 0) {
+                            val data = dataList[row] as GoodsInfo
+                            data.checked = !data.checked
+                            mDataBinding.tableLightRelease.notifyDataChanged()
+                            handleTotalNum()
+                        }
+                        dismissLoading()
+                    }, 200)
                 }
             }
         // 设置背景和字体颜色

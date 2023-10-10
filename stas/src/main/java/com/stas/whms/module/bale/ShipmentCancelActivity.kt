@@ -14,6 +14,7 @@ import com.bin.david.form.data.format.draw.ImageResDrawFormat
 import com.bin.david.form.data.table.TableData
 import com.bin.david.form.utils.DensityUtils
 import com.hjq.toast.ToastUtils
+import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.dialog.BottomListDialog
@@ -142,12 +143,9 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         }
         showLoading()
         Thread {
-//            val outPlanList = arrayListOf<ShipmentInfo>()
-//            outPlanList.add(mShipmentIntroduction!!)
             val req = SaveShipmentPrepareReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
             req.CustemerReceipt = mDataBinding.cetRefundInstruction.text.toString()
-//            req.OutPlanList = outPlanList
             req.OutPlanList = mTempDataList
             val result = StasHttpRequestUtil.saveShipmentCancelData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
@@ -216,7 +214,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         val coNum = Column<String>("数量", "Num")
         val coBoxSum = Column<String>("已采集数量", "ActualNum")
         //endregion
-        mDataBinding.tableShipmentCancel.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableShipmentCancel.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableShipmentCancel.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableShipmentCancel.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableShipmentCancel.config.setShowTableTitle(false) // 去掉表头
@@ -237,10 +235,18 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         mDataBinding.tableShipmentCancel.setTableData(tableData)
         mDataBinding.tableShipmentCancel.tableData
             .setOnRowClickListener { column, o, col, row ->
-                if (col == 0) {
-                    // 选择
-                    mDataList[row].checked = !mDataList[row].checked
-                    mDataBinding.tableShipmentCancel.notifyDataChanged()
+                if (col == 0 && !column.isParent) {
+                    // 选择,添加延迟是为了避免频繁刷新导致数组越界
+                    showLoading()
+                    BaseApplication.getMainHandler().postDelayed({
+                        val dataList = mDataBinding.tableShipmentCancel.tableData.t
+                        if (dataList != null && dataList.size > 0) {
+                            val data = dataList[row] as ShipmentInfo
+                            data.checked = !data.checked
+                            mDataBinding.tableShipmentCancel.notifyDataChanged()
+                        }
+                        dismissLoading()
+                    }, 200)
                 }
             }
         // 设置背景和字体颜色
