@@ -166,7 +166,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         val coDel = Column<String>("操作", "del")
         //endregion
-        mDataBinding.tableMoveCollection.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableMoveCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableMoveCollection.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableMoveCollection.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableMoveCollection.config.setShowTableTitle(false) // 去掉表头

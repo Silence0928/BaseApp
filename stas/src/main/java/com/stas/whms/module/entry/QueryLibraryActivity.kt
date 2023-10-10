@@ -133,7 +133,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         val coCreateBy = Column<String>("采集人", "CreateBy")
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         //endregion
-        mDataBinding.tableGoods.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableGoods.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableGoods.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableGoods.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableGoods.config.setShowTableTitle(false) // 去掉表头

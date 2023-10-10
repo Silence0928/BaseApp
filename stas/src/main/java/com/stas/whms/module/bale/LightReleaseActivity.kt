@@ -273,7 +273,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         val coCustomLabel = Column<String>("客户看板编号", "CustomLabel")
         val coBoxSum = Column<String>("数量", "Qty")
         //endregion
-        mDataBinding.tableLightRelease.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableLightRelease.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableLightRelease.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableLightRelease.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableLightRelease.config.setShowTableTitle(false) // 去掉表头

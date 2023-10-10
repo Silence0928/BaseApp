@@ -238,7 +238,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         val coCustomLabel = Column<String>("客户看板编号", "CustomLabel")
         val coBoxSum = Column<String>("数量", "BoxSum")
         //endregion
-        mDataBinding.tableBalePhoto.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableBalePhoto.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableBalePhoto.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableBalePhoto.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableBalePhoto.config.setShowTableTitle(false) // 去掉表头

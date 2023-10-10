@@ -78,7 +78,7 @@ public class TableDemoActivity extends BaseMvvmActivity<ActivityTablayoutDemoBin
         Column<String> coSex = new Column<>("性别", "sexy");
         //endregion
 
-        mDataBinding.table.setZoom(true,1,0.5f);                     //开启缩放功能
+        mDataBinding.table.setZoom(false,1,0.5f);                     //开启缩放功能
         mDataBinding.table.getConfig().setShowXSequence(false); //去掉表格顶部字母
         mDataBinding.table.getConfig().setShowYSequence(false); //去掉左侧数字
         mDataBinding.table.getConfig().setShowTableTitle(false); // 去掉表头

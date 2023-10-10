@@ -194,7 +194,7 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         val coBoxSum = Column<String>("电装品番", "PartsNo")
         val coFromProCode = Column<String>("数量", "Num")
         //endregion
-        mDataBinding.tableShipment.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableShipment.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableShipment.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableShipment.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableShipment.config.setShowTableTitle(false) // 去掉表头
@@ -270,7 +270,7 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         coPartsNo.maxMergeCount = 5
         val coDel = Column<String>("操作", "del")
         //endregion
-        mDataBinding.tableCustomer.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableCustomer.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableCustomer.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableCustomer.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableCustomer.config.setShowTableTitle(false) // 去掉表头

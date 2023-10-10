@@ -220,7 +220,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         val coCreateBy = Column<String>("采集人", "CreateBy")
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         //endregion
-        mDataBinding.tableStorageCollection.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableStorageCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableStorageCollection.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableStorageCollection.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableStorageCollection.config.setShowTableTitle(false) // 去掉表头
