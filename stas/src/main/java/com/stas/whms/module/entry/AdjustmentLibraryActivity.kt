@@ -125,12 +125,12 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
         }.start()
     }
 
-    private fun getReasonID(): String {
+    private fun getReasonID(): String? {
         if (mReasonInfoList.size > 0) {
             val reason = mDataBinding.cetReason.text.toString()
             for (r in mReasonInfoList) {
                 if (reason == r.ReasonName) {
-                    return r.ReasonID!!
+                    return r.ReasonID
                 }
             }
         }

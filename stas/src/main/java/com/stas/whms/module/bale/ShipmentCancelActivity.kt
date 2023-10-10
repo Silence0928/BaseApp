@@ -147,6 +147,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
             req.CustemerReceipt = mDataBinding.cetRefundInstruction.text.toString()
             req.OutPlanList = mTempDataList
+            req.ReasonID = getReasonID()
             val result = StasHttpRequestUtil.saveShipmentCancelData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
@@ -190,6 +191,18 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             ToastUtils.show("保存成功")
             finish()
         }
+    }
+
+    private fun getReasonID(): String? {
+        if (mReasonDataList.size > 0) {
+            val reason = mDataBinding.cetRefundReason.text.toString()
+            for (r in mReasonDataList) {
+                if (reason == r.ReasonName) {
+                    return r.ReasonID
+                }
+            }
+        }
+        return ""
     }
 
     private fun initDataTable() {
