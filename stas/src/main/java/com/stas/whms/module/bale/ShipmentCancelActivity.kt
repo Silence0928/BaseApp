@@ -2,6 +2,7 @@ package com.stas.whms.module.bale
 
 import android.content.Context
 import android.text.TextUtils
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
@@ -210,12 +211,13 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                 if (obj3 != null && obj3.size > 0) {
                     mTempDataList = obj3 as ArrayList<ShipmentInfo>
                     var i = 1
-                    for (t in obj3) {
+                     for (t in obj3) {
                         t.idNum = i
-                        i++
+                        i ++
                     }
                     mDataBinding.tableShipmentCancel.addData(obj3, false)
-                    mDataBinding.cetRefundInstruction.setText(mTempDataList[0]?.PartsNo)
+                    mDataBinding.cetRefundInstruction.setText(mTempDataList[0].PartsNo)
+                    mDataBinding.llAllSelect.visibility = View.VISIBLE
                 }
             }
         } else if (fromSource == REQ_SCANNER_GET_2) {

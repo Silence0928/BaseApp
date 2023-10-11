@@ -36,6 +36,7 @@ import com.lib_common.dialog.CommonAlertDialog;
 import com.lib_common.dialog.LoadingDialog;
 import com.lib_common.entity.ScanResult;
 import com.lib_common.utils.AndroidUtil;
+import com.lib_common.utils.DateUtils;
 import com.lib_common.view.layout.ActionBar;
 import com.lib_common.view.layout.dialog.ErrorDialog;
 import com.lib_common.view.layout.dialog.update.BaseDialog;
@@ -404,7 +405,24 @@ public abstract class BaseActivity extends AppCompatActivity {
                     new ErrorDialog(this, new ErrorDialog.ErrorHandleCallBack() {
                         @Override
                         public void commitModify(Dialog dialog, String workNo, String pwd, String remark) {
-                            dialog.dismiss();
+                            new Thread((() -> {
+                                Map<String, String> req = new HashMap<>();
+                                req.put("UserID", workNo);
+                                req.put("Password", pwd);
+                                req.put("Remark", remark);
+                                req.put("PdaID", AndroidUtil.getIpAddress());
+                                req.put("TextID", "1");
+                                req.put("TimeStamp", DateUtils.getCurrentDateMilTimeStr());
+                                final WebServiceResponse response1 = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.unLockUrl, WebMethodApi.unlockMethod);
+                                runOnUiThread ((() -> {
+                                    if (response1 != null && response1.getErrorCode() == 200) {
+                                        dialog.dismiss();
+                                    } else {
+                                        assert response1 != null;
+                                        ToastUtils.show(response1.getReason());
+                                    }
+                                }));
+                            })).start();
                         }
 
                         @Override
@@ -474,8 +492,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
                         UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);
-                        res.setForceUpdate("1");
-                        res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
+//                        res.setForceUpdate("1");
+//                        res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
                         mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
                         checkVersion(res);
                     } else {

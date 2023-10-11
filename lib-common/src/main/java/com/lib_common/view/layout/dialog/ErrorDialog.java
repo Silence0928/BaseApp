@@ -18,6 +18,7 @@ import com.lib_common.view.widget.ClearEditText;
 import com.lib_common.view.widget.PasswordEditText;
 
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * 补充身份证号码弹窗
@@ -113,7 +114,7 @@ public class ErrorDialog {
             return;
         }
         if (mCallBack != null) {
-            mCallBack.commitModify(mDialog, workNo, pwd, mRemarkEt.getText().toString());
+            mCallBack.commitModify(mDialog, workNo, pwd, Objects.requireNonNull(mRemarkEt.getText()).toString());
         }
     }
 

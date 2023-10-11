@@ -3,6 +3,7 @@ package com.stas.whms.module.bale
 import android.content.Context
 import android.text.Editable
 import android.text.TextUtils
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
@@ -250,6 +251,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                         i++
                     }
                     mDataBinding.tableLightRelease.addData(obj3, true)
+                    mDataBinding.llAllSelect.visibility = View.VISIBLE
                     handlePlanTotalNum()
                 }
             }

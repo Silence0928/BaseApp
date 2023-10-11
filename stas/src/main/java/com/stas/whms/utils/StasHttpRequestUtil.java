@@ -215,4 +215,12 @@ public class StasHttpRequestUtil {
     public static WebServiceResponse saveShipmentCancelData(String req) {
         return SoapClientUtil.execute(req, WebApi.saveShipmentCancelUrl, WebMethodApi.saveShipmentCancelDataMethod);
     }
+    /**
+     * 解锁
+     * @param req
+     * @return
+     */
+    public static WebServiceResponse unlock(String req) {
+        return SoapClientUtil.execute(req, WebApi.unLockUrl, WebMethodApi.unlockMethod);
+    }
 }

@@ -56,4 +56,6 @@ public class WebMethodApi {
     public static final String saveShipmentCancelDataMethod = "Cancel_Save";
     // APP升级
     public static final String upgradeMethod = "Upgrade";
+    // 解锁
+    public static final String unlockMethod = "UnLock_Get";
 }
