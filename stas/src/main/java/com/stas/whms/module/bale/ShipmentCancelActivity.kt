@@ -43,6 +43,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     private var mTempDataList = arrayListOf<ShipmentInfo>()
     private var mReasonDataList = arrayListOf<ReasonInfo>()
     private var mReasonStrList = arrayListOf<String>()
+    private var mProductEndList = arrayListOf<GoodsInfo>()
 
     override fun initView() {
         title = "出货取消"
@@ -116,10 +117,14 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
 
     private fun getCheckedData(): List<ShipmentInfo> {
         val listData = arrayListOf<ShipmentInfo>()
+        mProductEndList.clear()
         if (mTempDataList.size > 0) {
             for (i in mTempDataList) {
                 if (i.checked) {
                     listData.add(i)
+                    var goods = GoodsInfo()
+                    goods.PartsNo = i.PartsNo
+                    mProductEndList.add(goods)
                 }
             }
         }
@@ -145,7 +150,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         Thread {
             val req = SaveShipmentPrepareReqInfo()
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
-            req.CustemerReceipt = mDataBinding.cetRefundInstruction.text.toString()
+            req.ProductEndList = mProductEndList
             req.OutPlanList = mTempDataList
             req.ReasonID = getReasonID()
             val result = StasHttpRequestUtil.saveShipmentCancelData(JSON.toJSONString(req))
