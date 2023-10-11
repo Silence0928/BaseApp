@@ -44,6 +44,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     private var mReasonDataList = arrayListOf<ReasonInfo>()
     private var mReasonStrList = arrayListOf<String>()
     private var mProductEndList = arrayListOf<GoodsInfo>()
+    private var isSingleSelect = false // 是否单选
 
     override fun initView() {
         title = "出货取消"
@@ -81,6 +82,44 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         mDataBinding.stvCancelRefundCollection.setOnClickListener {
             onBackPressed()
         }
+        // 全选
+        mDataBinding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
+            if (!isSingleSelect) {
+                handleAllSelected()
+            } else {
+                isSingleSelect = false
+            }
+        }
+        mDataBinding.tvAll.setOnClickListener {
+            if (!isFastClick()) {
+                isSingleSelect = false
+                mDataBinding.cbAll.isChecked = !mDataBinding.cbAll.isChecked
+            }
+        }
+    }
+
+    private fun handleAllSelected() {
+        // 全选
+        showLoading()
+        BaseApplication.getMainHandler().postDelayed({
+            val dataList = mDataBinding.tableShipmentCancel.tableData.t
+            if (dataList != null && dataList.size > 0) {
+                if (!mDataBinding.cbAll.isChecked) {
+                    // 取消全选，此时需调整状态为全不选
+                    for (d in dataList) {
+                        val data = d as ShipmentInfo
+                        data.checked = false
+                    }
+                } else {
+                    for (d in dataList) {
+                        val data = d as ShipmentInfo
+                        data.checked = true
+                    }
+                }
+                mDataBinding.tableShipmentCancel.notifyDataChanged()
+            }
+            dismissLoading()
+        }, 200)
     }
 
     override fun getLayoutId(): Int {
@@ -171,9 +210,9 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                 if (obj3 != null && obj3.size > 0) {
                     mTempDataList = obj3 as ArrayList<ShipmentInfo>
                     var i = 1
-                     for (t in obj3) {
+                    for (t in obj3) {
                         t.idNum = i
-                        i ++
+                        i++
                     }
                     mDataBinding.tableShipmentCancel.addData(obj3, false)
                     mDataBinding.cetRefundInstruction.setText(mTempDataList[0]?.PartsNo)
@@ -254,7 +293,8 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         mDataBinding.tableShipmentCancel.tableData
             .setOnRowClickListener { column, o, col, row ->
                 if (col == 0 && !column.isParent) {
-                    // 选择,添加延迟是为了避免频繁刷新导致数组越界
+                    // 单选,添加延迟是为了避免频繁刷新导致数组越界
+                    isSingleSelect = true
                     showLoading()
                     BaseApplication.getMainHandler().postDelayed({
                         val dataList = mDataBinding.tableShipmentCancel.tableData.t
@@ -262,6 +302,8 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                             val data = dataList[row] as ShipmentInfo
                             data.checked = !data.checked
                             mDataBinding.tableShipmentCancel.notifyDataChanged()
+                            // 判断是否全选
+                            mDataBinding.cbAll.isChecked = getCheckedData().size == dataList.size
                         }
                         dismissLoading()
                     }, 200)

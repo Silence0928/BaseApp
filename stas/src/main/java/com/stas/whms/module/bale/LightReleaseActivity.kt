@@ -44,6 +44,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mOutPlanList = arrayListOf<ShipmentInfo>() // 出货指示书
     private var mPartsNoList = arrayListOf<String>() // 电装品番
+    private var isSingleSelect = false // 是否单选
 
     override fun initView() {
         title = "照合解除"
@@ -101,6 +102,44 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         mDataBinding.stvCancelStorageCollection.setOnClickListener {
             onBackPressed()
         }
+        // 全选
+        mDataBinding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
+            if (!isSingleSelect) {
+                handleAllSelected()
+            } else {
+                isSingleSelect = false
+            }
+        }
+        mDataBinding.tvAll.setOnClickListener {
+            if (!isFastClick()) {
+                isSingleSelect = false
+                mDataBinding.cbAll.isChecked = !mDataBinding.cbAll.isChecked
+            }
+        }
+    }
+
+    private fun handleAllSelected() {
+        // 全选
+        showLoading()
+        BaseApplication.getMainHandler().postDelayed({
+            val dataList = mDataBinding.tableLightRelease.tableData.t
+            if (dataList != null && dataList.size > 0) {
+                if (!mDataBinding.cbAll.isChecked) {
+                    // 取消全选，此时需调整状态为全不选
+                    for (d in dataList) {
+                        val data = d as GoodsInfo
+                        data.checked = false
+                    }
+                } else {
+                    for (d in dataList) {
+                        val data = d as GoodsInfo
+                        data.checked = true
+                    }
+                }
+                mDataBinding.tableLightRelease.notifyDataChanged()
+            }
+            dismissLoading()
+        }, 200)
     }
 
     override fun getLayoutId(): Int {
@@ -299,6 +338,8 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                             val data = dataList[row] as GoodsInfo
                             data.checked = !data.checked
                             mDataBinding.tableLightRelease.notifyDataChanged()
+                            // 判断是否全选
+                            mDataBinding.cbAll.isChecked = getCheckedData().size == dataList.size
                             handleTotalNum()
                         }
                         dismissLoading()
