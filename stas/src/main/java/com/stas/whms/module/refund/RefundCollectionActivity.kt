@@ -33,12 +33,10 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
     private val REQ_SCANNER_SAVE = 2
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
-    
     override fun initView() {
         title = "退库采集"
         initDataTable()
     }
-
     override fun onViewEvent() {
         mDataBinding.cetMadeFinishedTag.setOnFocusChangeListener { view, b ->
             if (!b) {
@@ -161,7 +159,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         val coDel = Column<String>("操作", "del")
 
         //endregion
-        mDataBinding.tableRefundCollection.setZoom(true, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableRefundCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableRefundCollection.config.setShowXSequence(false) //去掉表格顶部字母
         mDataBinding.tableRefundCollection.config.setShowYSequence(false) //去掉左侧数字
         mDataBinding.tableRefundCollection.config.setShowTableTitle(false) // 去掉表头

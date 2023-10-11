@@ -239,9 +239,9 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         val coBoxSum = Column<String>("数量", "BoxSum")
         //endregion
         mDataBinding.tableBalePhoto.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableBalePhoto.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableBalePhoto.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableBalePhoto.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableBalePhoto.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableBalePhoto.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableBalePhoto.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =

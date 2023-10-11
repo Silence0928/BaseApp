@@ -216,10 +216,10 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
         val coCreateDT = Column<String>("入库时间", "CreateDT")
         val coDel = Column<String>("操作", "del")
         //endregion
-        mDataBinding.tableMoveCollection.setZoom(true, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableMoveCollection.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableMoveCollection.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableMoveCollection.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableMoveCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableMoveCollection.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableMoveCollection.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableMoveCollection.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =

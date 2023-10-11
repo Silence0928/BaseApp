@@ -36,10 +36,10 @@ import java.util.Date
 @Route(path = RoutePathConfig.ROUTE_STORAGE_AUDIT)
 class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseViewModel>() {
 
-    private val REQ_IN_BOUND_GET_END = 1001
-    private val REQ_IN_BOUND_NO_GET = 1002
-    private val REQ_IN_BOUND_GET = 1003
-    private val REQ_IN_BOUND_SAVE = 1004
+    private val REQ_IN_BOUND_NO_GET = 2
+    private val REQ_IN_BOUND_GET_END = 3
+    private val REQ_IN_BOUND_GET = 4
+    private val REQ_IN_BOUND_SAVE = 5
     private var mOrderNoList = arrayListOf<String>()
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
@@ -124,7 +124,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
     }
 
     /**
-     * type=1 查询单号  =2查询入库数据
+     * type=2 查询单号  =3查询制造完了标签 =4查询入库数据
      */
     private fun getData(result: String?, type: Int) {
         if (type == REQ_IN_BOUND_GET_END && result?.isEmpty() == true) return
@@ -133,7 +133,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.Date = mDataBinding.cetStorageDate.text.toString()
         req.DocNo = mDataBinding.cetStorageOrderNo.text.toString()
-        req.TextID = if (type == REQ_IN_BOUND_NO_GET) "2" else if (type == REQ_IN_BOUND_GET_END) "3" else "4"
+        req.TextID = type.toString()
         req.ProductEnd = mProductEnd
         req.QrCode = if (type == REQ_IN_BOUND_GET_END)
             "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "

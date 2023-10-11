@@ -70,10 +70,10 @@ class StorageCollectionActivity :
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        getData(result?.data!!)
+        getData(result?.data)
     }
 
-    private fun getData(result: String) {
+    private fun getData(result: String?) {
         if (TextUtils.isEmpty(result)) return
         var req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
@@ -137,13 +137,13 @@ class StorageCollectionActivity :
     }
 
     private fun saveData() {
-        if (mDataList.size == 0) {
+        if (mTempDataList.size == 0) {
             ToastUtils.show("请采集制品箱后，点击保存")
             return
         }
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.saveInBound(JSON.toJSONString(mDataList))
+            val result = StasHttpRequestUtil.saveInBound(JSON.toJSONString(mTempDataList))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
     }
@@ -160,10 +160,10 @@ class StorageCollectionActivity :
         val coFromProCode = Column<String>("前工程", "FromProCode")
         val coDel = Column<String>("操作", "del")
         //endregion
-        mDataBinding.tableStorageCollection.setZoom(true, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableStorageCollection.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableStorageCollection.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableStorageCollection.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableStorageCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
+        mDataBinding.tableStorageCollection.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableStorageCollection.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableStorageCollection.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =

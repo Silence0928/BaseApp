@@ -233,9 +233,9 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         val coBoxSum = Column<String>("已采集数量", "ActualNum")
         //endregion
         mDataBinding.tableShipmentCancel.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableShipmentCancel.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableShipmentCancel.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableShipmentCancel.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableShipmentCancel.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableShipmentCancel.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableShipmentCancel.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<ShipmentInfo> =

@@ -48,10 +48,6 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     override fun initView() {
         title = "照合解除"
         initDataTable()
-        getData(
-            "08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576",
-            REQ_SCANNER_GET
-        )
     }
 
     override fun onViewEvent() {
@@ -120,7 +116,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        getData("27300078170Z", REQ_SCANNER_GET)
+        getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
     }
 
     private fun getData(result: String?, type: Int) {
@@ -274,9 +270,9 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         val coBoxSum = Column<String>("数量", "Qty")
         //endregion
         mDataBinding.tableLightRelease.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableLightRelease.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableLightRelease.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableLightRelease.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableLightRelease.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableLightRelease.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableLightRelease.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =

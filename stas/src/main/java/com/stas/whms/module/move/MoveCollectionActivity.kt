@@ -34,12 +34,10 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
     private val REQ_SCANNER_SAVE = 2
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
-
     override fun initView() {
         title = "移库采集"
         initDataTable()
     }
-
     override fun onViewEvent() {
         mDataBinding.cetMadeFinishedTag.setOnFocusChangeListener { view, b ->
             if (!b) {

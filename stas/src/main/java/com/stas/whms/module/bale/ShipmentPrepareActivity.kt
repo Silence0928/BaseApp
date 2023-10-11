@@ -195,9 +195,9 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         val coFromProCode = Column<String>("数量", "Num")
         //endregion
         mDataBinding.tableShipment.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableShipment.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableShipment.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableShipment.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableShipment.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableShipment.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableShipment.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<ShipmentInfo> =
@@ -271,9 +271,9 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         val coDel = Column<String>("操作", "del")
         //endregion
         mDataBinding.tableCustomer.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableCustomer.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableCustomer.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableCustomer.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableCustomer.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableCustomer.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableCustomer.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =

@@ -134,9 +134,9 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         //endregion
         mDataBinding.tableGoods.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableGoods.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableGoods.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableGoods.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableGoods.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableGoods.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableGoods.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =
