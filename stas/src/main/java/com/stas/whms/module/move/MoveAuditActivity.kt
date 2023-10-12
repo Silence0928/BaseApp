@@ -256,7 +256,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
 //                            handleTotalNum()
 //                        }.show()
 //                } else {
-                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
+//                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
 //                }
             }
         // 设置背景和字体颜色

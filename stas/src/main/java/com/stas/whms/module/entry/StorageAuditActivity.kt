@@ -83,7 +83,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                     return@setOnClickListener
                 }
                 if (madeFinishedTag.isEmpty()) {
-                    ToastUtils.show("请输入制造完了标签")
+                    ToastUtils.show("请扫描制造完了标签")
                     return@setOnClickListener
                 }
                 getData(null, REQ_IN_BOUND_GET)

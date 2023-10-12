@@ -238,7 +238,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         coId.isAutoCount = true
         //一致是因为需要用字段名来解析List对象
         val coCustomLabel = Column<String>("客户看板编号", "CustomLabel")
-        val coDel = Column<String>("操作", "del")
+//        val coDel = Column<String>("操作", "del")
         //endregion
         mDataBinding.tableCustomer.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableCustomer.config.isShowXSequence = false //去掉表格顶部字母
@@ -251,31 +251,31 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
                 "出货信息",
                 mCustomerDataList,
                 coId,
-                coCustomLabel,
-                coDel
+                coCustomLabel
+//                coDel
             )
         //注意：绑定数据的方法setData换成了setTableData。不再是List对象而是TableData对象
         mDataBinding.tableCustomer.setTableData(tableData)
         mDataBinding.tableCustomer.tableData
             .setOnRowClickListener { column, o, col, row ->
-                if (col == 2) {
-                 // 删除
-                    CommonAlertDialog(this).builder().setTitle("提示")
-                        .setMsg("是否确认删除？")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确认") {
-                            mCustomerDataList.removeAt(row)
-                            mTempDataList.removeAt(row)
-                            var i = 1
-                            for (info in mCustomerDataList) {
-                                info.idNum = i
-                                i++
-                            }
-                            mDataBinding.tableCustomer.notifyDataChanged()
-                        }.show()
-                } else {
-                    RouteJumpUtil.jumpToDocumentDetail(mTempDataList[row].TagSerialNo)
-                }
+//                if (col == 2) {
+//                 // 删除
+//                    CommonAlertDialog(this).builder().setTitle("提示")
+//                        .setMsg("是否确认删除？")
+//                        .setNegativeButton("取消", null)
+//                        .setPositiveButton("确认") {
+//                            mCustomerDataList.removeAt(row)
+//                            mTempDataList.removeAt(row)
+//                            var i = 1
+//                            for (info in mCustomerDataList) {
+//                                info.idNum = i
+//                                i++
+//                            }
+//                            mDataBinding.tableCustomer.notifyDataChanged()
+//                        }.show()
+//                } else {
+//                    RouteJumpUtil.jumpToDocumentDetail(mTempDataList[row].TagSerialNo)
+//                }
             }
         // 设置背景和字体颜色
         val backgroundFormat: BaseCellBackgroundFormat<CellInfo<*>?> =
@@ -289,16 +289,16 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
                     } else TableConfig.INVALID_COLOR
                 }
 
-                override fun getTextColor(t: CellInfo<*>?): Int {
-                    return if (t?.col == 2) ContextCompat.getColor(
-                        this@ShipmentActivity,
-                        com.lib_src.R.color.blue11
-                    ) else
-                        ContextCompat.getColor(
-                            this@ShipmentActivity,
-                            com.lib_src.R.color.black04
-                        )
-                }
+//                override fun getTextColor(t: CellInfo<*>?): Int {
+//                    return if (t?.col == 2) ContextCompat.getColor(
+//                        this@ShipmentActivity,
+//                        com.lib_src.R.color.blue11
+//                    ) else
+//                        ContextCompat.getColor(
+//                            this@ShipmentActivity,
+//                            com.lib_src.R.color.black04
+//                        )
+//                }
             }
         mDataBinding.tableCustomer.config.contentCellBackgroundFormat = backgroundFormat
 
