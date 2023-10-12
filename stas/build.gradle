@@ -7,17 +7,22 @@ plugins {
 android {
     signingConfigs {
         debug {
-//            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
-            storeFile file('G:\\Scan-demo\\whms\\BaseApp\\stas\\stas.jks')
+            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+//            storeFile file('G:\\Scan-demo\\whms\\BaseApp\\stas\\stas.jks')
             storePassword 'stas88888888'
             keyAlias 'stas'
             keyPassword 'stas88888888'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
         release {
             storePassword 'stas88888888'
             keyPassword 'stas88888888'
             keyAlias 'stas'
-            storeFile file('G:\\Scan-demo\\whms\\BaseApp\\stas\\stas.jks')
+            storeFile file('I:\\mul-barcode\\gitee-code\\BaseApp\\stas\\stas.jks')
+            v1SigningEnabled true
+            v2SigningEnabled true
+//            storeFile file('G:\\Scan-demo\\whms\\BaseApp\\stas\\stas.jks')
         }
     }
     namespace 'com.stas.whms'
@@ -29,7 +34,7 @@ android {
         targetSdk 33
         versionCode 100
         versionName "1.0.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -46,7 +51,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -73,6 +78,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     api project(path: ':lib-common')
     kapt 'com.alibaba:arouter-compiler:1.5.2'
-    def rxhttp_version = '3.1.1'
-    kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
+//    def rxhttp_version = '3.1.1'
+//    kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
 }
