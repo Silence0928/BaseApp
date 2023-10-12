@@ -494,7 +494,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
                         UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);
-                        res.setForceUpdate("1");
+//                        res.setForceUpdate("1");
 //                        res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
                         mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
                         checkVersion(res);
