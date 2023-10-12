@@ -153,9 +153,9 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                             mOrderNoList.add(a.DocNo!!)
                         }
                     }
-                    if (mOrderNoList.size > 0) {
-                        mDataBinding.cetMoveNo.text = mOrderNoList[0]
-                    }
+//                    if (mOrderNoList.size > 0) {
+//                        mDataBinding.cetMoveNo.text = mOrderNoList[0]
+//                    }
                 } else {
                     val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                     var i = 1

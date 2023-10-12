@@ -109,7 +109,11 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
             return
         }
         if (mDataBinding.cetGoodsNum.text.toString().isEmpty()) {
-            ToastUtils.show("数量不能为空")
+            ToastUtils.show("数量不能为空！")
+            return
+        }
+        if (mDataBinding.cetReason.text.toString().isEmpty()) {
+            ToastUtils.show("请选择调整原因！")
             return
         }
         showLoading()
@@ -159,9 +163,9 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
                     mReasonList.add(a.ReasonName!!)
                 }
             }
-            if (mReasonList.size > 0) {
-                mDataBinding.cetReason.text = mReasonList[0]
-            }
+//            if (mReasonList.size > 0) {
+//                mDataBinding.cetReason.text = mReasonList[0]
+//            }
         } else {
             ToastUtils.show("保存成功")
             finish()

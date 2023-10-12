@@ -168,9 +168,9 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                             mOrderNoList.add(a.DocNo!!)
                         }
                     }
-                    if (mOrderNoList.size > 0) {
-                        mDataBinding.cetRefundOrderNo.text = mOrderNoList[0]
-                    }
+//                    if (mOrderNoList.size > 0) {
+//                        mDataBinding.cetRefundOrderNo.text = mOrderNoList[0]
+//                    }
                 } else if (fromSource == REQ_IN_BOUND_REASON_GET) {
                     val jArray = JSONObject.parseArray(response.data, ReasonInfo::class.java)
                     for (a in jArray) {
@@ -178,9 +178,6 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         if (a is ReasonInfo && a.ReasonName?.isNotEmpty() == true) {
                             mReasonList.add(a.ReasonName!!)
                         }
-                    }
-                    if (mReasonList.size > 0) {
-                        mDataBinding.cetRefundReason.text = mReasonList[0]
                     }
                 } else {
                     val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
@@ -217,6 +214,10 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
     private fun saveData() {
         if (mDataList.size == 0) {
             ToastUtils.show("无待审核的退库单！")
+            return
+        }
+        if (mDataBinding.cetRefundReason.text.toString().isEmpty()) {
+            ToastUtils.show("请选择退库原因！")
             return
         }
         showLoading()

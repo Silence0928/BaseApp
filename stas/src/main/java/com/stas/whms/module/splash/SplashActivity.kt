@@ -19,11 +19,12 @@ class SplashActivity: BaseMvvmActivity<ActivitySplashBinding, BaseViewModel>() {
         mDataBinding.tvVersion.text = AndroidUtil.getAppVersionName(this)
         WebApi.serviceAddressUrl = mMMKV.decodeString(MmkvConstants.MMKV_SERVICE_URL, WebApi.serviceAddressUrl)
         WebApi.webBaseUrl = mMMKV.decodeString(MmkvConstants.MMKV_URL_NS, WebApi.webBaseUrl)
-        if (TextUtils.isEmpty(mMMKV.decodeString(MmkvConstants.MMKV_LOGIN_INFO))) {
+        mMMKV.encode(MmkvConstants.MMKV_LOGIN_INFO, "")
+//        if (TextUtils.isEmpty(mMMKV.decodeString(MmkvConstants.MMKV_LOGIN_INFO))) {
             RouteJumpUtil.jumpToLogin()
-        } else {
-            RouteJumpUtil.jumpToMain()
-        }
+//        } else {
+//            RouteJumpUtil.jumpToMain()
+//        }
         finish()
     }
 

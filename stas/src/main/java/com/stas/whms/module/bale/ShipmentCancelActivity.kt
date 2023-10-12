@@ -230,7 +230,6 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                             mReasonStrList.add(a.ReasonName!!)
                         }
                     }
-                    mDataBinding.cetRefundReason.text = mReasonStrList[0]
                 }
             }
         } else {

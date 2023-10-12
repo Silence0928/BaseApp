@@ -82,10 +82,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                     ToastUtils.show("请选择入库单号")
                     return@setOnClickListener
                 }
-                if (madeFinishedTag.isEmpty()) {
-                    ToastUtils.show("请扫描制造完了标签")
-                    return@setOnClickListener
-                }
+//                if (madeFinishedTag.isEmpty()) {
+//                    ToastUtils.show("请扫描制造完了标签")
+//                    return@setOnClickListener
+//                }
                 getData(null, REQ_IN_BOUND_GET)
             }
         }
@@ -163,7 +163,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                             mOrderNoList.add(a.DocNo!!)
                         }
                     }
-                    mDataBinding.cetStorageOrderNo.text = mOrderNoList[0]
+//                    mDataBinding.cetStorageOrderNo.text = mOrderNoList[0]
                 } else {
                     var i = 1
                     for (a in jArray) {
