@@ -405,6 +405,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     new ErrorDialog(this, new ErrorDialog.ErrorHandleCallBack() {
                         @Override
                         public void commitModify(Dialog dialog, String workNo, String pwd, String remark) {
+                            showLoading();
                             new Thread((() -> {
                                 Map<String, String> req = new HashMap<>();
                                 req.put("UserID", workNo);
@@ -415,6 +416,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                                 req.put("TimeStamp", DateUtils.getCurrentDateMilTimeStr());
                                 final WebServiceResponse response1 = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.unLockUrl, WebMethodApi.unlockMethod);
                                 runOnUiThread ((() -> {
+                                    dismissLoading();
                                     if (response1 != null && response1.getErrorCode() == 200) {
                                         dialog.dismiss();
                                     } else {
@@ -492,7 +494,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
                         UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);
-//                        res.setForceUpdate("1");
+                        res.setForceUpdate("1");
 //                        res.setUpdateLink("https://huoda-tms-public.oss-cn-beijing.aliyuncs.com/shipper-app/shipper.apk");
                         mMMKV.encode(MmkvConstants.MMKV_UPDATE_INFO, res);
                         checkVersion(res);
