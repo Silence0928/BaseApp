@@ -50,8 +50,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     override fun initView() {
         title = "出货取消"
         initDataTable()
-        getData("11", REQ_SCANNER_GET)
-        getData("11", REQ_SCANNER_GET_2)
+        getData(null, REQ_SCANNER_GET_2)
     }
 
     override fun onViewEvent() {
@@ -145,9 +144,10 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
-        req.QrCode =
-            if (type == REQ_SCANNER_GET) "08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576"
-            else null
+        req.QrCode = result
+//        req.QrCode =
+//            if (type == REQ_SCANNER_GET) "08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576"
+//            else null
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryShipmentCancelDataResult(JSON.toJSONString(req))

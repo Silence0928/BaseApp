@@ -76,8 +76,9 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         var req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
-        req.QrCode =
-            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+        req.QrCode = result
+//        req.QrCode =
+//            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryReturnScannerResult(JSON.toJSONString(req))

@@ -210,7 +210,7 @@ public class DownloadInstaller {
 
                 apkFile = new File(storageApkPath);
 
-                if (apkFile.exists() && apkFile.length() == total) {
+                if (apkFile.exists() && apkFile.length() >= total) {
                     //已经下载过了，直接的progress ==100,然后去安装
                     progress = 100;
                     updateNotify(progress);

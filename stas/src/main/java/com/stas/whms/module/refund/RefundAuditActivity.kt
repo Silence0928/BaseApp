@@ -140,9 +140,10 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         req.DocNo = mDataBinding.cetRefundOrderNo.text.toString()
         req.TextID = if (type == REQ_IN_BOUND_NO_GET) "1" else if (type == REQ_IN_BOUND_GET_END) "2"  else if (type == REQ_IN_BOUND_REASON_GET) "4" else "3"
         req.ProductEnd = mProductEnd
-        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
-            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
-        else null
+        req.QrCode = result
+//        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
+//            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+//        else null
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryReturnAuditData(JSON.toJSONString(req))

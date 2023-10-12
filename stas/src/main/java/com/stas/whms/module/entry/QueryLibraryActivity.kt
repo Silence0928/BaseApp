@@ -75,9 +75,10 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         req.FromProCode = mDataBinding.cetRotaryDesignation.text.toString()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.ProductEnd = mProductEnd
-        req.QrCode =
-            if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
-            else null
+        req.QrCode = result
+//        req.QrCode =
+//            if (type == REQ_SCANNER_GET) "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+//            else null
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryLibrariesData(JSON.toJSONString(req))

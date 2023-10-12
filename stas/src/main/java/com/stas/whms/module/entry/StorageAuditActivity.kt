@@ -135,9 +135,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         req.DocNo = mDataBinding.cetStorageOrderNo.text.toString()
         req.TextID = type.toString()
         req.ProductEnd = mProductEnd
-        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
-            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
-        else null
+        req.QrCode = result
+//        req.QrCode = if (type == REQ_IN_BOUND_GET_END)
+//            "DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         "
+//        else null
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
