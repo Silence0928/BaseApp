@@ -454,7 +454,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     protected boolean isCheckAppUpdate() {
-        return false;
+        return true;
     }
 
     /**
