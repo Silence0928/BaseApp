@@ -1,6 +1,5 @@
 package com.stas.whms.module.splash
 
-import android.text.TextUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.constants.MmkvConstants
@@ -45,5 +44,9 @@ class SplashActivity: BaseMvvmActivity<ActivitySplashBinding, BaseViewModel>() {
      */
     private fun initBugly() {
         CrashReport.initCrashReport(application, "59ad190f34", false)
+    }
+
+    override fun isCheckAppUpdate(): Boolean {
+        return false
     }
 }
