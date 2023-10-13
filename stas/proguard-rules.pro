@@ -17,11 +17,11 @@
 ##apk 包内所有 class 的内部结构
 #-dump class_files.txt
 ##未混淆的类和成员
-#-printseeds seeds.txt
+-printseeds seeds.txt
 ##列出从 apk 中删除的代码
-#-printusage unused.txt
+-printusage unused.txt
 ##混淆前后的映射
-#-printmapping mapping.txt
+-printmapping mapping.txt
 -keepattributes *Annotation*
 #如果有引用v4包可以添加下面这行
 -dontwarn android.support.**
@@ -104,6 +104,9 @@ public static final android.os.Parcelable$Creator *;
    public static *** i(...);
    public static *** w(...);
 }
+# 不需混淆的Android类
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
 
 # OkHttp3
 -dontwarn com.squareup.okhttp3.**
@@ -152,3 +155,10 @@ public static final android.os.Parcelable$Creator *;
 # 项目中用到的实体类
 -keep class com.stas.whms.bean.** {*;}
 -keep class com.lib_common.net.rxhttp.response.** {*;}
+# IScan
+-keep interface android.os.IScanListener {*;}
+-keep interface * extends android.os.IScanListener
+-keep class * implements android.os.IScanListener
+-keep interface android.os.IScanListener2 {*;}
+-keep interface * extends android.os.IScanListener2
+-keep class * implements android.os.IScanListener2
