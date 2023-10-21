@@ -11,4 +11,7 @@ class SaveShipmentPrepareReqInfo : Serializable{
     var ProductEndList: List<GoodsInfo>? = null // 制造完了标签数组
     var TruckNo: String? = null // 车牌号
     var ReasonID: String? = null // 原因编号
+    var PdaID: String? = null // 设备ID
+    var CreateBy: String? = null // 操作人
+    var TimeStamp: String? = null // 时间戳
 }

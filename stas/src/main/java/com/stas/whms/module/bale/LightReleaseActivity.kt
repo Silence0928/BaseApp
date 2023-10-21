@@ -19,6 +19,7 @@ import com.hjq.toast.ToastUtils
 import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
+import com.lib_common.constants.MmkvConstants
 import com.lib_common.dialog.BottomListDialog
 import com.lib_common.entity.ScanResult
 import com.lib_common.listener.SimpleTextWatcher
@@ -28,6 +29,7 @@ import com.lib_common.view.layout.dialog.CommonAlertDialog
 import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
 import com.stas.whms.bean.GoodsInfo
+import com.stas.whms.bean.LoginInfo
 import com.stas.whms.bean.SaveShipmentPrepareReqInfo
 import com.stas.whms.bean.ScannerRequestInfo
 import com.stas.whms.bean.ShipmentInfo
@@ -206,6 +208,15 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
             req.OutPlanList = mOutPlanList
             req.ProductEndList = mTempDataList
+            req.PdaID = AndroidUtil.getIpAddress()
+            req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
+            val loginInfoStr = mMMKV.decodeString(MmkvConstants.MMKV_LOGIN_INFO)
+            if (loginInfoStr != null) {
+                val loginInfo = JSON.parseObject(loginInfoStr, LoginInfo::class.java)
+                if (loginInfo != null) {
+                    req.CreateBy = loginInfo.UserID
+                }
+            }
             val result = StasHttpRequestUtil.saveLightReleaseData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
