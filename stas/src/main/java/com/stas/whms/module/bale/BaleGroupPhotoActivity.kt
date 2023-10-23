@@ -218,7 +218,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     private fun getTotalNum(): String {
         var totalCount = 0
         for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
@@ -232,7 +232,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     private fun getPlanTotalNum(): String {
         var totalCount = 0
         for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
@@ -247,7 +247,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
         val coCustemerReceipt = Column<String>("客户编号", "CustemerReceipt")
         val coCustomLabel = Column<String>("客户看板编号", "CustomLabel")
-        val coBoxSum = Column<String>("数量", "BoxSum")
+        val coBoxSum = Column<String>("数量", "Qty")
         //endregion
         mDataBinding.tableBalePhoto.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableBalePhoto.config.isShowXSequence = false //去掉表格顶部字母

@@ -185,7 +185,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
     private fun getTotalNum(): String {
         var totalCount = 0
         for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
@@ -222,7 +222,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
         //一致是因为需要用字段名来解析List对象
         val coPartsNo = Column<String>("电装品番", "PartsNo")
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
-        val coBoxSum = Column<String>("数量", "BoxSum")
+        val coBoxSum = Column<String>("数量", "Qty")
         val coFromProCode = Column<String>("前工程", "FromProCode")
         val coCreateBy = Column<String>("采集人", "CreateBy")
         val coCreateDT = Column<String>("入库时间", "CreateDT")

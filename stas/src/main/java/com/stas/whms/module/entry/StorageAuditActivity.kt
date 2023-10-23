@@ -191,7 +191,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
     private fun getTotalNum(): String {
         var totalCount = 0
         for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
         }
         return totalCount.toString()
     }
@@ -228,7 +228,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         //一致是因为需要用字段名来解析List对象
         val coDocNo = Column<String>("入库单号", "DocNo")
         val coPartsNo = Column<String>("电装品番", "PartsNo")
-        val coBoxSum = Column<String>("单据总数", "BoxSum")
+        val coBoxSum = Column<String>("单据总数", "Qty")
         val coCreateBy = Column<String>("采集人", "CreateBy")
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         //endregion

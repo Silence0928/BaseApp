@@ -200,10 +200,11 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         coId.isFixed = true
         coId.isAutoCount = true
         //一致是因为需要用字段名来解析List对象
-        val coPartsNo = Column<String>("客户编号", "Customer")
-        val coTagSerialNo = Column<String>("车次号", "TruckNo")
-        val coBoxSum = Column<String>("电装品番", "PartsNo")
-        val coFromProCode = Column<String>("数量", "Num")
+
+        val coCustomer = Column<String>("客户编号", "Customer")
+        val coTruckNo = Column<String>("车次号", "TruckNo")
+        val coPartsNo = Column<String>("电装品番", "PartsNo")
+        val coQty = Column<String>("数量", "Num")
         //endregion
         mDataBinding.tableShipment.setZoom(false, 1.0f, 0.5f) //开启缩放功能
         mDataBinding.tableShipment.config.isShowXSequence = false //去掉表格顶部字母
@@ -216,10 +217,10 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
                 "出货信息",
                 mDataList,
                 coId,
+                coCustomer,
+                coTruckNo,
                 coPartsNo,
-                coTagSerialNo,
-                coBoxSum,
-                coFromProCode,
+                coQty,
             )
         //注意：绑定数据的方法setData换成了setTableData。不再是List对象而是TableData对象
         mDataBinding.tableShipment.setTableData(tableData)

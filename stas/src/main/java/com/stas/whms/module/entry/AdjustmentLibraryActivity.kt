@@ -122,7 +122,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
         Thread {
             val req = SaveInBoundAuditReqInfo()
             val listData = arrayListOf<GoodsInfo>()
-            mGoodsInfo!!.BoxSum = mDataBinding.cetGoodsNum.text.toString()
+            mGoodsInfo!!.Qty = mDataBinding.cetGoodsNum.text.toString()
             listData.add(mGoodsInfo!!)
             req.Remark = mDataBinding.cetRemark.text.toString().trim()
             req.ListData = listData
@@ -163,7 +163,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
                     mDataBinding.cetRotaryDesignation.text = jArray[0].TagSerialNo
                     mDataBinding.cetForeworkNum.text = jArray[0].FromProCode
                     mDataBinding.cetInLibraryState.text = jArray[0].Status
-                    mDataBinding.cetGoodsNum.setText(jArray[0].BoxSum)
+                    mDataBinding.cetGoodsNum.setText(jArray[0].Qty)
                 }
             }
         } else if (fromSource == REQ_SCANNER_GET_REASON) {
