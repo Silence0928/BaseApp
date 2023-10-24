@@ -69,6 +69,12 @@ class DocumentDetailActivity :
             if (result?.errorCode == 200) {
                 if (result.data != null) {
                     val jArray = JSONObject.parseArray(result.data, GoodsInfo::class.java)
+
+                    var i = 1
+                    for (a in jArray) {
+                        a.idNum = i
+                        i++
+                    }
                     mTempDataList = jArray as ArrayList<GoodsInfo>
                     mDataBinding.tableGoods.addData(jArray, true)
                     handleTotalNum()
