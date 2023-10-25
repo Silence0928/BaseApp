@@ -52,6 +52,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     override fun initView() {
         title = "照合解除"
         initDataTable()
+//        getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
     }
 
     override fun onViewEvent() {
@@ -107,7 +108,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
         }
         // 全选
         mDataBinding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
-            if (!isSingleSelect) {
+            if (!isSingleSelect || b) {
                 handleAllSelected()
             } else {
                 isSingleSelect = false
@@ -141,6 +142,8 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 }
                 mDataBinding.tableLightRelease.notifyDataChanged()
             }
+            isSingleSelect = false
+            handleTotalNum()
             dismissLoading()
         }, 200)
     }
@@ -158,7 +161,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
+        getData(result?.data, REQ_SCANNER_GET)
     }
 
     private fun getData(result: String?, type: Int) {
@@ -242,15 +245,11 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 }
             }
             if (mTempDataList.size > 0) {
-                mTempDataList.clear()
-                mCustomerDataList.clear()
-                mDataBinding.tableLightRelease.notifyDataChanged()
+                resetData()
             }
         } else if (fromSource == REQ_SCANNER_GET_2) {
             if (mTempDataList.size > 0) {
-                mTempDataList.clear()
-                mCustomerDataList.clear()
-                mDataBinding.tableLightRelease.notifyDataChanged()
+                resetData()
             }
             if (response?.data != null) {
                 val obj3 = JSONObject.parseArray(response.data, GoodsInfo::class.java)
@@ -270,6 +269,14 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
             ToastUtils.show("保存成功")
             finish()
         }
+    }
+
+    private fun resetData() {
+        mTempDataList.clear()
+        mCustomerDataList.clear()
+        mDataBinding.tableLightRelease.notifyDataChanged()
+        mDataBinding.cbAll.isChecked = false
+        handleTotalNum()
     }
 
     private fun handleTotalNum() {
@@ -352,6 +359,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                             data.checked = !data.checked
                             mDataBinding.tableLightRelease.notifyDataChanged()
                             // 判断是否全选
+                            isSingleSelect = true
                             mDataBinding.cbAll.isChecked = getCheckedData().size == dataList.size
                             handleTotalNum()
                         }

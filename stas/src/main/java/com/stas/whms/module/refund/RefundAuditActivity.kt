@@ -46,6 +46,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
     private var mReasonInfoList = arrayListOf<ReasonInfo>()
     private var mReasonList = arrayListOf<String>()
     private var mProductEnd: GoodsInfo? = null
+    private var isFirstLoadData = true
 
     override fun initView() {
         title = "退库审核"
@@ -189,7 +190,15 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         i++
                     }
                     mTempDataList = jArray as ArrayList<GoodsInfo>
-                    mDataBinding.tableRefundCollection.addData(jArray, true)
+                    // 清除表格数据
+                    mDataList.clear()
+                    mDataList = jArray
+                    if (isFirstLoadData) {
+                        isFirstLoadData = false
+                        mDataBinding.tableRefundCollection.addData(mDataList, true)
+                    } else {
+                        mDataBinding.tableRefundCollection.notifyDataChanged()
+                    }
                     handleTotalNum()
                 }
             }

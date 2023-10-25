@@ -43,6 +43,8 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mProductEnd: GoodsInfo? = null
+    private var isFirstLoadData = true
+
     override fun initView() {
         title = "移库审核"
         initDataTable()
@@ -166,7 +168,15 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                         i++
                     }
                     mTempDataList = jArray as ArrayList<GoodsInfo>
-                    mDataBinding.tableMoveCollection.addData(jArray, true)
+                    // 清除表格数据
+                    mDataList.clear()
+                    mDataList = jArray as ArrayList<GoodsInfo>
+                    if (isFirstLoadData) {
+                        isFirstLoadData = false
+                        mDataBinding.tableMoveCollection.addData(mDataList, true)
+                    } else {
+                        mDataBinding.tableMoveCollection.notifyDataChanged()
+                    }
                     handleTotalNum()
                 }
             }

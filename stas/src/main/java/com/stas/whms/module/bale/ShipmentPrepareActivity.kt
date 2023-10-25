@@ -102,15 +102,22 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         val text1 = mDataBinding.cetStorageDate.text.toString()
         val text2 = mDataBinding.cetCustomerAcceptLetter.text.toString()
         if (text1.isEmpty()) {
-            getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
+            getData(result?.data, REQ_SCANNER_GET)
         } else if (text2.isEmpty()) {
-            getData("27300078170Z", REQ_SCANNER_GET_2)
+            getData(result?.data, REQ_SCANNER_GET_2)
         } else {
-            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
+            getData(result?.data, REQ_SCANNER_GET_3)
         }
+//        if (text1.isEmpty()) {
+//            getData("08080181000160001511CW296100-32454B0001056CW299500-32414B0003840CW299500-32814B0000576", REQ_SCANNER_GET)
+//        } else if (text2.isEmpty()) {
+//            getData("27300078170Z", REQ_SCANNER_GET_2)
+//        } else {
+//            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
+//        }
     }
 
-    private fun getData(result: String, type : Int) {
+    private fun getData(result: String?, type : Int) {
         if (TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()

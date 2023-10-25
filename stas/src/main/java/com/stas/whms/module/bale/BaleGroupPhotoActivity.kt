@@ -101,16 +101,23 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     override fun scanResultCallBack(result: ScanResult?) {
         val text1 = mDataBinding.cetShipmentInstruction.text.toString()
         val text2 = mDataBinding.cetProductionSignage.text.toString()
+//        if (text1.isEmpty()) {
+//            getData("27300078170Z", REQ_SCANNER_GET)
+//        } else if (text2.isEmpty()) {
+//            getData("DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         ", REQ_SCANNER_GET_2)
+//        } else {
+//            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
+//        }
         if (text1.isEmpty()) {
-            getData("27300078170Z", REQ_SCANNER_GET)
+            getData(result?.data, REQ_SCANNER_GET)
         } else if (text2.isEmpty()) {
-            getData("DISC5060020000010091000210125104151120712305152071530815408155092123810-E0150                095440-12800J0000002Z999 0070380        00000000         ", REQ_SCANNER_GET_2)
+            getData(result?.data, REQ_SCANNER_GET_2)
         } else {
-            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
+            getData(result?.data, REQ_SCANNER_GET_3)
         }
     }
 
-    private fun getData(result: String, type : Int) {
+    private fun getData(result: String?, type : Int) {
         if (TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()

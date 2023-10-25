@@ -86,7 +86,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
         }
         // 全选
         mDataBinding.cbAll.setOnCheckedChangeListener { compoundButton, b ->
-            if (!isSingleSelect) {
+            if (!isSingleSelect || b) {
                 handleAllSelected()
             } else {
                 isSingleSelect = false
@@ -120,6 +120,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                 }
                 mDataBinding.tableShipmentCancel.notifyDataChanged()
             }
+            isSingleSelect = false
             dismissLoading()
         }, 200)
     }
@@ -315,6 +316,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                             data.checked = !data.checked
                             mDataBinding.tableShipmentCancel.notifyDataChanged()
                             // 判断是否全选
+                            isSingleSelect = true
                             mDataBinding.cbAll.isChecked = getCheckedData().size == dataList.size
                         }
                         dismissLoading()

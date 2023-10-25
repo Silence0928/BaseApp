@@ -97,12 +97,15 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
     override fun scanResultCallBack(result: ScanResult?) {
         val text1 = mDataBinding.cetShipmentInstruction.text.toString()
         if (text1.isEmpty()) {
-//            mDataBinding.cetShipmentInstruction.setText(result?.data)
-            getData("27300078170Z", REQ_SCANNER_GET)
+            getData(result?.data, REQ_SCANNER_GET)
         } else {
-//            mDataBinding.cetCustomerBoard.setText(result?.data)
-            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_2)
+            getData(result?.data, REQ_SCANNER_GET_2)
         }
+//        if (text1.isEmpty()) {
+//            getData("27300078170Z", REQ_SCANNER_GET)
+//        } else {
+//            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_2)
+//        }
     }
 
     /**
@@ -123,7 +126,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         mVehicleNoKeyBoard.setTitle("输入车牌号")
     }
 
-    private fun getData(result: String, type : Int) {
+    private fun getData(result: String?, type : Int) {
         if (TextUtils.isEmpty(result)) return
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()

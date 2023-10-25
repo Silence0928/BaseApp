@@ -32,6 +32,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mProductEnd: GoodsInfo? = null
+    private var isFirstLoadData = true
 
     override fun initView() {
         title = "在库查询"
@@ -101,7 +102,15 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
                     i++
                 }
                 mTempDataList = jArray as ArrayList<GoodsInfo>
-                mDataBinding.tableGoods.addData(jArray, true)
+                // 清除表格数据
+                mDataList.clear()
+                mDataList = jArray as ArrayList<GoodsInfo>
+                if (isFirstLoadData) {
+                    isFirstLoadData = false
+                    mDataBinding.tableGoods.addData(mDataList, true)
+                } else {
+                    mDataBinding.tableGoods.notifyDataChanged()
+                }
                 handleTotalNum()
             }
         }

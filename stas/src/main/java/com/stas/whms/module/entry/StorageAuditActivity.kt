@@ -46,6 +46,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mProductEnd: GoodsInfo? = null
+    private var isFirstLoadData = true
 
     override fun initView() {
         title = "入库审核"
@@ -173,7 +174,15 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                         i++
                     }
                     mTempDataList = jArray as ArrayList<GoodsInfo>
-                    mDataBinding.tableStorageCollection.addData(jArray, true)
+                    // 清除表格数据
+                    mDataList.clear()
+                    mDataList = jArray as ArrayList<GoodsInfo>
+                    if (isFirstLoadData) {
+                        isFirstLoadData = false
+                        mDataBinding.tableStorageCollection.addData(mDataList, true)
+                    } else {
+                        mDataBinding.tableStorageCollection.notifyDataChanged()
+                    }
                     handleTotalNum()
                 }
             }
@@ -233,12 +242,12 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         //endregion
         mDataBinding.tableStorageCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableStorageCollection.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableStorageCollection.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableStorageCollection.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableStorageCollection.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableStorageCollection.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableStorageCollection.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
-        val tableData: TableData<GoodsInfo> =
+        val mTableData =
             TableData<GoodsInfo>(
                 "商品信息",
                 mDataList,
@@ -250,7 +259,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                 coCreateDT
             )
         //注意：绑定数据的方法setData换成了setTableData。不再是List对象而是TableData对象
-        mDataBinding.tableStorageCollection.setTableData(tableData)
+        mDataBinding.tableStorageCollection.setTableData(mTableData)
         mDataBinding.tableStorageCollection.tableData
             .setOnRowClickListener { column, o, col, row ->
                 RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
@@ -269,7 +278,6 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
 
             }
         mDataBinding.tableStorageCollection.config.contentCellBackgroundFormat = backgroundFormat
-
     }
 
     override fun onBackPressed() {
