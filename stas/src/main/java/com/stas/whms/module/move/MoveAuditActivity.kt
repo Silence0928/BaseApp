@@ -182,7 +182,15 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            // 清除表格数据
+            mDataBinding.cetMadeFinishedTag.setText("")
+            mDataBinding.cetMoveNo.text = ""
+            mDataBinding.cetRemark.setText("")
+            mTempDataList.clear()
+            mDataList.clear()
+            mProductEnd = null
+            mDataBinding.tableMoveCollection.notifyDataChanged()
+            handleTotalNum()
         }
     }
 

@@ -204,7 +204,16 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            // 清除表格数据
+            mDataBinding.cetMadeFinishedTag.setText("")
+            mDataBinding.cetRefundOrderNo.text = ""
+            mDataBinding.cetRefundReason.text = ""
+            mDataBinding.cetRemark.setText("")
+            mTempDataList.clear()
+            mDataList.clear()
+            mProductEnd = null
+            mDataBinding.tableRefundCollection.notifyDataChanged()
+            handleTotalNum()
         }
     }
 

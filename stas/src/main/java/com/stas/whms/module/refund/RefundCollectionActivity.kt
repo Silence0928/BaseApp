@@ -105,7 +105,12 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
             }
         } else if (fromSource == REQ_SCANNER_SAVE) {
             ToastUtils.show("保存成功")
-            finish()
+            // 清除表格数据
+            mDataBinding.cetMadeFinishedTag.setText("")
+            mTempDataList.clear()
+            mDataList.clear()
+            mDataBinding.tableRefundCollection.notifyDataChanged()
+            handleTotalNum()
         }
     }
 

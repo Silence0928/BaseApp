@@ -96,6 +96,7 @@ class StorageCollectionActivity :
                 val goodsInfo =
                     JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
                 if (isCanSave(goodsInfo)) {
+                    mDataBinding.cetMadeFinishedTag.setText(goodsInfo?.PartsNo)
                     goodsInfo.idNum = mDataList.size + 1
                     val tempList = arrayListOf<GoodsInfo>()
                     tempList.add(goodsInfo)
@@ -108,7 +109,12 @@ class StorageCollectionActivity :
             }
         } else if (fromSource == REQ_SCANNER_SAVE) {
             ToastUtils.show("保存成功")
-            finish()
+            // 清除表格数据
+            mDataBinding.cetMadeFinishedTag.setText("")
+            mTempDataList.clear()
+            mDataList.clear()
+            mDataBinding.tableStorageCollection.notifyDataChanged()
+            handleTotalNum()
         }
     }
 

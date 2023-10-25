@@ -199,7 +199,17 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            mCustomerDataList.clear()
+            mTempDataList.clear()
+            mOutPlanList.clear()
+            mProductEnd = null
+            mDataBinding.cetShipmentInstruction.setText("")
+            mDataBinding.cetCustomerBoard.setText("")
+            mDataBinding.cetProductionSignage.setText("")
+            mDataBinding.cetRemark.setText("")
+            mDataBinding.tableBalePhoto.notifyDataChanged()
+            handleTotalNum()
+            handlePlanTotalNum()
         }
     }
 

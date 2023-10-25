@@ -197,7 +197,15 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            mDataList.clear()
+            mTempDataList.clear()
+            mCustomerDataList.clear()
+            mDataBinding.cetCustomerAcceptLetter.text = ""
+            mDataBinding.cetCustomerBulletinBoard.text = ""
+            mDataBinding.cetRemark.setText("")
+            mDataBinding.cetStorageDate.text = ""
+            mDataBinding.tableShipment.notifyDataChanged()
+            mDataBinding.tableCustomer.notifyDataChanged()
         }
     }
 

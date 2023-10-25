@@ -267,7 +267,16 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            mCustomerDataList.clear()
+            mTempDataList.clear()
+            mOutPlanList.clear()
+            mPartsNoList.clear()
+            mDataBinding.cetShipmentInstruction.setText("")
+            mDataBinding.cetDenso.text = ""
+            mDataBinding.cetRemark.setText("")
+            mDataBinding.tableLightRelease.notifyDataChanged()
+            handleTotalNum()
+            handlePlanTotalNum()
         }
     }
 

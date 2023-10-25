@@ -40,7 +40,6 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
     private var mCustomerDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private lateinit var mVehicleNoKeyBoard: VehicleNoKeyBoardDialog // 车牌号键盘
-    private var mVehicleNo: String? = null // 车牌号
     private var mProductEnd: GoodsInfo? = null
 
     override fun initView() {
@@ -202,7 +201,15 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            mCustomerDataList.clear()
+            mTempDataList.clear()
+            mProductEnd = null
+            mDataBinding.cetShipmentInstruction.setText("")
+            mDataBinding.cetCustomerBoard.setText("")
+            mDataBinding.cetRemark.setText("")
+            mDataBinding.cetCarNo.setText("")
+            mDataBinding.tableCustomer.notifyDataChanged()
+            handleTotalNum()
         }
     }
 

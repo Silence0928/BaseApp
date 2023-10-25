@@ -246,7 +246,13 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            mDataList.clear()
+            mTempDataList.clear()
+            mProductEndList.clear()
+            mDataBinding.cetRefundInstruction.setText("")
+            mDataBinding.cetRefundReason.text = ""
+            mDataBinding.cetRemark.setText("")
+            mDataBinding.tableShipmentCancel.notifyDataChanged()
         }
     }
 

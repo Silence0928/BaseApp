@@ -188,6 +188,15 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             }
         } else {
             ToastUtils.show("保存成功")
+            // 清除表格数据
+            mDataBinding.cetMadeFinishedTag.setText("")
+            mDataBinding.cetStorageOrderNo.text = ""
+            mDataBinding.cetRemark.setText("")
+            mTempDataList.clear()
+            mDataList.clear()
+            mProductEnd = null
+            mDataBinding.tableStorageCollection.notifyDataChanged()
+            handleTotalNum()
         }
     }
 

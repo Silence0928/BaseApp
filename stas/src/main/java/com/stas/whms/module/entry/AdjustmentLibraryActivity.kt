@@ -179,7 +179,14 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
 //            }
         } else {
             ToastUtils.show("保存成功")
-            finish()
+            mGoodsInfo = null
+            mDataBinding.cetMadeFinishedTag.setText("")
+            mDataBinding.cetRotaryDesignation.text = ""
+            mDataBinding.cetForeworkNum.text = ""
+            mDataBinding.cetInLibraryState.text = ""
+            mDataBinding.cetGoodsNum.setText("")
+            mDataBinding.cetReason.text = ""
+            mDataBinding.cetRemark.setText("")
         }
     }
 }
