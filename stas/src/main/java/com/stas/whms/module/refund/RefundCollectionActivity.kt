@@ -174,7 +174,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
         val coBoxSum = Column<String>("包装数", "Qty")
         val coFromProCode = Column<String>("前工程", "FromProCode")
-        val coTime = Column<String>("入库时间", "InBoundTime")
+        val coTime = Column<String>("入库时间", "CreateDT")
         val coDel = Column<String>("操作", "del")
 
         //endregion
@@ -200,7 +200,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
         mDataBinding.tableRefundCollection.setTableData(tableData)
         mDataBinding.tableRefundCollection.tableData
             .setOnRowClickListener { column, o, col, row ->
-                if (col == 5) {
+                if (col == 6) {
                     // 删除
                     CommonAlertDialog(this).builder().setTitle("提示")
                         .setMsg("是否确认删除？")
@@ -231,7 +231,7 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
                 }
 
                 override fun getTextColor(t: CellInfo<*>?): Int {
-                    return if (t?.col == 5) ContextCompat.getColor(
+                    return if (t?.col == 6) ContextCompat.getColor(
                         this@RefundCollectionActivity,
                         com.lib_src.R.color.blue11
                     ) else
