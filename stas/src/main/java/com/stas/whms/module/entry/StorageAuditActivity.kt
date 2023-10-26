@@ -51,7 +51,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
     override fun initView() {
         title = "入库审核"
         initDataTable()
-        mDataBinding.cetStorageDate.text = DateUtils.getFormatDate(DateUtils.getDateBefore(1), Constants.DATE_FORMAT_LINE)
+        mDataBinding.cetStorageDate.text = DateUtils.getFormatDate( Date(),Constants.DATE_FORMAT_LINE)
         getData(null, REQ_IN_BOUND_NO_GET)
     }
 
@@ -60,6 +60,8 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         mDataBinding.cetStorageDate.setOnClickListener {
             DateSelectDialog(this) { date: Date?, v: View? ->
                 mDataBinding.cetStorageDate.text = DateUtils.getFormatDate(date, Constants.DATE_FORMAT_LINE)
+                mDataBinding.cetStorageOrderNo.text = ""
+                mOrderNoList.clear()
                 getData(null, REQ_IN_BOUND_NO_GET)
             }.build().show()
         }
@@ -81,10 +83,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             if (!isFastClick()) {
                 val orderNoStr = mDataBinding.cetStorageOrderNo.text.toString()
                 val madeFinishedTag = mDataBinding.cetMadeFinishedTag.text.toString()
-                if (orderNoStr.isEmpty()) {
-                    ToastUtils.show("请选择入库单号")
-                    return@setOnClickListener
-                }
+//                if (orderNoStr.isEmpty()) {
+//                    ToastUtils.show("请选择入库单号")
+//                    return@setOnClickListener
+//                }
 //                if (madeFinishedTag.isEmpty()) {
 //                    ToastUtils.show("请扫描制造完了标签")
 //                    return@setOnClickListener
@@ -191,6 +193,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             // 清除表格数据
             mDataBinding.cetMadeFinishedTag.setText("")
             mDataBinding.cetStorageOrderNo.text = ""
+            mOrderNoList.clear()
             mDataBinding.cetRemark.setText("")
             mTempDataList.clear()
             mDataList.clear()
