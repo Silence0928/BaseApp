@@ -102,6 +102,19 @@ public class ErrorDialog {
         }
     }
 
+    public boolean isShowing() {
+        if (mDialog != null) {
+            return mDialog.isShowing();
+        }
+        return false;
+    }
+
+    public void setWorkNo(String workNo) {
+        if (mWorkNoEt != null) {
+            mWorkNoEt.setText(workNo);
+        }
+    }
+
     private void checkCommitData() {
         String workNo = mWorkNoEt.getText().toString().trim().toUpperCase(Locale.getDefault());
         if (TextUtils.isEmpty(workNo)) {

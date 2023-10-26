@@ -77,6 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static long lastCheckAPPUpdateTime; // 记录上次请求升级接口的时间
     private static final int APP_CHECK_UPDATE_DELAY_TIME = 3000;  // 请求升级接口间隔时间
     private BaseDialog updateDialog; // 升级弹窗
+    private ErrorDialog mErrorDialog; // 班长解锁弹窗
 
     /**
      * 避免快速点击
@@ -323,7 +324,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                     Log.e("idata", "recv = " + scan_data);
                     ScanResult result = new ScanResult();
                     result.setData(scan_data);
-                    runOnUiThread(() -> scanResultCallBack(result));
+                    runOnUiThread(() -> {
+                                if (mErrorDialog == null || !mErrorDialog.isShowing()) {
+                                    scanResultCallBack(result);
+                                } else {
+                                    mErrorDialog.setWorkNo(result.getData());
+                                }
+                            }
+                    );
                 }
             }
         }
@@ -402,36 +410,39 @@ public abstract class BaseActivity extends AppCompatActivity {
                     handleWebServiceSuccess(response, fromSource);
                 } else if (response.getErrorCode() == 300) {
                     // 发生错误，需班长解锁
-                    new ErrorDialog(this, new ErrorDialog.ErrorHandleCallBack() {
-                        @Override
-                        public void commitModify(Dialog dialog, String workNo, String pwd, String remark) {
-                            showLoading();
-                            new Thread((() -> {
-                                Map<String, String> req = new HashMap<>();
-                                req.put("UserID", workNo);
-                                req.put("Password", pwd);
-                                req.put("Remark", remark);
-                                req.put("PdaID", AndroidUtil.getIpAddress());
-                                req.put("TextID", "1");
-                                req.put("TimeStamp", DateUtils.getCurrentDateMilTimeStr());
-                                final WebServiceResponse response1 = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.unLockUrl, WebMethodApi.unlockMethod);
-                                runOnUiThread ((() -> {
-                                    dismissLoading();
-                                    if (response1 != null && response1.getErrorCode() == 200) {
-                                        dialog.dismiss();
-                                    } else {
-                                        assert response1 != null;
-                                        ToastUtils.show(response1.getReason());
-                                    }
-                                }));
-                            })).start();
-                        }
+                    if (mErrorDialog == null) {
+                        mErrorDialog = new ErrorDialog(this, new ErrorDialog.ErrorHandleCallBack() {
+                            @Override
+                            public void commitModify(Dialog dialog, String workNo, String pwd, String remark) {
+                                showLoading();
+                                new Thread((() -> {
+                                    Map<String, String> req = new HashMap<>();
+                                    req.put("UserID", workNo);
+                                    req.put("Password", pwd);
+                                    req.put("Remark", remark);
+                                    req.put("PdaID", AndroidUtil.getIpAddress());
+                                    req.put("TextID", "1");
+                                    req.put("TimeStamp", DateUtils.getCurrentDateMilTimeStr());
+                                    final WebServiceResponse response1 = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.unLockUrl, WebMethodApi.unlockMethod);
+                                    runOnUiThread ((() -> {
+                                        dismissLoading();
+                                        if (response1 != null && response1.getErrorCode() == 200) {
+                                            dialog.dismiss();
+                                        } else {
+                                            assert response1 != null;
+                                            ToastUtils.show(response1.getReason());
+                                        }
+                                    }));
+                                })).start();
+                            }
 
-                        @Override
-                        public void cancel() {
-                            finish();
-                        }
-                    }).builder().show(response.getReason());
+                            @Override
+                            public void cancel() {
+                                finish();
+                            }
+                        }).builder();
+                    }
+                    mErrorDialog.show(response.getReason());
                 } else {
                     ToastUtils.show(response.getReason());
                 }

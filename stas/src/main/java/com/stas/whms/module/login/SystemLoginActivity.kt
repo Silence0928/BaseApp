@@ -11,6 +11,7 @@ import com.lib_common.app.BaseApplication
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.constants.MmkvConstants
+import com.lib_common.entity.ScanResult
 import com.lib_common.listener.SimpleTextWatcher
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.InputTextHelper
@@ -113,6 +114,14 @@ class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel
 
     override fun getVariableId(): Int {
         return 0
+    }
+
+    override fun isRegisterScan(): Boolean {
+        return true
+    }
+
+    override fun scanResultCallBack(result: ScanResult?) {
+        mDataBinding.etJobNum.setText(result?.data)
     }
 
     private fun login(jobNum: String, pwd: String) {
