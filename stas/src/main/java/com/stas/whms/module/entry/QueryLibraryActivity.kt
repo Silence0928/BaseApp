@@ -72,8 +72,8 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
-        req.DocNo = mDataBinding.cetForeworkNumber.text.toString()
-        req.FromProCode = mDataBinding.cetRotaryDesignation.text.toString()
+        req.FromProCode= mDataBinding.cetForeworkNumber.text.toString()
+        req.TagSerialNo  = mDataBinding.cetRotaryDesignation.text.toString()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.ProductEnd = mProductEnd
         req.QrCode = result
@@ -164,10 +164,10 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
             )
         //注意：绑定数据的方法setData换成了setTableData。不再是List对象而是TableData对象
         mDataBinding.tableGoods.setTableData(tableData)
-        mDataBinding.tableGoods.tableData
-            .setOnRowClickListener { column, o, col, row ->
-                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
-            }
+//        mDataBinding.tableGoods.tableData
+//            .setOnRowClickListener { column, o, col, row ->
+//                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
+//            }
         // 设置背景和字体颜色
         val backgroundFormat: BaseCellBackgroundFormat<CellInfo<*>?> =
             object : BaseCellBackgroundFormat<CellInfo<*>?>() {

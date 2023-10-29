@@ -107,7 +107,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
 
     private fun saveData() {
         if (mGoodsInfo == null) {
-            ToastUtils.show("无待调整的的入库单！")
+            ToastUtils.show("无待调整的的在库信息！")
             return
         }
         if (mDataBinding.cetGoodsNum.text.toString().isEmpty()) {
@@ -136,7 +136,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
                     req.CreateBy = loginInfo.UserID
                 }
             }
-            val result = StasHttpRequestUtil.saveInBoundAuditData(JSON.toJSONString(req))
+            val result = StasHttpRequestUtil.saveAdjustmentLibrariesData(JSON.toJSONString(req))
             handleWebServiceResult(result, REQ_SCANNER_SAVE)
         }.start()
     }

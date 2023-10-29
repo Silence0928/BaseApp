@@ -35,11 +35,11 @@ import com.stas.whms.utils.StasHttpRequestUtil
 
 @Route(path = RoutePathConfig.ROUTE_REFUND_AUDIT)
 class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseViewModel>() {
-    private val REQ_IN_BOUND_NO_GET = 1001 // 查询退库单号
-    private val REQ_IN_BOUND_GET_END = 1002 // 查询制造完了标签数据
-    private val REQ_IN_BOUND_REASON_GET = 1003 // 查询退库原因
-    private val REQ_IN_BOUND_GET = 1004 // 查询退库数据
-    private val REQ_IN_BOUND_SAVE = 1005 // 保存
+    private val REQ_IN_BOUND_NO_GET = 1 // 查询退库单号
+    private val REQ_IN_BOUND_GET_END = 2 // 查询制造完了标签数据
+    private val REQ_IN_BOUND_REASON_GET = 4 // 查询退库原因
+    private val REQ_IN_BOUND_GET = 3 // 查询退库数据
+    private val REQ_IN_BOUND_SAVE = 5 // 保存
     private var mOrderNoList = arrayListOf<String>()
     private var mDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
@@ -91,10 +91,10 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                     ToastUtils.show("请选择退库单号")
                     return@setOnClickListener
                 }
-                if (madeFinishedTag.isEmpty()) {
-                    ToastUtils.show("请扫描制造完了标签")
-                    return@setOnClickListener
-                }
+//                if (madeFinishedTag.isEmpty()) {
+//                    ToastUtils.show("请扫描制造完了标签")
+//                    return@setOnClickListener
+//                }
                 getData(null, REQ_IN_BOUND_GET)
             }
         }
@@ -279,9 +279,9 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         coId.isAutoCount = true
         //一致是因为需要用字段名来解析List对象
         val coPartsNo = Column<String>("品番", "PartsNo")
-        val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
+//        val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
         val coBoxSum = Column<String>("包装数", "Qty")
-        val coFromProCode = Column<String>("前工程", "FromProCode")
+//        val coFromProCode = Column<String>("前工程", "FromProCode")
         val coCreateBy = Column<String>("采集人", "CreateBy")
         val coCreateDT = Column<String>("入库日期", "CreateDT")
         val coDel = Column<String>("操作", "del")
@@ -298,9 +298,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                 mDataList,
                 coId,
                 coPartsNo,
-                coTagSerialNo,
                 coBoxSum,
-                coFromProCode,
                 coCreateBy,
                 coCreateDT,
                 coDel
@@ -309,7 +307,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         mDataBinding.tableRefundCollection.setTableData(tableData)
         mDataBinding.tableRefundCollection.tableData
             .setOnRowClickListener { column, o, col, row ->
-                if (col == 7) {
+                if (col == 5) {
                     CommonAlertDialog(this).builder().setTitle("提示")
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)

@@ -17,6 +17,7 @@ import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.lib_common.utils.AndroidUtil
 import com.lib_common.utils.DateUtils
+import com.lib_common.webservice.response.WebServiceResponse
 import com.stas.whms.R
 import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.InBoundAuditRequestInfo
@@ -65,23 +66,64 @@ class DocumentDetailActivity :
         req.TextID = "6"
         showLoading()
         Thread {
-            val result = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
-            if (result?.errorCode == 200) {
-                if (result.data != null) {
-                    val jArray = JSONObject.parseArray(result.data, GoodsInfo::class.java)
+            if(documentNo.toString().substring(0,2)=="IN"){
+                val result = StasHttpRequestUtil.queryInBoundAuditData(JSON.toJSONString(req))
+                if (result?.errorCode == 200) {
+                    if (result.data != null) {
+                        val jArray = JSONObject.parseArray(result.data, GoodsInfo::class.java)
 
-                    var i = 1
-                    for (a in jArray) {
-                        a.idNum = i
-                        i++
+                        var i = 1
+                        for (a in jArray) {
+                            a.idNum = i
+                            i++
+                        }
+                        mTempDataList = jArray as ArrayList<GoodsInfo>
+                        mDataBinding.tableGoods.addData(jArray, true)
+                        handleTotalNum()
                     }
-                    mTempDataList = jArray as ArrayList<GoodsInfo>
-                    mDataBinding.tableGoods.addData(jArray, true)
-                    handleTotalNum()
+                } else {
+                    ToastUtils.show(result?.reason)
                 }
-            } else {
-                ToastUtils.show(result?.reason)
             }
+            else if(documentNo.toString().substring(0,2)=="RE"){
+                var result = StasHttpRequestUtil.queryReturnAuditData(JSON.toJSONString(req))
+                if (result?.errorCode == 200) {
+                    if (result.data != null) {
+                        val jArray = JSONObject.parseArray(result.data, GoodsInfo::class.java)
+
+                        var i = 1
+                        for (a in jArray) {
+                            a.idNum = i
+                            i++
+                        }
+                        mTempDataList = jArray as ArrayList<GoodsInfo>
+                        mDataBinding.tableGoods.addData(jArray, true)
+                        handleTotalNum()
+                    }
+                } else {
+                    ToastUtils.show(result?.reason)
+                }
+            }
+            else if(documentNo.toString().substring(0,2)=="MO"){
+                var result = StasHttpRequestUtil.queryMoveAuditDataResult(JSON.toJSONString(req))
+                if (result?.errorCode == 200) {
+                    if (result.data != null) {
+                        val jArray = JSONObject.parseArray(result.data, GoodsInfo::class.java)
+
+                        var i = 1
+                        for (a in jArray) {
+                            a.idNum = i
+                            i++
+                        }
+                        mTempDataList = jArray as ArrayList<GoodsInfo>
+                        mDataBinding.tableGoods.addData(jArray, true)
+                        handleTotalNum()
+                    }
+                } else {
+                    ToastUtils.show(result?.reason)
+                }
+            }
+
         }.start()
     }
 
