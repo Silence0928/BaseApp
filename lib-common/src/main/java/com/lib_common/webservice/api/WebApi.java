@@ -2,12 +2,12 @@ package com.lib_common.webservice.api;
 
 public class WebApi {
 
-    public static String webBaseUrl = "http://192.168.101.12/Interface/";
-//    public static String webBaseUrl = "http://192.168.3.39/Interface/";
+//    public static String webBaseUrl = "http://192.168.101.12/Interface/";
+    public static String webBaseUrl = "http://192.168.3.39/Interface/";
 
 //    public static String serviceAddressUrl = "http://192.168.6.180:8084/Interface.asmx";
-//    public static String serviceAddressUrl = "http://192.168.3.39/Interface/";
-    public static String serviceAddressUrl = "http://192.168.101.12/Interface/";
+    public static String serviceAddressUrl = "http://192.168.3.39/Interface/";
+//    public static String serviceAddressUrl = "http://192.168.101.12/Interface/";
 
     // 登录
     public static final String loginUrl = webBaseUrl + WebMethodApi.loginMethod;

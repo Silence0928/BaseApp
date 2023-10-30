@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:paddingTop="20dp"
-                android:text="欢迎使用出货追溯采集系统"
+                android:text="欢迎使用出货溯源采集系统"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/logo" />

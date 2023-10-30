@@ -101,9 +101,9 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
         // 出货指示书、客户受领书采集一次，客户看板采集多次
         val text1 = mDataBinding.cetStorageDate.text.toString()
         val text2 = mDataBinding.cetCustomerAcceptLetter.text.toString()
-        if (text1.isEmpty()) {
+        if (text1.isEmpty() && mDataList.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET)
-        } else if (text2.isEmpty()) {
+        } else if (text2.isEmpty() && !mDataList.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET_2)
         } else {
             getData(result?.data, REQ_SCANNER_GET_3)
