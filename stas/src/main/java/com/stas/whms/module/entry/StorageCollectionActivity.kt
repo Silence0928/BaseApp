@@ -113,6 +113,7 @@ class StorageCollectionActivity :
             mDataBinding.cetMadeFinishedTag.setText("")
             mTempDataList.clear()
             mDataList.clear()
+            mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
             mDataBinding.tableStorageCollection.notifyDataChanged()
             handleTotalNum()
         }

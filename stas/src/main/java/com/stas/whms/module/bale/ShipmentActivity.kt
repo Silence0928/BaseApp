@@ -100,11 +100,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         } else {
             getData(result?.data, REQ_SCANNER_GET_2)
         }
-//        if (text1.isEmpty()) {
-//            getData("27300078170Z", REQ_SCANNER_GET)
-//        } else {
-//            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_2)
-//        }
+
     }
 
     /**
@@ -132,7 +128,10 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
         req.TextID = if (type == REQ_SCANNER_GET) "1" else "2"
         req.QrCode = result
-        req.ProductEnd = mProductEnd
+        if(type != REQ_SCANNER_GET){
+            req.ProductEnd = mProductEnd
+        }
+
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryShipmentDataResult(JSON.toJSONString(req))

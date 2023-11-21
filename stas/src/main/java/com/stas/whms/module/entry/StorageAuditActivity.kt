@@ -132,6 +132,11 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
      * type=2 查询单号  =3查询制造完了标签 =4查询入库数据
      */
     private fun getData(result: String?, type: Int) {
+        // 清除表格数据
+        mDataList.clear()
+        mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
+        mDataBinding.tableStorageCollection.notifyDataChanged()
+
         if (type == REQ_IN_BOUND_GET_END && result?.isEmpty() == true) return
         val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
@@ -197,7 +202,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
             mDataBinding.cetRemark.setText("")
             mTempDataList.clear()
             mDataList.clear()
+
             mProductEnd = null
+
+            mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
             mDataBinding.tableStorageCollection.notifyDataChanged()
             handleTotalNum()
         }
