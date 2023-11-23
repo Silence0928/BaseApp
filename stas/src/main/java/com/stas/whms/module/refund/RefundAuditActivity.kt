@@ -86,15 +86,11 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         mDataBinding.stvQueryRefundCollection.setOnClickListener {
             if (!isFastClick()) {
                 val orderNoStr = mDataBinding.cetRefundOrderNo.text.toString()
-                val madeFinishedTag = mDataBinding.cetMadeFinishedTag.text.toString()
                 if (orderNoStr.isEmpty()) {
                     ToastUtils.show("请选择退库单号")
                     return@setOnClickListener
                 }
-//                if (madeFinishedTag.isEmpty()) {
-//                    ToastUtils.show("请扫描制造完了标签")
-//                    return@setOnClickListener
-//                }
+                clearData()
                 getData(null, REQ_IN_BOUND_GET)
             }
         }
@@ -205,18 +201,34 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         } else {
             ToastUtils.show("保存成功")
             // 清除表格数据
-            mDataBinding.cetMadeFinishedTag.setText("")
-            mDataBinding.cetRefundOrderNo.text = ""
-            mDataBinding.cetRefundReason.text = ""
-            mDataBinding.cetRemark.setText("")
-            mTempDataList.clear()
-            mDataList.clear()
-            mProductEnd = null
-            mDataBinding.tableRefundCollection.notifyDataChanged()
-            handleTotalNum()
+            clearAllData()
         }
     }
 
+    /**
+     * 清除表格数据
+     */
+    private fun clearData() {
+        mTempDataList.clear()
+        mDataList.clear()
+        mDataBinding.tableRefundCollection.notifyDataChanged()
+        handleTotalNum()
+    }
+
+    /**
+     * 清除所有数据
+     */
+    private fun clearAllData() {
+        mDataBinding.cetMadeFinishedTag.setText("")
+        mDataBinding.cetRefundOrderNo.text = ""
+        mDataBinding.cetRefundReason.text = ""
+        mDataBinding.cetRemark.setText("")
+        mTempDataList.clear()
+        mDataList.clear()
+        mProductEnd = null
+        mDataBinding.tableRefundCollection.notifyDataChanged()
+        handleTotalNum()
+    }
     private fun handleTotalNum() {
         val totalSize = mTempDataList.size
         mDataBinding.cetTotalBoxNum.text = totalSize.toString()
@@ -312,6 +324,11 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
+                            if (mDataList.size == 0) {
+                                clearData()
+                                handleTotalNum()
+                                return@setPositiveButton
+                            }
                             mDataList.removeAt(row)
                             mTempDataList.removeAt(row)
                             var i = 1

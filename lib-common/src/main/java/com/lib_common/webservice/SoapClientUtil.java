@@ -13,8 +13,8 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 public class SoapClientUtil {
-    public static WebServiceResponse execute(String req, String url, String methodName) {
-        System.out.println("请求地址：" + url + "\n\n请求入参:" + req);
+    public static WebServiceResponse execute(String req, String methodName) {
+        System.out.println("请求地址：" + WebApi.webBaseUrl + methodName + "\n\n请求入参:" + req);
         WebServiceResponse response = new WebServiceResponse();
         SoapObject soapObject = new SoapObject(WebApi.webBaseUrl, methodName);
         soapObject.addProperty("param", req);
@@ -24,7 +24,7 @@ public class SoapClientUtil {
         envelope.setOutputSoapObject(soapObject);
         HttpTransportSE httpTransportSE = new HttpTransportSE(WebApi.serviceAddressUrl, 60000);
         try {
-            httpTransportSE.call(url, envelope);
+            httpTransportSE.call(WebApi.webBaseUrl + methodName, envelope);
             //获得服务返回的数据,并且开始解析
             if (envelope.bodyIn instanceof SoapObject) {
                 SoapObject object = (SoapObject) envelope.bodyIn;//System.out.println("获得服务数据");

@@ -423,7 +423,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                                     req.put("PdaID", AndroidUtil.getIpAddress());
                                     req.put("TextID", "1");
                                     req.put("TimeStamp", DateUtils.getCurrentDateMilTimeStr());
-                                    final WebServiceResponse response1 = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.unLockUrl, WebMethodApi.unlockMethod);
+                                    final WebServiceResponse response1 = SoapClientUtil.execute(JSON.toJSONString(req), WebMethodApi.unlockMethod);
                                     runOnUiThread ((() -> {
                                         dismissLoading();
                                         if (response1 != null && response1.getErrorCode() == 200) {
@@ -501,7 +501,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Looper.prepare();
                 Map<String, String> req = new HashMap<>();
                 req.put("versionId", AndroidUtil.getAppVersionName(getBaseContext()));
-                final WebServiceResponse response = SoapClientUtil.execute(JSON.toJSONString(req), WebApi.upgradeUrl, WebMethodApi.upgradeMethod);
+                final WebServiceResponse response = SoapClientUtil.execute(JSON.toJSONString(req), WebMethodApi.upgradeMethod);
                 runOnUiThread(() -> {
                     if (response != null && response.getErrorCode() == 200 && response.getObj() != null) {
                         UpdateBean res = JSONObject.parseObject(response.getObj(), UpdateBean.class);

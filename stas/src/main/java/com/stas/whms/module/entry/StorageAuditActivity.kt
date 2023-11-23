@@ -81,8 +81,8 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         // 查询
         mDataBinding.stvQueryStorageCollection.setOnClickListener {
             if (!isFastClick()) {
-                val orderNoStr = mDataBinding.cetStorageOrderNo.text.toString()
-                val madeFinishedTag = mDataBinding.cetMadeFinishedTag.text.toString()
+//                val orderNoStr = mDataBinding.cetStorageOrderNo.text.toString()
+//                val madeFinishedTag = mDataBinding.cetMadeFinishedTag.text.toString()
 //                if (orderNoStr.isEmpty()) {
 //                    ToastUtils.show("请选择入库单号")
 //                    return@setOnClickListener
@@ -91,6 +91,8 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
 //                    ToastUtils.show("请扫描制造完了标签")
 //                    return@setOnClickListener
 //                }
+                // 查询前先清空上一次查询结果
+                clearData()
                 getData(null, REQ_IN_BOUND_GET)
             }
         }
@@ -132,11 +134,6 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
      * type=2 查询单号  =3查询制造完了标签 =4查询入库数据
      */
     private fun getData(result: String?, type: Int) {
-        // 清除表格数据
-        mDataList.clear()
-        mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
-        mDataBinding.tableStorageCollection.notifyDataChanged()
-
         if (type == REQ_IN_BOUND_GET_END && result?.isEmpty() == true) return
         val req = InBoundAuditRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
@@ -196,19 +193,42 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
         } else {
             ToastUtils.show("保存成功")
             // 清除表格数据
-            mDataBinding.cetMadeFinishedTag.setText("")
-            mDataBinding.cetStorageOrderNo.text = ""
-            mOrderNoList.clear()
-            mDataBinding.cetRemark.setText("")
-            mTempDataList.clear()
-            mDataList.clear()
-
-            mProductEnd = null
-
-            mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
-            mDataBinding.tableStorageCollection.notifyDataChanged()
-            handleTotalNum()
+            clearAllData()
+//            mDataBinding.cetMadeFinishedTag.setText("")
+//            mDataBinding.cetStorageOrderNo.text = ""
+//            mOrderNoList.clear()
+//            mDataBinding.cetRemark.setText("")
+//            mTempDataList.clear()
+//            mDataList.clear()
+//            mProductEnd = null
+//            mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
+//            mDataBinding.tableStorageCollection.notifyDataChanged()
+//            handleTotalNum()
         }
+    }
+
+    /**
+     * 清除表格数据
+     */
+    private fun clearData() {
+        mTempDataList.clear()
+        mDataList.clear()
+        mDataBinding.tableStorageCollection.notifyDataChanged()
+        handleTotalNum()
+    }
+
+    /**
+     * 清除所有数据
+     */
+    private fun clearAllData() {
+        mDataBinding.cetMadeFinishedTag.setText("")
+        mDataBinding.cetStorageOrderNo.text = ""
+        mDataBinding.cetRemark.setText("")
+        mTempDataList.clear()
+        mDataList.clear()
+        mProductEnd = null
+        mDataBinding.tableStorageCollection.notifyDataChanged()
+        handleTotalNum()
     }
 
     private fun handleTotalNum() {

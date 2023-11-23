@@ -321,6 +321,7 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
+                            if (mCustomerDataList.size == 0) return@setPositiveButton
                             mCustomerDataList.removeAt(row)
                             mTempDataList.removeAt(row)
                             var i = 1

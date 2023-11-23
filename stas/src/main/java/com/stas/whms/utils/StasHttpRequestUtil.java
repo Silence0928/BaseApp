@@ -13,7 +13,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse login(String req) {
-        return SoapClientUtil.execute(req, WebApi.loginUrl, WebMethodApi.loginMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.loginMethod);
     }
     /**
      * 扫描结果查询
@@ -21,7 +21,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryScannerResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.scannerUrl, WebMethodApi.scannerMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.scannerMethod);
     }
     /**
      * 保存入库采集结果
@@ -29,7 +29,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveInBound(String req) {
-        return SoapClientUtil.execute(req, WebApi.inboundSaveUrl, WebMethodApi.inboundSaveMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.inboundSaveMethod);
     }
     /**
      * 入库审核数据查询
@@ -37,7 +37,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryInBoundAuditData(String req) {
-        return SoapClientUtil.execute(req, WebApi.inboundAuditDataUrl, WebMethodApi.inboundAuditGetMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.inboundAuditGetMethod);
     }
     /**
      * 入库审核数据保存
@@ -45,7 +45,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveInBoundAuditData(String req) {
-        return SoapClientUtil.execute(req, WebApi.inboundAuditSaveUrl, WebMethodApi.inboundAuditSaveMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.inboundAuditSaveMethod);
     }
     /**
      * 退库结果查询
@@ -53,7 +53,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryReturnScannerResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.returnUrl, WebMethodApi.returnMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.returnMethod);
     }
     /**
      * 保存退库采集结果
@@ -61,7 +61,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveReturn(String req) {
-        return SoapClientUtil.execute(req, WebApi.returnSaveUrl, WebMethodApi.returnSaveMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.returnSaveMethod);
     }
     /**
      * 退库审核数据查询
@@ -69,7 +69,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryReturnAuditData(String req) {
-        return SoapClientUtil.execute(req, WebApi.returnAuditDataUrl, WebMethodApi.returnAuditGetMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.returnAuditGetMethod);
     }
     /**
      * 退库审核数据保存
@@ -77,7 +77,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveReturnAuditData(String req) {
-        return SoapClientUtil.execute(req, WebApi.returnAuditSaveUrl, WebMethodApi.returnAuditSaveMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.returnAuditSaveMethod);
     }
     /**
      * 在库数据查询
@@ -85,7 +85,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryLibrariesData(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryLibraryDataUrl, WebMethodApi.queryLibraryMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryLibraryMethod);
     }
     /**
      * 在库调整查询
@@ -93,7 +93,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryAdjustmentLibrariesData(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryAdjustmentLibraryDataUrl, WebMethodApi.queryAdjustmentLibraryMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryAdjustmentLibraryMethod);
     }
     /**
      * 在库调整保存
@@ -101,7 +101,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveAdjustmentLibrariesData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveAdjustmentLibraryDataUrl, WebMethodApi.saveAdjustmentLibraryMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveAdjustmentLibraryMethod);
     }
     /**
      * 出货准备查询
@@ -109,7 +109,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryShipmentPrepareResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryShipmentPrepareDataUrl, WebMethodApi.queryShipmentPrepareMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryShipmentPrepareMethod);
     }
     /**
      * 出货准备保存
@@ -117,7 +117,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveShipmentPrepareData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveShipmentPrepareDataUrl, WebMethodApi.saveShipmentPrepareMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveShipmentPrepareMethod);
     }
     /**
      * 移库结果查询
@@ -125,7 +125,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryMoveDataResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryMoveDataUrl, WebMethodApi.queryMoveDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryMoveDataMethod);
     }
     /**
      * 保存移库采集结果
@@ -133,7 +133,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveMoveData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveMoveUrl, WebMethodApi.saveMoveDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveMoveDataMethod);
     }
     /**
      * 移库审核结果查询
@@ -141,7 +141,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryMoveAuditDataResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryMoveAuditDataUrl, WebMethodApi.queryMoveAuditDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryMoveAuditDataMethod);
     }
     /**
      * 保存移库审核采集结果
@@ -149,7 +149,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveMoveAuditData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveMoveAuditUrl, WebMethodApi.saveMoveAuditDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveMoveAuditDataMethod);
     }
     /**
      * 捆包照合结果查询
@@ -157,7 +157,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryBaleDataResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryBaleDataUrl, WebMethodApi.queryBaleDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryBaleDataMethod);
     }
     /**
      * 保存捆包照合采集结果
@@ -165,7 +165,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveBaleData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveBaleUrl, WebMethodApi.saveBaleDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveBaleDataMethod);
     }
     /**
      * 出货采集
@@ -173,7 +173,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryShipmentDataResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryShipmentDataUrl, WebMethodApi.queryShipmentDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryShipmentDataMethod);
     }
     /**
      * 保存出货采集结果
@@ -181,7 +181,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveShipmentData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveShipmentUrl, WebMethodApi.saveShipmentDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveShipmentDataMethod);
     }
     /**
      * 照合解除查询
@@ -189,7 +189,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryLightReleaseDataResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryLightReleaseDataUrl, WebMethodApi.queryLightReleaseDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryLightReleaseDataMethod);
     }
     /**
      * 保存照合解除结果
@@ -197,7 +197,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveLightReleaseData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveLightReleaseUrl, WebMethodApi.saveLightReleaseDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveLightReleaseDataMethod);
     }
     /**
      * 出货取消查询
@@ -205,7 +205,7 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse queryShipmentCancelDataResult(String req) {
-        return SoapClientUtil.execute(req, WebApi.queryShipmentCancelDataUrl, WebMethodApi.queryShipmentCancelDataMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.queryShipmentCancelDataMethod);
     }
     /**
      * 保存出货取消结果
@@ -213,14 +213,6 @@ public class StasHttpRequestUtil {
      * @return
      */
     public static WebServiceResponse saveShipmentCancelData(String req) {
-        return SoapClientUtil.execute(req, WebApi.saveShipmentCancelUrl, WebMethodApi.saveShipmentCancelDataMethod);
-    }
-    /**
-     * 解锁
-     * @param req
-     * @return
-     */
-    public static WebServiceResponse unlock(String req) {
-        return SoapClientUtil.execute(req, WebApi.unLockUrl, WebMethodApi.unlockMethod);
+        return SoapClientUtil.execute(req, WebMethodApi.saveShipmentCancelDataMethod);
     }
 }

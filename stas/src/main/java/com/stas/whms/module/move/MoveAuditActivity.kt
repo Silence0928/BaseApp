@@ -77,10 +77,10 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
         // 查询
         mDataBinding.stvQuery.setOnClickListener {
             if (!isFastClick()) {
-                if (mDataBinding.cetMadeFinishedTag.text.toString().isEmpty()) {
-                    ToastUtils.show("请扫描制造完了标签")
-                    return@setOnClickListener
-                }
+//                if (mDataBinding.cetMadeFinishedTag.text.toString().isEmpty()) {
+//                    ToastUtils.show("请扫描制造完了标签")
+//                    return@setOnClickListener
+//                }
                 if (mDataBinding.cetMoveNo.text.toString().isEmpty()) {
                     ToastUtils.show("请选择移库单号")
                     return@setOnClickListener

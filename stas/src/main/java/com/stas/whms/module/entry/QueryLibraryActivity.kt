@@ -43,6 +43,7 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         // 查询
         mDataBinding.stvQueryStorageCollection.setOnClickListener {
             if (!isFastClick()) {
+                clearData()
                 getData(null, REQ_SCANNER_GET_2)
             }
         }
@@ -87,7 +88,15 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
         }.start()
     }
 
-
+    /**
+     * 清除表格数据
+     */
+    private fun clearData() {
+        mTempDataList.clear()
+        mDataList.clear()
+        mDataBinding.tableGoods.notifyDataChanged()
+        handleTotalNum()
+    }
     override fun handleWebServiceSuccess(response: WebServiceResponse?, fromSource: Int) {
         if (fromSource == REQ_SCANNER_GET) {
             mProductEnd =

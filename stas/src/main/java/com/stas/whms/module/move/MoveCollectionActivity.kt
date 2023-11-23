@@ -210,6 +210,10 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
+                            if (mDataList.size == 0) {
+                                handleTotalNum()
+                                return@setPositiveButton
+                            }
                             mDataList.removeAt(row)
                             mTempDataList.removeAt(row)
                             var i = 1

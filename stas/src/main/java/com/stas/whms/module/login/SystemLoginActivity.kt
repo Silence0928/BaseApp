@@ -93,6 +93,12 @@ class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel
 
         // 登录
         mDataBinding.tvLogin.setOnClickListener {
+            if (clickSystemSetting) {
+                WebApi.webBaseUrl = mDataBinding.etUrlNs.text.toString()
+                mMMKV.encode(MmkvConstants.MMKV_URL_NS, WebApi.webBaseUrl)
+                WebApi.serviceAddressUrl = mDataBinding.etUrl.text.toString()
+                mMMKV.encode(MmkvConstants.MMKV_SERVICE_URL, WebApi.serviceAddressUrl)
+            }
             val jobNum = mDataBinding.etJobNum.text.toString().trim()
             val password = mDataBinding.etPwd.text.toString().trim()
             if (jobNum.isEmpty()) {
