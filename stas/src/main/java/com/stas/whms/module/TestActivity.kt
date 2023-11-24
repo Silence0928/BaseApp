@@ -11,6 +11,7 @@ import com.bin.david.form.data.format.bg.BaseBackgroundFormat
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.format.grid.BaseAbstractGridFormat
 import com.bin.david.form.data.format.grid.IGridFormat
+import com.bin.david.form.data.format.grid.SimpleGridFormat
 import com.bin.david.form.data.style.FontStyle
 import com.bin.david.form.data.table.TableData
 import com.bin.david.form.data.table.TableData.OnRowClickListener
@@ -56,6 +57,7 @@ class TestActivity : BaseMvvmActivity<ActivityStorageCollectionBinding, BaseView
      * 清除表格数据
      */
     private fun clearData() {
+        ToastUtils.show("清除成功")
         mDataList.clear()
         mDataBinding.tableStorageCollection.notifyDataChanged()
     }
@@ -94,9 +96,9 @@ class TestActivity : BaseMvvmActivity<ActivityStorageCollectionBinding, BaseView
         val coSex = Column<String>("前工程", "sexy")
         //endregion
         mDataBinding.tableStorageCollection.setZoom(true, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableStorageCollection.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableStorageCollection.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableStorageCollection.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableStorageCollection.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableStorageCollection.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableStorageCollection.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<UserInfo> =
@@ -136,5 +138,18 @@ class TestActivity : BaseMvvmActivity<ActivityStorageCollectionBinding, BaseView
             BaseBackgroundFormat(ContextCompat.getColor(this@TestActivity, com.lib_src.R.color.main_color))
         // 设置列标题字体颜色
         mDataBinding.tableStorageCollection.config.columnTitleStyle = FontStyle(18, ContextCompat.getColor(this@TestActivity, com.lib_src.R.color.white))
+        // 清除表格左右、底部边框线
+        mDataBinding.tableStorageCollection.config.tableGridFormat = object: SimpleGridFormat(){
+            override fun drawTableBorderGrid(
+                canvas: Canvas?,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                paint: Paint?
+            ) {
+                super.drawTableBorderGrid(canvas, 0, top, 0, 0, paint)
+            }
+        }
     }
 }

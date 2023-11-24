@@ -1,6 +1,8 @@
 package com.stas.whms.module.bale
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.text.Editable
 import android.text.TextUtils
 import android.view.View
@@ -13,6 +15,7 @@ import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
 import com.bin.david.form.data.format.draw.ImageResDrawFormat
+import com.bin.david.form.data.format.grid.SimpleGridFormat
 import com.bin.david.form.data.table.TableData
 import com.bin.david.form.utils.DensityUtils
 import com.hjq.toast.ToastUtils
@@ -390,7 +393,19 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
 
             }
         mDataBinding.tableLightRelease.config.contentCellBackgroundFormat = backgroundFormat
-
+        // 清除表格左右、底部边框线
+        mDataBinding.tableLightRelease.config.tableGridFormat = object: SimpleGridFormat(){
+            override fun drawTableBorderGrid(
+                canvas: Canvas?,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                paint: Paint?
+            ) {
+                super.drawTableBorderGrid(canvas, 0, top, 0, 0, paint)
+            }
+        }
     }
 
     override fun onBackPressed() {

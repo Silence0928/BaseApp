@@ -1,5 +1,7 @@
 package com.stas.whms.module.bale
 
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.text.Editable
 import android.text.TextUtils
 import androidx.core.content.ContextCompat
@@ -10,6 +12,7 @@ import com.bin.david.form.core.TableConfig
 import com.bin.david.form.data.CellInfo
 import com.bin.david.form.data.column.Column
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat
+import com.bin.david.form.data.format.grid.SimpleGridFormat
 import com.bin.david.form.data.table.TableData
 import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
@@ -330,7 +333,19 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
 //                }
             }
         mDataBinding.tableBalePhoto.config.contentCellBackgroundFormat = backgroundFormat
-
+        // 清除表格左右、底部边框线
+        mDataBinding.tableBalePhoto.config.tableGridFormat = object: SimpleGridFormat(){
+            override fun drawTableBorderGrid(
+                canvas: Canvas?,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                paint: Paint?
+            ) {
+                super.drawTableBorderGrid(canvas, 0, top, 0, 0, paint)
+            }
+        }
     }
 
     override fun onBackPressed() {
