@@ -215,10 +215,12 @@ class RefundCollectionActivity : BaseMvvmActivity<ActivityRefundCollectionBindin
                             }
                             mDataList.removeAt(row)
                             mTempDataList.removeAt(row)
-                            var i = 1
-                            for (info in mDataList) {
-                                info.idNum = i
-                                i++
+                            if (mDataList.size > 0) {
+                                var i = 1
+                                for (info in mDataList) {
+                                    info.idNum = i
+                                    i++
+                                }
                             }
                             mDataBinding.tableRefundCollection.notifyDataChanged()
                             handleTotalNum()

@@ -339,10 +339,12 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
                             if (mCustomerDataList.size == 0 || mTempDataList.size == 0) return@setPositiveButton
                             mCustomerDataList.removeAt(row)
                             mTempDataList.removeAt(row)
-                            var i = 1
-                            for (info in mCustomerDataList) {
-                                info.idNum = i
-                                i++
+                            if (mCustomerDataList.size > 0) {
+                                var i = 1
+                                for (info in mCustomerDataList) {
+                                    info.idNum = i
+                                    i++
+                                }
                             }
                             mDataBinding.tableCustomer.notifyDataChanged()
                         }.show()
