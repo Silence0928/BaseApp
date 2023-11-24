@@ -19,6 +19,7 @@ import com.hjq.toast.ToastUtils
 import com.lib_common.base.mvvm.BaseMvvmActivity
 import com.lib_common.base.mvvm.BaseViewModel
 import com.stas.whms.R
+import com.stas.whms.bean.GoodsInfo
 import com.stas.whms.bean.UserInfo
 import com.stas.whms.databinding.ActivityStorageCollectionBinding
 
@@ -62,6 +63,27 @@ class TestActivity : BaseMvvmActivity<ActivityStorageCollectionBinding, BaseView
         mDataBinding.tableStorageCollection.notifyDataChanged()
     }
 
+//    private fun test() {
+//        var tempDataList = arrayListOf<GoodsInfo>()
+//        var goods = GoodsInfo()
+//        goods.PartsNo = "CW299500-32414B"
+//        goods.Qty = "48"
+//        goods.CreateDT = "2023/11/24 20:30:58"
+//        goods.CreateBy = "0001001M"
+//        goods.DocNo = "RE-20231124-002"
+//        goods.idNum = 1
+//        tempDataList.add(goods)
+//        mTempDataList.addAll(tempDataList)
+//        // 清除表格数据
+//        mDataList.addAll(tempDataList)
+//        if (isFirstLoadData) {
+//            isFirstLoadData = false
+//            mDataBinding.tableRefundCollection.addData(mDataList, true)
+//        } else {
+//            mDataBinding.tableRefundCollection.notifyDataChanged()
+//        }
+//        handleTotalNum()
+//    }
     /**
      * 手动绑定数据
      */

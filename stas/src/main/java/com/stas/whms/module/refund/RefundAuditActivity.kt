@@ -189,10 +189,11 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         a.idNum = i
                         i++
                     }
-                    mTempDataList = jArray as ArrayList<GoodsInfo>
+                    mTempDataList.clear()
+                    mTempDataList.addAll(jArray)
                     // 清除表格数据
                     mDataList.clear()
-                    mDataList = jArray
+                    mDataList.addAll(jArray)
                     if (isFirstLoadData) {
                         isFirstLoadData = false
                         mDataBinding.tableRefundCollection.addData(mDataList, true)
@@ -333,7 +334,9 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                                 return@setPositiveButton
                             }
                             mDataList.removeAt(row)
-                            mTempDataList.removeAt(row)
+                            if (mTempDataList.size > 0) {
+                                mTempDataList.removeAt(row)
+                            }
                             if (mDataList.size > 0) {
                                 var i = 1
                                 for (info in mDataList) {
