@@ -41,11 +41,11 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
         initDataTable()
     }
     override fun onViewEvent() {
-        mDataBinding.cetMadeFinishedTag.setOnFocusChangeListener { view, b ->
-            if (!b) {
-                getData(mDataBinding.cetMadeFinishedTag.text.toString().trim())
-            }
-        }
+//        mDataBinding.cetMadeFinishedTag.setOnFocusChangeListener { view, b ->
+//            if (!b) {
+//                getData(mDataBinding.cetMadeFinishedTag.text.toString().trim())
+//            }
+//        }
         // 保存
         mDataBinding.stvSaveMoveCollection.setOnClickListener {
             if (!isFastClick()) {
@@ -210,7 +210,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
-                            if (mDataList.size == 0) {
+                            if (mDataList.size == 0 || mTempDataList.size == 0) {
                                 handleTotalNum()
                                 return@setPositiveButton
                             }
@@ -241,7 +241,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
                 }
 
                 override fun getTextColor(t: CellInfo<*>?): Int {
-                    return if (t?.col == 5) ContextCompat.getColor(
+                    return if (t?.col == 6) ContextCompat.getColor(
                         this@MoveCollectionActivity,
                         com.lib_src.R.color.blue11
                     ) else

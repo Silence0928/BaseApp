@@ -172,6 +172,7 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                     }
 //                    mDataBinding.cetStorageOrderNo.text = mOrderNoList[0]
                 } else {
+                    mDataBinding.cetMadeFinishedTag.setText("")
                     var i = 1
                     for (a in jArray) {
                         a.idNum = i

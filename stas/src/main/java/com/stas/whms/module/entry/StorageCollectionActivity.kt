@@ -113,7 +113,6 @@ class StorageCollectionActivity :
             mDataBinding.cetMadeFinishedTag.setText("")
             mTempDataList.clear()
             mDataList.clear()
-            mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
             mDataBinding.tableStorageCollection.notifyDataChanged()
             handleTotalNum()
         }
@@ -208,7 +207,7 @@ class StorageCollectionActivity :
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
-                            if (mDataList.size == 0) {
+                            if (mDataList.size == 0 || mTempDataList.size == 0) {
                                 handleTotalNum()
                                 return@setPositiveButton
                             }

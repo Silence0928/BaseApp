@@ -61,9 +61,9 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
             BottomListDialog(this).setItems(mOrderNoList)
                 .setOnConfirmSelectListener { position: Int, name: String? ->
                     mDataBinding.cetMoveNo.text = name
-                    if (mDataBinding.cetMadeFinishedTag.text.toString().isNotEmpty()) {
+//                    if (mDataBinding.cetMadeFinishedTag.text.toString().isNotEmpty()) {
                         getData(null, REQ_IN_BOUND_GET)
-                    }
+//                    }
                 }
                 .setCurrentItem(if (mOrderNoList.size > 0) mOrderNoList.indexOf(mDataBinding.cetMoveNo.text.toString()) else 0)
                 .show()
@@ -113,9 +113,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        if (result?.data?.isNotEmpty() == true) {
-            getData(result?.data, REQ_IN_BOUND_GET_END)
-        }
+        getData(result?.data, REQ_IN_BOUND_GET_END)
     }
 
     /**
@@ -161,6 +159,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
 //                        mDataBinding.cetMoveNo.text = mOrderNoList[0]
 //                    }
                 } else {
+                    mDataBinding.cetMadeFinishedTag.setText("")
                     val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                     var i = 1
                     for (a in jArray) {

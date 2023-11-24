@@ -321,7 +321,7 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
-                            if (mCustomerDataList.size == 0) return@setPositiveButton
+                            if (mCustomerDataList.size == 0 || mTempDataList.size == 0) return@setPositiveButton
                             mCustomerDataList.removeAt(row)
                             mTempDataList.removeAt(row)
                             var i = 1
@@ -346,7 +346,7 @@ class ShipmentPrepareActivity : BaseMvvmActivity<ActivityShipmentPrepareBinding,
                 }
 
                 override fun getTextColor(t: CellInfo<*>?): Int {
-                    return if (t?.col == 5) ContextCompat.getColor(
+                    return if (t?.col == 2) ContextCompat.getColor(
                         this@ShipmentPrepareActivity,
                         com.lib_src.R.color.blue11
                     ) else

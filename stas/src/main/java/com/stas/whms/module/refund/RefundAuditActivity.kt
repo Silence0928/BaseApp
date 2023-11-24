@@ -179,6 +179,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         }
                     }
                 } else {
+                    mDataBinding.cetMadeFinishedTag.setText("")
                     val jArray = JSONObject.parseArray(response.data, GoodsInfo::class.java)
                     var i = 1
                     for (a in jArray) {
@@ -299,9 +300,9 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         val coDel = Column<String>("操作", "del")
         //endregion
         mDataBinding.tableRefundCollection.setZoom(false, 1.0f, 0.5f) //开启缩放功能
-        mDataBinding.tableRefundCollection.config.setShowXSequence(false) //去掉表格顶部字母
-        mDataBinding.tableRefundCollection.config.setShowYSequence(false) //去掉左侧数字
-        mDataBinding.tableRefundCollection.config.setShowTableTitle(false) // 去掉表头
+        mDataBinding.tableRefundCollection.config.isShowXSequence = false //去掉表格顶部字母
+        mDataBinding.tableRefundCollection.config.isShowYSequence = false //去掉左侧数字
+        mDataBinding.tableRefundCollection.config.isShowTableTitle = false // 去掉表头
 
         //TableData对象，包含了（表格标题，数据源，列1，列2，列3，列4....好多列）
         val tableData: TableData<GoodsInfo> =
@@ -324,9 +325,8 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         .setMsg("是否确认删除？")
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") {
-                            if (mDataList.size == 0) {
+                            if (mDataList.size == 0 || mTempDataList.size == 0) {
                                 clearData()
-                                handleTotalNum()
                                 return@setPositiveButton
                             }
                             mDataList.removeAt(row)
@@ -340,6 +340,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                             handleTotalNum()
                         }.show()
                 } else {
+                    if (mDataList.size == 0) return@setOnRowClickListener
                     RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
                 }
             }

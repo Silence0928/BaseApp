@@ -56,11 +56,6 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
     }
 
     override fun onViewEvent() {
-        mDataBinding.cetRefundInstruction.setOnFocusChangeListener { view, b ->
-            if (!b) {
-//                getData(mDataBinding.cetMadeFinishedTag.text.toString().trim())
-            }
-        }
         // 出货取消原因
         mDataBinding.cetRefundReason.setOnClickListener {
             if (mReasonStrList.size == 0) {
