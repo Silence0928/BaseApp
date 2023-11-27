@@ -189,14 +189,14 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                         a.idNum = i
                         i++
                     }
+                    // 清除表格数据
                     mTempDataList.clear()
                     mTempDataList.addAll(jArray)
-                    // 清除表格数据
                     mDataList.clear()
                     mDataList.addAll(jArray)
                     if (isFirstLoadData) {
                         isFirstLoadData = false
-                        mDataBinding.tableRefundCollection.addData(mDataList, true)
+                        mDataBinding.tableRefundCollection.addData(jArray, true)
                     } else {
                         mDataBinding.tableRefundCollection.notifyDataChanged()
                     }
@@ -204,9 +204,9 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             // 清除表格数据
             clearAllData()
+            ToastUtils.show("保存成功")
         }
     }
 

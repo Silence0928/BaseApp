@@ -202,7 +202,6 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             mCustomerDataList.clear()
             mTempDataList.clear()
             mProductEnd = null
@@ -212,6 +211,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             mDataBinding.cetCarNo.setText("")
             mDataBinding.tableCustomer.notifyDataChanged()
             handleTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 

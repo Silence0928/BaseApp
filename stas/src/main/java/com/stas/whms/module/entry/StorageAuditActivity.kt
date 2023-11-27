@@ -181,13 +181,14 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                         a.idNum = i
                         i++
                     }
-                    mTempDataList = jArray as ArrayList<GoodsInfo>
-                    // 清除表格数据
+                    // 清除数据
+                    mTempDataList.clear()
+                    mTempDataList.addAll(jArray)
                     mDataList.clear()
-                    mDataList = jArray as ArrayList<GoodsInfo>
+                    mDataList.addAll(jArray)
                     if (isFirstLoadData) {
                         isFirstLoadData = false
-                        mDataBinding.tableStorageCollection.addData(mDataList, true)
+                        mDataBinding.tableStorageCollection.addData(jArray, true)
                     } else {
                         mDataBinding.tableStorageCollection.notifyDataChanged()
                     }
@@ -195,19 +196,9 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             // 清除表格数据
             clearAllData()
-//            mDataBinding.cetMadeFinishedTag.setText("")
-//            mDataBinding.cetStorageOrderNo.text = ""
-//            mOrderNoList.clear()
-//            mDataBinding.cetRemark.setText("")
-//            mTempDataList.clear()
-//            mDataList.clear()
-//            mProductEnd = null
-//            mDataBinding.tableStorageCollection.setData(arrayListOf<GoodsInfo>())
-//            mDataBinding.tableStorageCollection.notifyDataChanged()
-//            handleTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 

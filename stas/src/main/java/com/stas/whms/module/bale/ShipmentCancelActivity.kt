@@ -243,7 +243,6 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             mDataList.clear()
             mTempDataList.clear()
             mProductEndList.clear()
@@ -251,6 +250,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             mDataBinding.cetRefundReason.text = ""
             mDataBinding.cetRemark.setText("")
             mDataBinding.tableShipmentCancel.notifyDataChanged()
+            ToastUtils.show("保存成功")
         }
     }
 

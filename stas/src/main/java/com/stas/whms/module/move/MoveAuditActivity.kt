@@ -169,13 +169,14 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                         a.idNum = i
                         i++
                     }
-                    mTempDataList = jArray as ArrayList<GoodsInfo>
-                    // 清除表格数据
+                    // 清除数据
+                    mTempDataList.clear()
+                    mTempDataList.addAll(jArray)
                     mDataList.clear()
-                    mDataList = jArray as ArrayList<GoodsInfo>
+                    mDataList.addAll(jArray)
                     if (isFirstLoadData) {
                         isFirstLoadData = false
-                        mDataBinding.tableMoveCollection.addData(mDataList, true)
+                        mDataBinding.tableMoveCollection.addData(jArray, true)
                     } else {
                         mDataBinding.tableMoveCollection.notifyDataChanged()
                     }
@@ -183,7 +184,6 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             // 清除表格数据
             mDataBinding.cetMadeFinishedTag.setText("")
             mDataBinding.cetMoveNo.text = ""
@@ -193,6 +193,7 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
             mProductEnd = null
             mDataBinding.tableMoveCollection.notifyDataChanged()
             handleTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 

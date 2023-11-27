@@ -178,7 +178,6 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
 //                mDataBinding.cetReason.text = mReasonList[0]
 //            }
         } else {
-            ToastUtils.show("保存成功")
             mGoodsInfo = null
             mDataBinding.cetMadeFinishedTag.setText("")
             mDataBinding.cetRotaryDesignation.text = ""
@@ -187,6 +186,7 @@ class AdjustmentLibraryActivity : BaseMvvmActivity<ActivityAdjustmentLibraryBind
             mDataBinding.cetGoodsNum.setText("")
             mDataBinding.cetReason.text = ""
             mDataBinding.cetRemark.setText("")
+            ToastUtils.show("保存成功")
         }
     }
 }

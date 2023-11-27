@@ -111,13 +111,13 @@ class StorageCollectionActivity :
                 }
             }
         } else if (fromSource == REQ_SCANNER_SAVE) {
-            ToastUtils.show("保存成功")
             // 清除表格数据
             mDataBinding.cetMadeFinishedTag.setText("")
             mTempDataList.clear()
             mDataList.clear()
             mDataBinding.tableStorageCollection.notifyDataChanged()
             handleTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 

@@ -269,7 +269,6 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             mCustomerDataList.clear()
             mTempDataList.clear()
             mOutPlanList.clear()
@@ -280,6 +279,7 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
             mDataBinding.tableLightRelease.notifyDataChanged()
             handleTotalNum()
             handlePlanTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 

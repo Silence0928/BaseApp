@@ -113,13 +113,14 @@ class QueryLibraryActivity : BaseMvvmActivity<ActivityQueryInLibraryBinding, Bas
                     a.idNum = i
                     i++
                 }
-                mTempDataList = jArray as ArrayList<GoodsInfo>
                 // 清除表格数据
+                mTempDataList.clear()
+                mTempDataList.addAll(jArray)
                 mDataList.clear()
-                mDataList = jArray as ArrayList<GoodsInfo>
+                mDataList.addAll(jArray)
                 if (isFirstLoadData) {
                     isFirstLoadData = false
-                    mDataBinding.tableGoods.addData(mDataList, true)
+                    mDataBinding.tableGoods.addData(jArray, true)
                 } else {
                     mDataBinding.tableGoods.notifyDataChanged()
                 }

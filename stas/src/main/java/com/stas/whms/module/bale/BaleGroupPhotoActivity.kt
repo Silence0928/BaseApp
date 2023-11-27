@@ -201,7 +201,6 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
                 }
             }
         } else {
-            ToastUtils.show("保存成功")
             mCustomerDataList.clear()
             mTempDataList.clear()
             mOutPlanList.clear()
@@ -213,6 +212,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             mDataBinding.tableBalePhoto.notifyDataChanged()
             handleTotalNum()
             handlePlanTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 

@@ -110,7 +110,6 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
                 }
             }
         } else if (fromSource == REQ_SCANNER_SAVE) {
-            ToastUtils.show("保存成功")
             // 清除表格数据
             mDataBinding.cetMadeFinishedTag.setText("")
             mDataBinding.cetRemark.setText("")
@@ -118,6 +117,7 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
             mDataList.clear()
             mDataBinding.tableMoveCollection.notifyDataChanged()
             handleTotalNum()
+            ToastUtils.show("保存成功")
         }
     }
 
