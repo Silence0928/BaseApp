@@ -242,9 +242,9 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
         coId.isAutoCount = true
         //一致是因为需要用字段名来解析List对象
         val coPartsNo = Column<String>("电装品番", "PartsNo")
-        val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
+//        val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
         val coBoxSum = Column<String>("数量", "Qty")
-        val coFromProCode = Column<String>("前工程", "FromProCode")
+//        val coFromProCode = Column<String>("前工程", "FromProCode")
         val coCreateBy = Column<String>("采集人", "CreateBy")
         val coCreateDT = Column<String>("入库时间", "CreateDT")
         val coDel = Column<String>("操作", "del")
@@ -261,9 +261,9 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                 mDataList,
                 coId,
                 coPartsNo,
-                coTagSerialNo,
+//                coTagSerialNo,
                 coBoxSum,
-                coFromProCode,
+//                coFromProCode,
                 coCreateBy,
                 coCreateDT
 //                coDel
@@ -288,7 +288,8 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
 //                            handleTotalNum()
 //                        }.show()
 //                } else {
-//                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
+                if (mDataList.size == 0) return@setOnRowClickListener
+                RouteJumpUtil.jumpToDocumentDetail(mDataList[row].DocNo)
 //                }
             }
         // 设置背景和字体颜色
