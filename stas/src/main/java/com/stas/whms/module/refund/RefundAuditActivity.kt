@@ -95,6 +95,10 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
                 }
                 clearData()
                 getData(null, REQ_IN_BOUND_GET)
+
+                mDataBinding.cetMadeFinishedTag.setText("")
+                mProductEnd = null
+                mDataBinding.tableRefundCollection.notifyDataChanged()
             }
         }
         mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {

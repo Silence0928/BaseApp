@@ -179,13 +179,23 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         } else if (fromSource == REQ_SCANNER_GET_2) {
             if (response?.obj != null) { // 生产看板
                 mProductEnd = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
-                mDataBinding.cetProductionSignage.setText(mProductEnd?.TagSerialNo)
+//                mDataBinding.cetProductionSignage.setText(mProductEnd?.TagSerialNo)
+                val obj2 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
+                if (obj2 != null) {
+                    mDataBinding.cetProductionSignage.setText("")
+                    mDataBinding.cetCustomerBoard.setText("")
+                    if (isCanSave(obj2)) {
+                        mDataBinding.cetProductionSignage.setText(obj2?.TagSerialNo)
+                    } else {
+                        ToastUtils.show("采集的数据已存在，请重新扫描")
+                    }
+                }
             }
         } else if (fromSource == REQ_SCANNER_GET_3) {
             if (response?.obj != null) { // 客户看板编号
                 val obj3 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
                 if (obj3 != null) {
-                    mDataBinding.cetProductionSignage.setText("")
+//                    mDataBinding.cetProductionSignage.setText("")
                     mDataBinding.cetCustomerBoard.setText("")
                     if (isCanSave(obj3)) {
                         mTempDataList.add(obj3)
@@ -222,6 +232,10 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         var canSave = true
         for (i in mTempDataList) {
             if (i.TagSerialNo == goods.TagSerialNo) {
+                canSave = false
+                break
+            }
+            if (i.CustomLabel == goods.CustomLabel) {
                 canSave = false
                 break
             }
@@ -265,7 +279,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         //一致是因为需要用字段名来解析List对象
         val coPartsNo = Column<String>("电装品番", "PartsNo")
         val coTagSerialNo = Column<String>("回转号", "TagSerialNo")
-        val coCustemerReceipt = Column<String>("客户编号", "CustemerReceipt")
+//        val coCustemerReceipt = Column<String>("客户编号", "CustemerReceipt")
         val coCustomLabel = Column<String>("客户看板编号", "CustomLabel")
         val coBoxSum = Column<String>("数量", "Qty")
         //endregion
@@ -282,7 +296,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
                 coId,
                 coPartsNo,
                 coTagSerialNo,
-                coCustemerReceipt,
+//                coCustemerReceipt,
                 coCustomLabel,
                 coBoxSum
             )

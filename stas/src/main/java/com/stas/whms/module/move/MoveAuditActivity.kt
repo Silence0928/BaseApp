@@ -64,8 +64,10 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
             BottomListDialog(this).setItems(mOrderNoList)
                 .setOnConfirmSelectListener { position: Int, name: String? ->
                     mDataBinding.cetMoveNo.text = name
+                    mDataBinding.cetMadeFinishedTag.setText("")
+                    mProductEnd = null
 //                    if (mDataBinding.cetMadeFinishedTag.text.toString().isNotEmpty()) {
-                        getData(null, REQ_IN_BOUND_GET)
+//                        getData(null, REQ_IN_BOUND_GET)
 //                    }
                 }
                 .setCurrentItem(if (mOrderNoList.size > 0) mOrderNoList.indexOf(mDataBinding.cetMoveNo.text.toString()) else 0)
@@ -88,7 +90,12 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
                     ToastUtils.show("请选择移库单号")
                     return@setOnClickListener
                 }
+                clearData()
                 getData(null, REQ_IN_BOUND_GET)
+
+                mDataBinding.cetMadeFinishedTag.setText("")
+                mProductEnd = null
+                mDataBinding.tableMoveCollection.notifyDataChanged()
             }
         }
         // 保存
@@ -335,5 +342,15 @@ class MoveAuditActivity : BaseMvvmActivity<ActivityMoveAuditBinding, BaseViewMod
         } else {
             finish()
         }
+    }
+
+    /**
+     * 清除表格数据
+     */
+    private fun clearData() {
+        mTempDataList.clear()
+        mDataList.clear()
+        mDataBinding.tableMoveCollection.notifyDataChanged()
+        handleTotalNum()
     }
 }

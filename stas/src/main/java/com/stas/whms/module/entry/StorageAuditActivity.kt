@@ -97,6 +97,10 @@ class StorageAuditActivity : BaseMvvmActivity<ActivityStorageAuditBinding, BaseV
                 // 查询前先清空上一次查询结果
                 clearData()
                 getData(null, REQ_IN_BOUND_GET)
+
+                mDataBinding.cetMadeFinishedTag.setText("")
+                mProductEnd = null
+                mDataBinding.tableStorageCollection.notifyDataChanged()
             }
         }
         mDataBinding.cetRemark.addTextChangedListener (object: SimpleTextWatcher() {
