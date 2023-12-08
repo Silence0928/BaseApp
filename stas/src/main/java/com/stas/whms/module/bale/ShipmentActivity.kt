@@ -209,8 +209,11 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             mDataBinding.cetCustomerBoard.setText("")
             mDataBinding.cetRemark.setText("")
             mDataBinding.cetCarNo.setText("")
+            mDataBinding.cetCollectedTotalBoxNum.setText("")
+            mDataBinding.cetTotalBoxNum.setText("")
+            mDataBinding.cetTotalNum.setText("")
             mDataBinding.tableCustomer.notifyDataChanged()
-            handleTotalNum()
+//            handleTotalNum()
             ToastUtils.show("保存成功")
         }
     }
@@ -220,7 +223,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
         if (goods == null) return false
         var canSave = true
         for (i in mTempDataList) {
-            if (i.TagSerialNo == goods.TagSerialNo) {
+            if (i.CustomLabel == goods.CustomLabel) {
                 canSave = false
                 break
             }
@@ -240,17 +243,19 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
 
     private fun getTotalBoxNum(): String {
         var totalCount = 0
-        for (g in mTempDataList) {
-            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
-        }
+//        for (g in mTempDataList) {
+//            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
+//        }
+        totalCount=mTempDataList.get(0).BoxSum?.toInt()!!
         return totalCount.toString()
     }
 
     private fun getTotalNum(): String {
         var totalCount = 0
-        for (g in mTempDataList) {
-            totalCount += if (g.QtySum == null) 0 else g.QtySum?.toInt()!!
-        }
+//        for (g in mTempDataList) {
+//            totalCount += if (g.QtySum == null) 0 else g.QtySum?.toInt()!!
+//        }
+        totalCount = mTempDataList.get(0).QtySum?.toInt()!!
         return totalCount.toString()
     }
 

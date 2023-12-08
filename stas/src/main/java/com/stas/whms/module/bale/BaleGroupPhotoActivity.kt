@@ -174,6 +174,8 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
                 mOutPlanList = jArray as ArrayList<ShipmentInfo>
                 if (jArray != null && jArray.size > 0) {
                     mDataBinding.cetShipmentInstruction.setText(jArray[0].Customer)
+
+                    handlePlanTotalNum()
                 }
             }
         } else if (fromSource == REQ_SCANNER_GET_2) {
@@ -204,7 +206,8 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
                         array2.add(obj3)
                         mDataBinding.tableBalePhoto.addData(array2, true)
                         handleTotalNum()
-                        handlePlanTotalNum()
+                        mProductEnd = null
+                        mDataBinding.cetProductionSignage.setText("")
                     } else {
                         ToastUtils.show("采集的数据已存在，请重新扫描")
                     }
@@ -219,9 +222,12 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             mDataBinding.cetCustomerBoard.setText("")
             mDataBinding.cetProductionSignage.setText("")
             mDataBinding.cetRemark.setText("")
+            mDataBinding.cetPlanTotalNum.setText("")
+            mDataBinding.cetTotalBoxNum.setText("")
+            mDataBinding.cetTotalNum.setText("")
             mDataBinding.tableBalePhoto.notifyDataChanged()
-            handleTotalNum()
-            handlePlanTotalNum()
+//            handleTotalNum()
+//            handlePlanTotalNum()
             ToastUtils.show("保存成功")
         }
     }
@@ -258,15 +264,15 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     }
 
     private fun handlePlanTotalNum() {
-        val totalSize = mTempDataList.size
-        mDataBinding.cetPlanTotalBoxNum.text = totalSize.toString()
+//        val totalSize = mTempDataList.size
+//        mDataBinding.cetPlanTotalBoxNum.text = totalSize.toString()
         mDataBinding.cetPlanTotalNum.text = getPlanTotalNum()
     }
 
     private fun getPlanTotalNum(): String {
         var totalCount = 0
-        for (g in mTempDataList) {
-            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
+        for (g in mOutPlanList) {
+            totalCount += if (g.Num == null) 0 else g.Num?.toInt()!!
         }
         return totalCount.toString()
     }

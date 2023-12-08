@@ -37,6 +37,7 @@ class SystemLoginActivity : BaseMvvmActivity<ActivityLoginBinding, BaseViewModel
     override fun initView() {
         title = "登录"
         mActionBar.leftView.visibility = View.INVISIBLE
+        mDataBinding.tvCompanyName.text ="无锡敏正信息科技有限公司"
         mDataBinding.tvVersion.text = "版本：V${AndroidUtil.getAppVersionName(this)}"
         mDataBinding.etUrl.setText(WebApi.serviceAddressUrl)
         mDataBinding.etUrlNs.setText(WebApi.webBaseUrl)

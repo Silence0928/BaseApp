@@ -202,7 +202,7 @@
                     android:layout_marginBottom="10dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:text="计划箱数/总数："
+                    android:text="计划总数："
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@+id/cet_total_num"
@@ -223,17 +223,17 @@
                     app:layout_constraintTop_toTopOf="@+id/tv_plan_total_num"
                     tools:text="1000" />
 
-                <TextView
-                    android:id="@+id/tv_plan_total_num_split"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="/"
-                    android:textColor="@color/black_333333"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cet_plan_total_box_num"
-                    app:layout_constraintLeft_toRightOf="@+id/cet_plan_total_box_num"
-                    app:layout_constraintTop_toTopOf="@+id/cet_plan_total_box_num" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_plan_total_num_split"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:text="/"-->
+<!--                    android:textColor="@color/black_333333"-->
+<!--                    android:textSize="18sp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/cet_plan_total_box_num"-->
+<!--                    app:layout_constraintLeft_toRightOf="@+id/cet_plan_total_box_num"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/cet_plan_total_box_num" />-->
 
                 <TextView
                     android:id="@+id/cet_plan_total_num"
@@ -247,7 +247,7 @@
                     android:textColor="@color/black_333333"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/cet_plan_total_box_num"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_plan_total_num_split"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_plan_total_num"
                     app:layout_constraintTop_toTopOf="@+id/cet_plan_total_box_num"
                     tools:text="1000" />
 

@@ -218,16 +218,19 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
      * 清除表格数据
      */
     private fun clearData() {
+
+        handleTotalNum()
         mTempDataList.clear()
         mDataList.clear()
         mDataBinding.tableRefundCollection.notifyDataChanged()
-        handleTotalNum()
     }
 
     /**
      * 清除所有数据
      */
     private fun clearAllData() {
+
+        handleTotalNum()
         mDataBinding.cetMadeFinishedTag.setText("")
         mDataBinding.cetRefundOrderNo.text = ""
         mDataBinding.cetRefundReason.text = ""
@@ -236,7 +239,6 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         mDataList.clear()
         mProductEnd = null
         mDataBinding.tableRefundCollection.notifyDataChanged()
-        handleTotalNum()
     }
     private fun handleTotalNum() {
         val totalSize = mTempDataList.size
