@@ -71,7 +71,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //https://square.github.io/leakcanary/getting_started/
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
     //网络框架RxHttp 相关依赖 https://github.com/liujingxing/rxhttp
     def rxhttp_version = '3.1.1'
     api 'com.squareup.okhttp3:okhttp:4.10.0'
