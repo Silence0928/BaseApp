@@ -284,7 +284,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
             })
         coChecked.isFixed = true
         val coPartsNo = Column<String>("电装品番", "PartsNo")
-        val coCustomLabel = Column<String>("客户看板编号", "Customer")
+//        val coCustomLabel = Column<String>("客户看板编号", "Customer")
         val coNum = Column<String>("数量", "Num")
         val coBoxSum = Column<String>("已采集数量", "ActualNum")
         //endregion
@@ -301,7 +301,7 @@ class ShipmentCancelActivity : BaseMvvmActivity<ActivityShipmentCancelBinding, B
                 coChecked,
                 coId,
                 coPartsNo,
-                coCustomLabel,
+//                coCustomLabel,
                 coNum,
                 coBoxSum
             )

@@ -312,8 +312,10 @@ class LightReleaseActivity : BaseMvvmActivity<ActivityLightReleaseBinding, BaseV
 
     private fun getPlanTotalNum(): String {
         var totalCount = 0
-        for (g in mTempDataList) {
-            totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
+        if(mTempDataList.size>0) {
+            for (g in mTempDataList) {
+                totalCount += if (g.Qty == null) 0 else g.Qty?.toInt()!!
+            }
         }
         return totalCount.toString()
     }

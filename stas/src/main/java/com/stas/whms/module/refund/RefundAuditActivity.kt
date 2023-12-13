@@ -219,9 +219,9 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
      */
     private fun clearData() {
 
-        handleTotalNum()
         mTempDataList.clear()
         mDataList.clear()
+        handleTotalNum()
         mDataBinding.tableRefundCollection.notifyDataChanged()
     }
 
@@ -230,7 +230,6 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
      */
     private fun clearAllData() {
 
-        handleTotalNum()
         mDataBinding.cetMadeFinishedTag.setText("")
         mDataBinding.cetRefundOrderNo.text = ""
         mDataBinding.cetRefundReason.text = ""
@@ -238,6 +237,7 @@ class RefundAuditActivity : BaseMvvmActivity<ActivityRefundAuditBinding, BaseVie
         mTempDataList.clear()
         mDataList.clear()
         mProductEnd = null
+        handleTotalNum()
         mDataBinding.tableRefundCollection.notifyDataChanged()
     }
     private fun handleTotalNum() {

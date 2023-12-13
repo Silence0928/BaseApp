@@ -115,6 +115,18 @@ public class ErrorDialog {
         }
     }
 
+    public void setPassword(String password) {
+        if (mPwdEt != null) {
+            mPwdEt.setText(password);
+        }
+    }
+
+    public void setRemark(String remark) {
+        if (mRemarkEt != null) {
+            mRemarkEt.setText(remark);
+        }
+    }
+
     private void checkCommitData() {
         String workNo = mWorkNoEt.getText().toString().trim().toUpperCase(Locale.getDefault());
         if (TextUtils.isEmpty(workNo)) {

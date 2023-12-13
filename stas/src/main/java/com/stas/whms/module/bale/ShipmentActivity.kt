@@ -213,7 +213,7 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             mDataBinding.cetTotalBoxNum.setText("")
             mDataBinding.cetTotalNum.setText("")
             mDataBinding.tableCustomer.notifyDataChanged()
-//            handleTotalNum()
+            handleTotalNum()
             ToastUtils.show("保存成功")
         }
     }
@@ -246,7 +246,9 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
 //        for (g in mTempDataList) {
 //            totalCount += if (g.BoxSum == null) 0 else g.BoxSum?.toInt()!!
 //        }
-        totalCount=mTempDataList.get(0).BoxSum?.toInt()!!
+        if(mTempDataList != null && mTempDataList.size > 0 ){
+            totalCount=mTempDataList.get(0).BoxSum?.toInt()!!
+        }
         return totalCount.toString()
     }
 
@@ -255,7 +257,9 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
 //        for (g in mTempDataList) {
 //            totalCount += if (g.QtySum == null) 0 else g.QtySum?.toInt()!!
 //        }
-        totalCount = mTempDataList.get(0).QtySum?.toInt()!!
+        if(mTempDataList != null && mTempDataList.size > 0 ) {
+            totalCount = mTempDataList.get(0).QtySum?.toInt()!!
+        }
         return totalCount.toString()
     }
 

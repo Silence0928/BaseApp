@@ -427,6 +427,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                                     runOnUiThread ((() -> {
                                         dismissLoading();
                                         if (response1 != null && response1.getErrorCode() == 200) {
+                                            mErrorDialog.setWorkNo("");
+                                            mErrorDialog.setPassword("");
+                                            mErrorDialog.setRemark("");
                                             dialog.dismiss();
                                         } else {
                                             assert response1 != null;

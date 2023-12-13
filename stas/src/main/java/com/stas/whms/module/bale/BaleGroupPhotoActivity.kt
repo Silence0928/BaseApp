@@ -226,8 +226,8 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             mDataBinding.cetTotalBoxNum.setText("")
             mDataBinding.cetTotalNum.setText("")
             mDataBinding.tableBalePhoto.notifyDataChanged()
-//            handleTotalNum()
-//            handlePlanTotalNum()
+            handleTotalNum()
+            handlePlanTotalNum()
             ToastUtils.show("保存成功")
         }
     }
