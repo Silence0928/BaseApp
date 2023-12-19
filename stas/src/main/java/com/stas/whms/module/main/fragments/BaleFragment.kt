@@ -8,10 +8,10 @@ import com.stas.whms.utils.RouteJumpUtil
 
 class BaleFragment: BaseMvvmFragment<FragmentBaleBinding, BaseViewModel>() {
     override fun onViewEvent() {
-        // 出货准备
-        mDataBinding.tvShipmentPrepare.setOnClickListener {
-            RouteJumpUtil.jumpToShipmentPrepare()
-        }
+//        // 出货准备
+//        mDataBinding.tvShipmentPrepare.setOnClickListener {
+//            RouteJumpUtil.jumpToShipmentPrepare()
+//        }
         // 捆包照合
         mDataBinding.tvBale.setOnClickListener {
             RouteJumpUtil.jumpToBaleGroupPhoto()
