@@ -40,11 +40,12 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     private val REQ_SCANNER_GET = 1
     private val REQ_SCANNER_GET_2 = 2
     private val REQ_SCANNER_GET_3 = 3
-    private val REQ_SCANNER_SAVE = 4
+    private val REQ_SCANNER_GET_4 = 4
+    private val REQ_SCANNER_SAVE = 5
     private var mCustomerDataList = arrayListOf<GoodsInfo>()
     private var mTempDataList = arrayListOf<GoodsInfo>()
     private var mOutPlanList = arrayListOf<ShipmentInfo>() // 出货指示书
-    private var mProductEnd: GoodsInfo? = null
+    private var mProductEnd: GoodsInfo? = null // 生产看板
 
     override fun initView() {
         title = "捆包照合"
@@ -102,8 +103,10 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
     }
 
     override fun scanResultCallBack(result: ScanResult?) {
-        val text1 = mDataBinding.cetShipmentInstruction.text.toString()
-        val text2 = mDataBinding.cetProductionSignage.text.toString()
+        val text1 = mDataBinding.cetShipmentInstruction.text.toString() // 出货指示书
+        val text2 = mDataBinding.cetCustomerSignage.text.toString() // 客户受领书
+        val text3 = mDataBinding.cetProductionSignage.text.toString() // 生产看板
+        val text4 = mDataBinding.cetCustomerBoard.text.toString() // 客户看板
 //        if (text1.isEmpty()) {
 //            getData("27300078170Z", REQ_SCANNER_GET)
 //        } else if (text2.isEmpty()) {
@@ -113,9 +116,11 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
 //        }
         if (text1.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET)
-        } else if (text2.isEmpty()) {
+        } else if (text2.isEmpty() || mDataBinding.cetCustomerSignage.isFocused) {
+            getData(result?.data, REQ_SCANNER_GET_4)
+        } else if (text3.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET_2)
-        } else {
+        }  else {
             getData(result?.data, REQ_SCANNER_GET_3)
         }
     }
@@ -125,10 +130,11 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         val req = ScannerRequestInfo()
         req.PdaID = AndroidUtil.getIpAddress()
         req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
-        req.TextID = if (type == REQ_SCANNER_GET) "1" else if (type == REQ_SCANNER_GET_2) "2" else "3"
+        req.TextID = type.toString()
         req.OutPlanList = mOutPlanList // 出货指示书
         req.ProductEnd = mProductEnd
         req.QrCode = result
+        req.CustemerReceipt = mDataBinding.cetCustomerSignage.text.toString() // 客户首领书，逗号分割
         showLoading()
         Thread {
             val response = StasHttpRequestUtil.queryBaleDataResult(JSON.toJSONString(req))
@@ -140,6 +146,11 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         val shipmentProInt = mDataBinding.cetShipmentInstruction.text.toString()
         if (shipmentProInt.isEmpty()) {
             ToastUtils.show("请扫描出货指示书！")
+            return
+        }
+        val customerSignageStr = mDataBinding.cetCustomerSignage.text.toString()
+        if (customerSignageStr.isEmpty()) {
+            ToastUtils.show("请扫描客户受领书！")
             return
         }
         if (mTempDataList.size == 0) {
@@ -155,6 +166,7 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             req.CustomLabelList = mTempDataList
             req.PdaID = AndroidUtil.getIpAddress()
             req.TimeStamp = DateUtils.getCurrentDateMilTimeStr()
+            req.CustemerReceipt = mDataBinding.cetCustomerSignage.text.toString() // 客户首领书，逗号分割
             val loginInfoStr = mMMKV.decodeString(MmkvConstants.MMKV_LOGIN_INFO)
             if (loginInfoStr != null) {
                 val loginInfo = JSON.parseObject(loginInfoStr, LoginInfo::class.java)
@@ -181,13 +193,11 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
         } else if (fromSource == REQ_SCANNER_GET_2) {
             if (response?.obj != null) { // 生产看板
                 mProductEnd = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
-//                mDataBinding.cetProductionSignage.setText(mProductEnd?.TagSerialNo)
-                val obj2 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
-                if (obj2 != null) {
+                if (mProductEnd != null) {
                     mDataBinding.cetProductionSignage.setText("")
                     mDataBinding.cetCustomerBoard.setText("")
-                    if (isCanSave(obj2)) {
-                        mDataBinding.cetProductionSignage.setText(obj2?.TagSerialNo)
+                    if (isCanSave(mProductEnd)) {
+                        mDataBinding.cetProductionSignage.setText(mProductEnd?.TagSerialNo)
                     } else {
                         ToastUtils.show("采集的数据已存在，请重新扫描")
                     }
@@ -213,18 +223,40 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
                     }
                 }
             }
+        }  else if (fromSource == REQ_SCANNER_GET_4) {
+            if (response?.obj != null) { // 客户受领书
+                val obj2 = JSONObject.parseObject(response.obj, GoodsInfo::class.java)
+                if (obj2 != null) {
+                    if (obj2.CustemerReceipt != null) {
+                        var customerInstructionStr = mDataBinding.cetCustomerSignage.text.toString()
+                        if (customerInstructionStr.contains(obj2.CustemerReceipt!!)) {
+                            ToastUtils.show("采集的数据已存在，请重新扫描")
+                            mDataBinding.cetCustomerSignage.requestFocus()
+                            return
+                        }
+                        customerInstructionStr = if (customerInstructionStr.isNotEmpty()) {
+                            "${customerInstructionStr},${obj2.CustemerReceipt}"
+                        } else {
+                            "${obj2.CustemerReceipt}"
+                        }
+                        mDataBinding.cetCustomerSignage.setText(customerInstructionStr)
+                        mDataBinding.cetCustomerSignage.requestFocus()
+                    }
+                }
+            }
         } else {
             mCustomerDataList.clear()
             mTempDataList.clear()
             mOutPlanList.clear()
             mProductEnd = null
             mDataBinding.cetShipmentInstruction.setText("")
+            mDataBinding.cetCustomerSignage.setText("")
             mDataBinding.cetCustomerBoard.setText("")
             mDataBinding.cetProductionSignage.setText("")
             mDataBinding.cetRemark.setText("")
-            mDataBinding.cetPlanTotalNum.setText("")
-            mDataBinding.cetTotalBoxNum.setText("")
-            mDataBinding.cetTotalNum.setText("")
+            mDataBinding.cetPlanTotalNum.text = ""
+            mDataBinding.cetTotalBoxNum.text = ""
+            mDataBinding.cetTotalNum.text = ""
             mDataBinding.tableBalePhoto.notifyDataChanged()
             handleTotalNum()
             handlePlanTotalNum()
