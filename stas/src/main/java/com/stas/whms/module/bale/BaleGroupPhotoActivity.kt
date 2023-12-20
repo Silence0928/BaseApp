@@ -114,6 +114,11 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
 //        } else {
 //            getData("901423101F2020  160786ZU", REQ_SCANNER_GET_3)
 //        }
+        if( mDataBinding.cetCustomerSignage.isFocused && mCustomerDataList.size >0 ){
+            ToastUtils.show("已采集生产看板和客户看，不允许重新采集客户受领书！")
+            return
+        }
+
         if (text1.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET)
         } else if (text2.isEmpty() || mDataBinding.cetCustomerSignage.isFocused) {
