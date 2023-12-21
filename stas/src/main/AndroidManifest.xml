@@ -41,7 +41,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".module.bale.BaleGroupPhotoActivity"
+            android:name=".module.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme"
             android:label="@string/app_name">
@@ -71,8 +71,8 @@
             android:exported="false"/>
 <!--        <activity android:name=".module.bale.ShipmentPrepareActivity"-->
 <!--            android:exported="false"/>-->
-<!--        <activity android:name=".module.bale.BaleGroupPhotoActivity"-->
-<!--            android:exported="false"/>-->
+        <activity android:name=".module.bale.BaleGroupPhotoActivity"
+            android:exported="false"/>
         <activity android:name=".module.bale.ShipmentActivity"
             android:exported="false"/>
         <activity android:name=".module.bale.LightReleaseActivity"
