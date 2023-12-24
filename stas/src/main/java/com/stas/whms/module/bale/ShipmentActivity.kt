@@ -98,6 +98,16 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
 
     override fun scanResultCallBack(result: ScanResult?) {
         val text1 = mDataBinding.cetShipmentInstruction.text.toString()
+
+//        if (mDataBinding.cetTotalBoxNum != null  && mDataBinding.cetCollectedTotalBoxNum != null  ) {
+//            val planQty: Int = mDataBinding.cetTotalBoxNum.getText().toString().toInt()
+//            val acQty: Int = mDataBinding.cetCollectedTotalBoxNum.getText().toString().toInt()
+//            if (planQty <= acQty) {
+//                ToastUtils.show("已采集足够的箱数，请保存！")
+//                return
+//            }
+//        }
+
         if (text1.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET)
         } else {
@@ -157,6 +167,15 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
             ToastUtils.show("请输入车牌号！")
             return
         }
+        if (!mDataBinding.cetTotalBoxNum.getText().toString().isEmpty() && !mDataBinding.cetCollectedTotalBoxNum.getText().toString().isEmpty() ) {
+            val planQty: Int = mDataBinding.cetTotalBoxNum.getText().toString().toInt()
+            val acQty: Int = mDataBinding.cetCollectedTotalBoxNum.getText().toString().toInt()
+            if (planQty > acQty) {
+                ToastUtils.show("未采集足够的箱数，请继续采集！")
+                return
+            }
+        }
+
         showLoading()
         Thread {
             val req = SaveShipmentPrepareReqInfo()
@@ -190,6 +209,11 @@ class ShipmentActivity : BaseMvvmActivity<ActivityShipmentBinding, BaseViewModel
                 if (obj3 != null) {
                     mDataBinding.cetCustomerBoard.setText("")
                     if (isCanSave(obj3)) {
+                        if( mDataBinding.cetTotalBoxNum.text==mDataBinding.cetCollectedTotalBoxNum.text)
+                        {
+                            ToastUtils.show("采集的箱数一致，请点击保存！")
+                            return;
+                        }
                         mTempDataList.add(obj3)
                         obj3.idNum = mTempDataList.size
                         val array2 = arrayListOf<GoodsInfo>()

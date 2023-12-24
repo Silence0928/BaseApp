@@ -99,6 +99,11 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
                     JSON.parseObject(response.obj.toString(), GoodsInfo::class.java)
                 mDataBinding.cetMadeFinishedTag.setText(goodsInfo?.PartsNo)
                 if (isCanSave(goodsInfo)) {
+                    if(!isScanDiffPartNo(goodsInfo)){
+                        ToastUtils.show("采集的电装品番不一致，请重新扫描")
+                        return;
+                    }
+
                     goodsInfo.idNum = mDataList.size + 1
                     val tempList = arrayListOf<GoodsInfo>()
                     tempList.add(goodsInfo)
@@ -129,6 +134,18 @@ class MoveCollectionActivity : BaseMvvmActivity<ActivityMoveCollectionBinding, B
             if (i.TagSerialNo == goods.TagSerialNo) {
                 canSave = false
                 break
+            }
+        }
+        return canSave
+    }
+
+    private fun isScanDiffPartNo(goods: GoodsInfo?): Boolean {
+        if (mDataList.size == 0) return true
+        if (goods == null) return false
+        var canSave = true
+        if(mDataList.size >= 1){
+            if (mDataList[0].PartsNo != goods.PartsNo) {
+                canSave = false
             }
         }
         return canSave

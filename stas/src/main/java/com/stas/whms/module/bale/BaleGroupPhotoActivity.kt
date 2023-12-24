@@ -118,6 +118,14 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             ToastUtils.show("已采集生产看板和客户看，不允许重新采集客户受领书！")
             return
         }
+//        if (!mDataBinding.cetPlanTotalNum.getText().toString().isEmpty() && mDataBinding.cetTotalNum.getText().toString().isEmpty() ) {
+//            val planQty: Int = mDataBinding.cetPlanTotalNum.getText().toString().toInt()
+//            val acQty: Int = mDataBinding.cetTotalNum.getText().toString().toInt()
+//            if (planQty <= acQty) {
+//                ToastUtils.show("已采集足够的品番数量，请保存！")
+//                return
+//            }
+//        }
 
         if (text1.isEmpty()) {
             getData(result?.data, REQ_SCANNER_GET)
@@ -162,6 +170,16 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
             ToastUtils.show("请扫描客户看板！")
             return
         }
+
+        if (!mDataBinding.cetPlanTotalNum.getText().toString().isEmpty() && !mDataBinding.cetTotalNum.getText().toString().isEmpty() ) {
+            val planQty: Int = mDataBinding.cetPlanTotalNum.getText().toString().toInt()
+            val acQty: Int = mDataBinding.cetTotalNum.getText().toString().toInt()
+            if (planQty > acQty) {
+                ToastUtils.show("未采集足够的品番数量，请继续采集！")
+                return
+            }
+        }
+
         showLoading()
         Thread {
             val req = SaveShipmentPrepareReqInfo()
@@ -202,6 +220,12 @@ class BaleGroupPhotoActivity : BaseMvvmActivity<ActivityBaleGroupPhotoBinding, B
                     mDataBinding.cetProductionSignage.setText("")
                     mDataBinding.cetCustomerBoard.setText("")
                     if (isCanSave(mProductEnd)) {
+                        if( mDataBinding.cetPlanTotalNum.text==mDataBinding.cetTotalNum.text)
+                        {
+                            ToastUtils.show("采集的总数一致，请点击保存！")
+                            return;
+                        }
+
                         mDataBinding.cetProductionSignage.setText(mProductEnd?.TagSerialNo)
                     } else {
                         ToastUtils.show("采集的数据已存在，请重新扫描")
